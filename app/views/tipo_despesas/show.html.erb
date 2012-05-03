@@ -1,0 +1,23 @@
+<h2><%= t("tipo_despesa.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('tipo_despesa.descricao')%>:</b>
+		  <%= @tipo_despesa.descricao if @tipo_despesa  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('tipo_despesa.observacao')%>:</b>
+		  <%= @tipo_despesa.observacao if @tipo_despesa  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_tipo_despesa_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= tipo_despesas_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

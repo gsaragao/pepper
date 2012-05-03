@@ -1,0 +1,41 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.cor')%></h2>
+<br>
+<%= form_for(@cor, :html => { :method => :get }, :url => cores_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+				<th><%= t('cor.descricao') %>&nbsp;
+		<%= f.text_field :descricao %>&nbsp;&nbsp;<%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @cores.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+    <th width="40%"><%= t('cor.descricao')%></th>
+    <th width="40%"><%= t('cor.observacao')%></th>
+   	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @cores.each do |cor| %>
+  <tr>
+    <td style="color:#666"><%= cor.descricao %></td>
+    <td title="<%= cor.observacao %>" style="color:#666"><%= show_obs(cor.observacao) %></td>
+    <td><%= link_to t('botao.detalhes'), cor %></td>
+    <td><%= link_to t('botao.editar'), edit_cor_path(cor)%></td>
+    <td><%= link_to t('botao.excluir'), cor, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @cores, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_cor_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('cor.acao.novo')%></button></a>

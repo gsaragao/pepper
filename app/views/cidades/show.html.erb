@@ -1,0 +1,18 @@
+<h2><%= t("cidade.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('cidade.nome')%>:</b>
+		  <%= @cidade.nome if @cidade  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_cidade_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= cidades_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

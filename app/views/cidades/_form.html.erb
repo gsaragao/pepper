@@ -1,0 +1,36 @@
+<%= form_for @cidade do |f| %>
+<% if @cidade.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <% @cidade.errors.full_messages.each do |msg| %>
+         <li><%= msg %></li>
+       <% end %>
+     </ul>
+   </div>
+</fieldset>
+<% end %>
+<br>
+<table>
+	<tr><td>
+          <div class="clearfix">    
+   	     <%= f.label :nome %>
+		<div class="input">
+	     <%= f.text_field :nome %>
+	    </div>
+      </div>
+    </td></tr>
+</table> 
+  <div class="actions">
+    <%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%= cidades_path %>"><button class="btn" name="btnback"><%= t('botao.cancelar')%></button></a>
+  </div>
+<% end %>
+
+<script>
+
+ $('#cidade_descricao').focus();
+
+</script>

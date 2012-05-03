@@ -1,0 +1,70 @@
+<%= form_for @despesa do |f| %>
+<% if @despesa.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <% @despesa.errors.full_messages.each do |msg| %>
+         <li><%= msg %></li>
+       <% end %>
+     </ul>
+   </div>
+</fieldset>
+<% end %>
+<br>
+<table>
+	<tr><td>
+		<div class="clearfix">    
+   	     <%= f.label :compra %>
+		<div class="input">
+	     <%= f.select :compra_id, options_from_collection_for_select(@compras,:id,:descricao, @despesa.compra_id),  
+					:include_blank => true %>
+	    </div>
+      </div>
+       <div class="clearfix">    
+   	     <%= f.label :tipo_despesa %>
+		<div class="input">
+	     	<%= f.select :tipo_despesa_id, options_from_collection_for_select(@tipo_despesas,:id,:descricao, @despesa.tipo_despesa_id),  
+					:include_blank => true %>
+	    </div>
+      </div>
+       <div class="clearfix">    
+   	     <%= f.label :fornecedor %>
+		<div class="input">
+	     	<%= f.select :fornecedor_id, options_from_collection_for_select(@fornecedores,:id,:nome, @despesa.fornecedor_id),  
+					:include_blank => true %>
+	    </div>
+      </div>
+	    <div class="clearfix">    
+ 	     <%= f.label :descricao %>
+		  <div class="input">
+	        <%= f.text_field :descricao %>
+	      </div>
+      </div>          
+          <div class="clearfix">    
+   	     <%= f.label :data %>
+		<div class="input">
+	     <%= f.text_field :data, :value => (I18n.l(@despesa.data) if @despesa.data) %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :valor %>
+		<div class="input">
+	     <%= f.text_field :valor, :alt => 'decimal', :value => @despesa.valor %>
+	    </div>
+      </div>
+    </td></tr>
+</table> 
+  <div class="actions">
+    <%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%= despesas_path %>"><button class="btn" name="btnback"><%= t('botao.cancelar')%></button></a>
+  </div>
+<% end %>
+
+<script>
+
+$('#despesa_data').datepicker({dateFormat : 'dd/mm/yy'});
+$('#despesa_valor').setMask();
+
+</script>

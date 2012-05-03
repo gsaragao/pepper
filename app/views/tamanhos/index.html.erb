@@ -1,0 +1,41 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.tamanho')%></h2>
+<br>
+<%= form_for(@tamanho, :html => { :method => :get }, :url => tamanhos_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+	  <th><%= t('tamanho.descricao') %>&nbsp;
+		<%= f.text_field :descricao %>&nbsp;&nbsp;<%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @tamanhos.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+    <th width="40%"><%= t('tamanho.descricao')%></th>
+     <th width="40%"><%= t('tamanho.observacao')%></th>
+   	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @tamanhos.each do |tamanho| %>
+  <tr>
+    <td style="color:#666"><%= tamanho.descricao %></td>
+    <td title="<%= tamanho.observacao %>" style="color:#666"><%= show_obs(tamanho.observacao) %></td>
+    <td><%= link_to t('botao.detalhes'), tamanho %></td>
+    <td><%= link_to t('botao.editar'), edit_tamanho_path(tamanho)%></td>
+    <td><%= link_to t('botao.excluir'), tamanho, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @tamanhos, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_tamanho_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('tamanho.acao.novo')%></button></a>

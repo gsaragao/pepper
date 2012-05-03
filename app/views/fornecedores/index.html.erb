@@ -1,0 +1,49 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.fornecedor')%></h2>
+<br>
+<%= form_for(@fornecedor, :html => { :method => :get }, :url => fornecedores_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th><%= t('fornecedor.nome') %>&nbsp;
+		<%= f.text_field :nome %>&nbsp;&nbsp;
+	    <%= t('fornecedor.cidade') %>&nbsp;
+		<%= f.select :cidade_id, options_from_collection_for_select(@cidades,:id,:nome, @fornecedor.cidade_id), :style=>'width: 240px;',
+							:include_blank => true %>&nbsp;&nbsp;
+	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @fornecedores.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+	    <th width="20%"><%= t('fornecedor.nome')%></th>
+        <th width="20%"><%= t('fornecedor.telefone')%></th>
+        <th width="20%"><%= t('fornecedor.email')%></th>
+        <th width="20%"><%= t('fornecedor.cidade')%></th>
+    	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @fornecedores.each do |fornecedor| %>
+  <tr>
+	    <td style="color:#666"><%= fornecedor.nome %></td>
+        <td style="color:#666"><%= fornecedor.telefone %></td>
+        <td style="color:#666"><%= fornecedor.email %></td>
+        <td style="color:#666"><%= fornecedor.cidade.nome if fornecedor.cidade %></td>
+        <td><%= link_to t('botao.detalhes'), fornecedor %></td>
+    <td><%= link_to t('botao.editar'), edit_fornecedor_path(fornecedor)%></td>
+    <td><%= link_to t('botao.excluir'), fornecedor, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @fornecedores, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_fornecedor_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('fornecedor.acao.novo')%></button></a>

@@ -1,0 +1,27 @@
+<h2><%= t("categoria.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+		<p>
+		  <b><%= t('categoria.descricao')%>:</b>
+		  <%= @categoria.descricao if @categoria  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('categoria.pai')%>:</b>
+		  <%= @categoria.father.rec if @categoria.father %>
+		</p>
+		
+		<p>
+		  <b><%= t('categoria.observacao')%>:</b>
+		  <%= @categoria.observacao %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_categoria_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= categorias_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

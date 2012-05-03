@@ -1,0 +1,45 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.categoria')%></h2>
+<br>
+
+<%= form_for(@categoria, :html => { :method => :get }, :url => categorias_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th><%= t('categoria.descricao') %>&nbsp;<%= f.text_field :descricao , :style=>'width: 200px;' %>&nbsp;
+	      <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+
+<% if @categorias.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+	    <th width="20%"><%= t('categoria.descricao')%></th>
+        <th width="40%"><%= t('categoria.pai')%></th>
+		<th width="20%"><%= t('categoria.observacao')%></th>
+    	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @categorias.each do |categoria| %>
+  <tr>
+	<td style="color:#666"><%= categoria.descricao %></td>
+    <td style="color:#666"><%= categoria.father.rec if categoria.father %></td>
+    <td title="<%= categoria.observacao %>" style="color:#666"><%= show_obs(categoria.observacao) %></td>
+    <td><%= link_to t('botao.detalhes'), categoria %></td>
+    <td><%= link_to t('botao.editar'), edit_categoria_path(categoria)%></td>
+    <td><%= link_to t('botao.excluir'), categoria, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @categorias, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_categoria_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('categoria.acao.novo')%></button></a>

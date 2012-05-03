@@ -1,0 +1,23 @@
+<h2><%= t("marca.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('marca.descricao')%>:</b>
+		  <%= @marca.descricao if @marca  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('marca.observacao')%>:</b>
+		  <%= @marca.observacao if @marca  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_marca_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= marcas_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

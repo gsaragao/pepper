@@ -1,0 +1,23 @@
+<h2><%= t("cor.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('cor.descricao')%>:</b>
+		  <%= @cor.descricao if @cor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('cor.observacao')%>:</b>
+		  <%= @cor.observacao if @cor  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_cor_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= cores_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

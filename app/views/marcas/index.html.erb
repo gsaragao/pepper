@@ -1,0 +1,41 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.marca')%></h2>
+<br>
+<%= form_for(@marca, :html => { :method => :get }, :url => marcas_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+				<th><%= t('marca.descricao') %>&nbsp;
+		<%= f.text_field :descricao %>&nbsp;&nbsp;<%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @marcas.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+	    <th width="40%"><%= t('marca.descricao')%></th>
+        <th width="40%"><%= t('marca.observacao')%></th>
+    	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @marcas.each do |marca| %>
+  <tr>
+	    <td style="color:#666"><%= marca.descricao %></td>
+	    <td title="<%= marca.observacao %>" style="color:#666"><%= show_obs(marca.observacao) %></td>
+        <td><%= link_to t('botao.detalhes'), marca %></td>
+    <td><%= link_to t('botao.editar'), edit_marca_path(marca)%></td>
+    <td><%= link_to t('botao.excluir'), marca, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @marcas, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_marca_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('marca.acao.novo')%></button></a>

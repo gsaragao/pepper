@@ -1,0 +1,42 @@
+<h2><%= t("despesa.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+		<p>
+		  <b><%= t('despesa.descricao')%>:</b>
+		  <%= @despesa.descricao  %>
+		</p> 
+
+		<p>
+		  <b><%= t('despesa.compra')%>:</b>
+		  <%= @despesa.compra.descricao if @despesa  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('despesa.tipo_despesa')%>:</b>
+		  <%= @despesa.tipo_despesa.descricao if @despesa  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('despesa.fornecedor')%>:</b>
+		  <%= @despesa.fornecedor.nome if @despesa.fornecedor  %>
+		</p>
+
+		<p>
+		  <b><%= t('despesa.data')%>:</b>
+		  <%= I18n.l(@despesa.data) if @despesa.data  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('despesa.valor')%>:</b>
+		  <%= number_to_currency(@despesa.valor) if @despesa  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_despesa_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= despesas_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

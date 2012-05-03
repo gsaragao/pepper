@@ -1,0 +1,48 @@
+<h2><%= t("vendedor.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('vendedor.nome')%>:</b>
+		  <%= @vendedor.nome if @vendedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('vendedor.email')%>:</b>
+		  <%= @vendedor.email if @vendedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('vendedor.telefone')%>:</b>
+		  <%= @vendedor.telefone if @vendedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('vendedor.cidade')%>:</b>
+		  <%= @vendedor.cidade.nome if @vendedor.cidade  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('vendedor.endereco')%>:</b>
+		  <%= @vendedor.endereco if @vendedor  %>
+		</p>
+		
+		<p>
+		  <b><%= t('vendedor.data_cadastro')%>:</b>
+		  <%= I18n.l(@vendedor.created_at, :format => :short) if @vendedor.created_at  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('vendedor.observacao')%>:</b>
+		  <%= @vendedor.observacao if @vendedor  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_vendedor_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= vendedores_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

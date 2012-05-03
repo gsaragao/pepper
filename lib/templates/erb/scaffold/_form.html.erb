@@ -1,0 +1,38 @@
+<%%= form_for @<%= singular_table_name %> do |f| %>
+<%% if @<%= singular_table_name %>.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <%% @<%= singular_table_name %>.errors.full_messages.each do |msg| %>
+         <li><%%= msg %></li>
+       <%% end %>
+     </ul>
+   </div>
+</fieldset>
+<%% end %>
+<br>
+<table>
+	<tr><td>
+    <% attributes.each do |attribute| -%>
+      <div class="clearfix">    
+   	     <%%= f.label :<%= attribute.name %> %>
+		<div class="input">
+	     <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
+	    </div>
+      </div>
+    <% end -%>
+</td></tr>
+</table> 
+  <div class="actions">
+    <%%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%%= <%= plural_table_name %>_path %>"><button class="btn" name="btnback"><%%= t('botao.cancelar')%></button></a>
+  </div>
+<%% end %>
+
+<script>
+
+ $('#<%= singular_table_name %>_descricao').focus();
+
+</script>

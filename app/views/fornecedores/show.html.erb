@@ -1,0 +1,43 @@
+<h2><%= t("fornecedor.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('fornecedor.nome')%>:</b>
+		  <%= @fornecedor.nome if @fornecedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('fornecedor.telefone')%>:</b>
+		  <%= @fornecedor.telefone if @fornecedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('fornecedor.email')%>:</b>
+		  <%= @fornecedor.email if @fornecedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('fornecedor.cidade')%>:</b>
+		  <%= @fornecedor.cidade.nome if @fornecedor.cidade  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('fornecedor.endereco')%>:</b>
+		  <%= @fornecedor.endereco if @fornecedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('fornecedor.observacao')%>:</b>
+		  <%= @fornecedor.observacao if @fornecedor  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_fornecedor_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= fornecedores_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

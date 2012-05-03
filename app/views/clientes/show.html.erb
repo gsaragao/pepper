@@ -1,0 +1,46 @@
+<h2><%= t("cliente.acao.detalhar") %></h2>
+<br>
+<table>
+	<tr><td>
+ 
+	<p>
+	  <b><%= t('cliente.nome')%>:</b>
+	  <%= @cliente.nome if @cliente  %>
+	</p>
+ 
+	<p>
+	  <b><%= t('cliente.email')%>:</b>
+	  <%= @cliente.email if @cliente  %>
+	</p>
+ 
+	<p>
+	  <b><%= t('cliente.telefone')%>:</b>
+	  <%= @cliente.telefone if @cliente  %>
+	</p>
+ 
+	<p>
+	  <b><%= t('cliente.cidade')%>:</b>
+	  <%= @cliente.cidade.nome if @cliente.cidade  %>
+	</p>
+ 
+	<p>
+	  <b><%= t('cliente.endereco')%>:</b>
+	  <%= @cliente.endereco if @cliente  %>
+	</p>
+	
+	<p>
+	  <b><%= t('cliente.data_cadastro')%>:</b>
+	  <%= I18n.l(@cliente.created_at, :format => :short) if @cliente.created_at  %>
+	</p>
+	
+	<p>
+	  <b><%= t('cliente.observacao')%>:</b>
+	  <%= @cliente.observacao %>
+	</p>
+	
+</td></tr></table>
+<div class="actionsShow">
+	<a href="<%= edit_cliente_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= clientes_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

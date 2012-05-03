@@ -1,0 +1,63 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.despesa')%></h2>
+<br>
+<%= form_for(@despesa, :html => { :method => :get }, :url => despesas_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th>		<%= t('despesa.compra') %>&nbsp;
+			<%= f.select :compra_id, options_from_collection_for_select(@compras,:id,:descricao, @despesa.compra_id),  
+					:include_blank => true, :size => 100 %>&nbsp;&nbsp;
+	    		<%= t('despesa.tipo_despesa') %>&nbsp;
+				<%= f.select :tipo_despesa_id, options_from_collection_for_select(@tipo_despesas,:id,:descricao, @despesa.tipo_despesa_id),  
+						:include_blank => true %>&nbsp;&nbsp;
+	    		<%= t('despesa.data') %>&nbsp;
+		<%= f.text_field :data, :value => (I18n.l(@despesa.data) if @despesa.data) %>&nbsp;&nbsp;
+	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @despesas.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+	    <th width="10%"><%= t('despesa.compra')%></th>
+        <th width="10%"><%= t('despesa.tipo_despesa')%></th>
+		<th width="10%"><%= t('despesa.fornecedor')%></th>
+		<th width="10%"><%= t('despesa.descricao')%></th>
+        <th width="5%"><%= t('despesa.data')%></th>
+        <th width="5%"><%= t('despesa.valor')%></th>
+    	<th></th>
+		<th></th>
+		<th></th>
+  </tr>
+
+ <% @despesas.each do |despesa| %>
+  <tr>
+	    <td width="15%" style="color:#666"><%= despesa.compra.descricao if despesa.compra %></td>
+        <td width="15%" style="color:#666"><%= despesa.tipo_despesa.descricao if despesa.tipo_despesa %></td>
+        <td width="15%" style="color:#666"><%= despesa.fornecedor.nome if despesa.fornecedor %></td>
+		<td width="15%" style="color:#666"><%= despesa.descricao %></td>
+        <td width="10%" style="color:#1E90FF"><%= I18n.l(despesa.data) if despesa.data %></td>
+        <td width="10%" style="color:#006400"><%= number_to_currency(despesa.valor) if despesa.valor %></td>
+        <td><%= link_to t('botao.detalhes'), despesa %></td>
+    <td><%= link_to t('botao.editar'), edit_despesa_path(despesa)%></td>
+    <td><%= link_to t('botao.excluir'), despesa, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @despesas, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_despesa_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('despesa.acao.novo')%></button></a>
+
+<script>
+
+$(function() {
+  $('#despesa_data').datepicker({dateFormat : 'dd/mm/yy'});
+});
+</script>

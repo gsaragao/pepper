@@ -1,0 +1,40 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.cidade')%></h2>
+<br>
+<%= form_for(@cidade, :html => { :method => :get }, :url => cidades_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th>		<%= t('cidade.nome') %>&nbsp;
+		<%= f.text_field :nome %>&nbsp;&nbsp;
+	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @cidades.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+	    <th width="80%"><%= t('cidade.nome')%></th>
+    	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @cidades.each do |cidade| %>
+  <tr>
+	    <td><%= cidade.nome %></td>
+        <td><%= link_to t('botao.detalhes'), cidade %></td>
+    <td><%= link_to t('botao.editar'), edit_cidade_path(cidade)%></td>
+    <td><%= link_to t('botao.excluir'), cidade, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @cidades, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_cidade_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('cidade.acao.novo')%></button></a>

@@ -1,0 +1,31 @@
+<h2><%= t("compra.acao.detalhar") %></h2>
+<br>
+<table>
+	<tr><td>
+ 
+	<p>
+	  <b><%= t('compra.descricao')%>:</b>
+	  <%= @compra.descricao if @compra  %>
+	</p>
+ 
+	<p>
+	  <b><%= t('compra.data')%>:</b>
+		<span style="color:#1E90FF"><%= I18n.l(@compra.data) if @compra.data %></span>  
+	</p>
+
+	<p>
+	  <b><%= t('compra.total_despesas')%>:</b>
+	  <span style="color:#006400"><%= number_to_currency(@compra.total_despesas) if @compra.total_despesas %></span>
+	</p>
+ 
+	<p>
+	  <b><%= t('compra.observacao')%>:</b>
+	  <%= @compra.observacao if @compra  %>
+	</p>
+		
+</td></tr></table>
+<div class="actionsShow">
+	<a href="<%= edit_compra_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= compras_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

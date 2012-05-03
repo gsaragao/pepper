@@ -1,0 +1,45 @@
+<h2><%%= t('app.menu.listagem')%>&nbsp;<%%= t('app.menu.<%= singular_table_name %>')%></h2>
+<br>
+<%%= form_for(@<%= singular_table_name %>, :html => { :method => :get }, :url => <%= plural_table_name %>_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th><% attributes.each do |attribute| -%>
+		<%%= t('<%= singular_table_name %>.<%= attribute.name %>') %>&nbsp;
+		<%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>&nbsp;&nbsp;
+	    <% end -%><%%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<%% end %>
+<%% if @<%= plural_table_name %>.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+	<% attributes.each do |attribute| -%>
+    <th width="20%"><%%= t('<%= singular_table_name %>.<%= attribute.name %>')%></th>
+    <% end -%>
+	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+  <tr>
+	<% attributes.each do |attribute| -%>
+    <td style="color:#666"><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
+    <% end -%>
+    <td><%%= link_to t('botao.detalhes'), <%= singular_table_name %> %></td>
+    <td><%%= link_to t('botao.editar'), edit_<%= singular_table_name %>_path(<%= singular_table_name %>)%></td>
+    <td><%%= link_to t('botao.excluir'), <%= singular_table_name %>, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <%% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%%= will_paginate @<%= plural_table_name %>, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<%% end %>
+
+<br />
+
+<a href="<%%= new_<%= singular_table_name %>_path %>">
+	<button class="btn" name="btnpesquisa"><%%= t('<%= singular_table_name %>.acao.novo')%></button></a>

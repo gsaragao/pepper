@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= t("app.nome_completo") %></title>
+
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/"><%= t("app.nome") %></a>
+          <ul class="nav">
+            <li class='<%=@class_home %>' ><a href="/home"><%= t("app.menu.home") %></a></li>
+            <li class='<%=@class_cliente %>' ><a href="/clientes"><%= t("app.menu.cliente") %></a></li>
+			<li class='<%=@class_compra %>' ><a href="/compras"><%= t("app.menu.compra") %></a></li>
+			<li class='<%=@class_despesa %>' ><a href="/despesas"><%= t("app.menu.despesa") %></a></li>
+			<li class='<%=@class_fornecedor %>' ><a href="/fornecedores"><%= t("app.menu.fornecedor") %></a></li>
+			<li class="<%=@class_categoria %><%=@class_cor %><%=@class_marca %><%=@class_tamanho %><%=@class_tipo_despesa %>">
+		    	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			          <%= t("app.menu.administracao") %>
+			       <b class="caret"></b>
+			    </a>
+			    <ul class="dropdown-menu">
+		            <li class='<%=@class_categoria %>' ><a href="/categorias"><%= t("app.menu.categoria") %></a></li>
+					<li class='<%=@class_cidade %>' ><a href="/cidades"><%= t("app.menu.cidade") %></a></li>
+					<li class='<%=@class_cor %>' ><a href="/cores"><%= t("app.menu.cor") %></a></li>
+					<li class='<%=@class_marca %>' ><a href="/marcas"><%= t("app.menu.marca") %></a></li>
+					<li class='<%=@class_tamanho %>' ><a href="/tamanhos"><%= t("app.menu.tamanho") %></a></li>
+					<li class='<%=@class_tipo_despesa %>' ><a href="/tipo_despesas"><%= t("app.menu.tipo_despesa") %></a></li>
+					<li class='<%=@class_vendedor %>' ><a href="/vendedores"><%= t("app.menu.vendedor") %></a></li>
+			    </ul>
+		    </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+ <div class="container">
+    <div class="content">
+		<div class="page-header">
+		 </div>
+     	<div class="row">
+		   <div>
+			<% if notice.present? %>
+			    <script>showNotification(true,'<%= notice %>');</script>
+			<% end %>	
+			<% if alert.present? %>
+			    <script>showNotification(false,'<%= alert %>');</script>
+			<% end %>
+             <%= yield %>
+           </div>
+        </div>      
+    </div>
+    <footer>
+	  <p>© <%= t("app.nome_completo") %> 2012</p>
+	</footer>
+ </div>
+</body>
+</html>

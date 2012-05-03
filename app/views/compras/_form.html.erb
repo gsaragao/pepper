@@ -1,0 +1,49 @@
+<%= form_for @compra do |f| %>
+<% if @compra.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <% @compra.errors.full_messages.each do |msg| %>
+           <li><%= msg %></li>
+         <% end %>
+     </ul>
+   </div>
+</fieldset>
+<% end %>
+<br>
+<table sytle="margin-top:10px;">
+	<tr><td>
+          <div class="clearfix">    
+   	     <%= f.label :descricao %>
+		<div class="input">
+	     <%= f.text_field :descricao %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :data %>
+		<div class="input">
+		 <%= f.text_field :data, :value => (I18n.l(@compra.data) if @compra.data) %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :observacao %>
+		<div class="input">
+	     <%= f.text_area :observacao, :rows => 10, :cols => 50 %>
+	    </div>
+      </div>
+    </td></tr>
+</table> 
+  <div class="actions">
+    <%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%= compras_path %>"><button class="btn" name="btnback"><%= t('botao.cancelar')%></button></a>
+  </div>
+<% end %>
+
+<script>
+$(function() {
+ $('#compra_descricao').focus();
+ $('#compra_data').datepicker({dateFormat : 'dd/mm/yy'});
+});
+</script>
