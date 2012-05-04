@@ -1,0 +1,133 @@
+<%= form_for @produto do |f| %>
+<% if @produto.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <% @produto.errors.full_messages.each do |msg| %>
+         <li><%= msg %></li>
+       <% end %>
+     </ul>
+   </div>
+</fieldset>
+<% end %>
+<br>
+<table>
+	<tr><td>
+          <div class="clearfix">    
+   	     <%= f.label :descricao %>
+		<div class="input">
+	     <%= f.text_field :descricao %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :codigo_interno %>
+		<div class="input">
+	     <%= f.text_field :codigo_interno %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :codigo_fabricante %>
+		<div class="input">
+	     <%= f.text_field :codigo_fabricante %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :categoria %>
+		<div class="input">
+	     	<%= f.select :categoria_id, options_from_collection_for_select(@categorias,:id,:rec, @produto.categoria_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :fornecedor %>
+		<div class="input">
+	     	<%= f.select :fornecedor_id, options_from_collection_for_select(@fornecedores,:id,:nome, @produto.fornecedor_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :compra %>
+		<div class="input">
+	     	<%= f.select :compra_id, options_from_collection_for_select(@compras,:id,:descricao, @produto.compra_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :marca %>
+		<div class="input">
+	     	<%= f.select :marca_id, options_from_collection_for_select(@marcas,:id,:descricao, @produto.marca_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :cor %>
+		<div class="input">
+	     	<%= f.select :cor_id, options_from_collection_for_select(@cores,:id,:descricao, @produto.cor_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :tamanho %>
+		<div class="input">
+	     	<%= f.select :tamanho_id, options_from_collection_for_select(@tamanhos,:id,:descricao, @produto.tamanho_id),  
+						:include_blank => true %>
+	    </div>
+      </div>	
+	</td><td>
+          <div class="clearfix">    
+   	     <%= f.label :valor_compra %>
+		<div class="input">
+	     <%= f.text_field :valor_compra, :alt => 'decimal', :value => @produto.valor_compra %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :valor_venda %>
+		<div class="input">
+	     <%= f.text_field :valor_venda, :alt => 'decimal', :value => @produto.valor_venda %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :valor_minimo %>
+		<div class="input">
+	     <%= f.text_field :valor_minimo, :alt => 'decimal', :value => @produto.valor_minimo %>
+	    </div>
+
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :margem_lucro %>
+		<div class="input">
+	     <%= f.text_field :margem_lucro %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :observacao %>
+		<div class="input">
+	     <%= f.text_area :observacao, :rows => 10, :cols => 50  %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :foto %>
+		<div class="input">
+	     	<%= f.file_field :foto %>
+	    </div>
+      </div>
+	</td>
+	<td width="30%"></td>
+	</tr>
+</table> 
+  <div class="actions">
+    <%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%= produtos_path %>"><button class="btn" name="btnback"><%= t('botao.cancelar')%></button></a>
+  </div>
+<% end %>
+
+<script>
+
+ $('#produto_descricao').focus();
+ $('#produto_valor_compra').setMask();
+ $('#produto_valor_venda').setMask();
+ $('#produto_valor_minimo').setMask();
+
+</script>

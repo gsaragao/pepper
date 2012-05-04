@@ -1,0 +1,63 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.produto')%></h2>
+<br>
+<%= form_for(@produto, :html => { :method => :get }, :url => produtos_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th>		<%= t('produto.descricao') %>&nbsp;
+		<%= f.text_field :descricao %>&nbsp;&nbsp;
+	    		<%= t('produto.codigo_interno') %>&nbsp;
+		<%= f.text_field :codigo_interno %>&nbsp;&nbsp;
+	    		<%= t('produto.compra') %>&nbsp;
+				<%= f.select :compra_id, options_from_collection_for_select(@compras,:id,:descricao, @produto.compra_id),  
+							:include_blank => true %>&nbsp;&nbsp;
+	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @produtos.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+        <th width="10%"><%= t('produto.codigo_interno')%></th>
+	    <th width="10%"><%= t('produto.descricao')%></th>
+        <th width="10%"><%= t('produto.categoria')%></th>
+        <th width="10%"><%= t('produto.fornecedor')%></th>
+        <th width="10%"><%= t('produto.compra')%></th>
+        <th width="10%"><%= t('produto.marca')%></th>
+        <th width="10%"><%= t('produto.valor_compra')%></th>
+        <th width="10%"><%= t('produto.valor_venda')%></th>
+        <th width="10%"><%= t('produto.valor_minimo')%></th>
+        <th width="10%"><%= t('produto.margem_lucro')%></th>
+    	<th></th>
+    	<th></th>
+    	<th></th>
+  </tr>
+
+ <% @produtos.each do |produto| %>
+  <tr>
+        <td style="color:#1E90FF"><%= produto.codigo_interno %></td>
+	    <td style="color:#666"><%= produto.descricao %></td>
+        <td style="color:#666"><%= produto.categoria.descricao if produto.categoria %></td>
+        <td style="color:#666"><%= produto.fornecedor.nome if produto.fornecedor %></td>
+        <td style="color:#666"><%= produto.compra.descricao if produto.compra %></td>
+        <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>
+        <td style="color:#006400"><%= number_to_currency(produto.valor_compra) %></td>
+        <td style="color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
+        <td style="color:#006400"><%= number_to_currency(produto.valor_minimo) %></td>
+        <td style="color:#666"><%= number_to_percentage(produto.margem_lucro) if produto.margem_lucro %></td>
+        <td><%= link_to t('botao.detalhes'), produto %></td>
+    	<td><%= link_to t('botao.editar'), edit_produto_path(produto)%></td>
+    	<td><%= link_to t('botao.excluir'), produto, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @produtos, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_produto_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('produto.acao.novo')%></button></a>

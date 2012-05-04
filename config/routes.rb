@@ -1,5 +1,7 @@
 Pepper::Application.routes.draw do
 
+  resources :produtos
+
   resources :vendedores
 
   resources :fornecedores

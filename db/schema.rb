@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120501024944) do
+ActiveRecord::Schema.define(:version => 20120503163826) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -102,6 +102,37 @@ ActiveRecord::Schema.define(:version => 20120501024944) do
 
   add_index "marcas", ["descricao"], :name => "index_marcas_on_descricao", :unique => true
 
+  create_table "produtos", :force => true do |t|
+    t.string   "descricao"
+    t.string   "codigo_interno"
+    t.string   "codigo_fabricante"
+    t.integer  "categoria_id"
+    t.integer  "fornecedor_id"
+    t.integer  "compra_id"
+    t.integer  "marca_id"
+    t.integer  "cor_id"
+    t.integer  "tamanho_id"
+    t.decimal  "valor_compra",      :precision => 13, :scale => 2
+    t.decimal  "valor_venda",       :precision => 13, :scale => 2
+    t.decimal  "valor_minimo",      :precision => 13, :scale => 2
+    t.decimal  "margem_lucro",      :precision => 4,  :scale => 1
+    t.text     "observacao"
+    t.string   "foto_file_name"
+    t.string   "foto_content_type"
+    t.integer  "foto_file_size"
+    t.datetime "foto_updated_at"
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+  end
+
+  add_index "produtos", ["categoria_id"], :name => "index_produtos_on_categoria_id"
+  add_index "produtos", ["codigo_interno"], :name => "index_produtos_on_codigo_interno", :unique => true
+  add_index "produtos", ["compra_id"], :name => "index_produtos_on_compra_id"
+  add_index "produtos", ["cor_id"], :name => "index_produtos_on_cor_id"
+  add_index "produtos", ["fornecedor_id"], :name => "index_produtos_on_fornecedor_id"
+  add_index "produtos", ["marca_id"], :name => "index_produtos_on_marca_id"
+  add_index "produtos", ["tamanho_id"], :name => "index_produtos_on_tamanho_id"
+
   create_table "tamanhos", :force => true do |t|
     t.string   "descricao"
     t.text     "observacao"
@@ -141,6 +172,13 @@ ActiveRecord::Schema.define(:version => 20120501024944) do
   add_foreign_key "despesas", "compras", :name => "despesas_compra_id_fk"
   add_foreign_key "despesas", "fornecedores", :name => "despesas_fornecedor_id_fk"
   add_foreign_key "despesas", "tipo_despesas", :name => "despesas_tipo_despesa_id_fk"
+
+  add_foreign_key "produtos", "categorias", :name => "produtos_categoria_id_fk"
+  add_foreign_key "produtos", "compras", :name => "produtos_compra_id_fk"
+  add_foreign_key "produtos", "cores", :name => "produtos_cor_id_fk"
+  add_foreign_key "produtos", "fornecedores", :name => "produtos_fornecedor_id_fk"
+  add_foreign_key "produtos", "marcas", :name => "produtos_marca_id_fk"
+  add_foreign_key "produtos", "tamanhos", :name => "produtos_tamanho_id_fk"
 
   add_foreign_key "vendedores", "cidades", :name => "vendedores_cidade_id_fk"
 

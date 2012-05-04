@@ -6,6 +6,7 @@
     nome_completo: Pepper
     menu: 
       home: Home
+      administracao: Administração
 
   home:
     titulo: Painel Geral
@@ -137,7 +138,33 @@
     telefone: Telefone
     email: Email
     observacao: Observação
-     
+    
+  produto:  
+     self: Produto
+     acao: 
+       novo: Novo Produto
+       editar: Editar Produto
+       listar: Listar Produto
+       detalhar: Detalhes Produto
+     descricao: Descrição
+     codigo_interno: Cód. Interno
+     codigo_fabricante: Código Fabricante
+     categoria: Categoria
+     fornecedor: Fornecedor
+     compra: Compra
+     marca: Marca
+     cor: Cor 
+     tamanho: Tamanho
+     valor_compra: Vl. Compra
+     valor_venda: Vl. Venda
+     valor_minimo: Vl. Mínimo
+     margem_lucro: Lucro
+     percentual: Percentual
+     observacao: Observação
+     foto: Foto
+     foto_valida:
+       tamanho: "Foto deve ter no máximo: 200 kb"
+       tipo: "São permitidos apenas os formatos: PNG, JPG e GIF"
     
   botao:
     criar: Criar
@@ -256,6 +283,7 @@
     percentage:
       format:
         delimiter: '.'
+        precision: 1
 
     precision:
       format:
@@ -459,4 +487,21 @@
         email: Email
         observacao: Observação
     
+      produto:  
+         descricao: Descrição
+         codigo_interno: Código Interno
+         codigo_fabricante: Código Fabricante
+         categoria: Categoria
+         fornecedor: Fornecedor
+         compra: Compra
+         marca: Marca
+         cor: Cor 
+         tamanho: Tamanho
+         valor_compra: Valor Compra
+         valor_venda: Valor Venda
+         valor_minimo: Valor Mínimo
+         margem_lucro: Margem Lucro
+         percentual: Percentual
+         foto: Foto
+         observacao: Observação
         

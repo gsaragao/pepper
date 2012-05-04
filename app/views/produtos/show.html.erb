@@ -1,0 +1,88 @@
+<h2><%= t("produto.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+		<p>
+		  <b><%= t('produto.descricao')%>:</b>
+		  <%= @produto.descricao if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.codigo_interno')%>:</b>
+		  <%= @produto.codigo_interno if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.codigo_fabricante')%>:</b>
+		  <%= @produto.codigo_fabricante if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.categoria')%>:</b>
+		  <%= @produto.categoria.descricao if @produto.categoria  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.fornecedor')%>:</b>
+		  <%= @produto.fornecedor.nome if @produto.fornecedor %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.compra')%>:</b>
+		  <%= @produto.compra.descricao if @produto.compra  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.marca')%>:</b>
+		  <%= @produto.marca.descricao if @produto.marca  %>
+		</p>
+    </td><td>
+		<p>
+		  <b><%= t('produto.cor')%>:</b>
+		  <%= @produto.cor.descricao if @produto.cor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.tamanho')%>:</b>
+		  <%= @produto.tamanho.descricao if @produto.tamanho  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.valor_compra')%>:</b>
+		  <%= @produto.valor_compra if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.valor_venda')%>:</b>
+		  <%= @produto.valor_venda if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.valor_minimo')%>:</b>
+		  <%= @produto.valor_minimo if @produto  %>
+		</p>
+   </td><td>
+		<p>
+		  <b><%= t('produto.margem_lucro')%>:</b>
+		  <%= @produto.margem_lucro if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.observacao')%>:</b>
+		  <%= @produto.observacao if @produto  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('produto.foto_file_name')%>:</b>
+		  <%= link_to "#{@produto.foto_file_name}", @produto.foto.url, :target => "_blank" %>
+		</p>
+
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_produto_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= produtos_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>
