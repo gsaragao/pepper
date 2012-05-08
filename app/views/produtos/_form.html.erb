@@ -125,6 +125,14 @@
 
 <script>
 
+  function calcula() {
+     
+	vc = $('#produto_valor_compra').val();
+	vv = $('#produto_valor_venda').val();
+	result = ((vv - vc) / vc) * 100; 
+	$('#produto_margem_lucro').val(result);
+  }
+
  $('#produto_descricao').focus();
  $('#produto_valor_compra').setMask();
  $('#produto_valor_venda').setMask();

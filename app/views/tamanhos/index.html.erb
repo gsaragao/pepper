@@ -12,8 +12,9 @@
 <% if @tamanhos.size > 0  %>
  <table class="zebra-striped">
   <tr>
-    <th width="40%"><%= t('tamanho.descricao')%></th>
-     <th width="40%"><%= t('tamanho.observacao')%></th>
+    <th width="25%"><%= t('tamanho.descricao')%></th>
+	<th width="25%"><%= t('tamanho.default')%></th>
+    <th width="30%"><%= t('tamanho.observacao')%></th>
    	<th></th>
     <th></th>
     <th></th>
@@ -22,6 +23,7 @@
  <% @tamanhos.each do |tamanho| %>
   <tr>
     <td style="color:#666"><%= tamanho.descricao %></td>
+	<td style="color:#666"><% if (tamanho.default == 1) %><i class="icon-ok"></i><% end %></td>
     <td title="<%= tamanho.observacao %>" style="color:#666"><%= show_obs(tamanho.observacao) %></td>
     <td><%= link_to t('botao.detalhes'), tamanho %></td>
     <td><%= link_to t('botao.editar'), edit_tamanho_path(tamanho)%></td>

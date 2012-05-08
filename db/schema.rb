@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20120503163826) do
     t.string   "descricao"
     t.date     "data"
     t.text     "observacao"
+    t.integer  "default"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -135,6 +136,7 @@ ActiveRecord::Schema.define(:version => 20120503163826) do
 
   create_table "tamanhos", :force => true do |t|
     t.string   "descricao"
+    t.integer  "default"
     t.text     "observacao"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -157,6 +159,7 @@ ActiveRecord::Schema.define(:version => 20120503163826) do
     t.string   "telefone"
     t.integer  "cidade_id"
     t.text     "endereco"
+    t.integer  "default"
     t.text     "observacao"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

@@ -25,12 +25,12 @@
 
 		<p>
 		  <b><%= t('despesa.data')%>:</b>
-		  <%= I18n.l(@despesa.data) if @despesa.data  %>
+		  <span style="color:#1E90FF"><%= I18n.l(@despesa.data) if @despesa.data  %></span>
 		</p>
  
 		<p>
 		  <b><%= t('despesa.valor')%>:</b>
-		  <%= number_to_currency(@despesa.valor) if @despesa  %>
+		  <span style="color:#006400"><%= number_to_currency(@despesa.valor) if @despesa  %></span>
 		</p>
     </td>
   </tr>

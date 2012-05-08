@@ -2,6 +2,7 @@ class CreateTamanhos < ActiveRecord::Migration
   def change
     create_table :tamanhos do |t|
       t.string :descricao
+      t.integer :default
       t.text :observacao
 
       t.timestamps

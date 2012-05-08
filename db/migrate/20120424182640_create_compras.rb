@@ -4,6 +4,7 @@ class CreateCompras < ActiveRecord::Migration
       t.string :descricao
       t.date :data
       t.text :observacao
+      t.integer :default
 
       t.timestamps
     end

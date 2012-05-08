@@ -385,3 +385,6 @@ button.btn::-moz-focus-inner,input[type=submit].btn::-moz-focus-inner{padding:0;
 .icon-search {
   background-position: -48px 0;
 }
+.icon-ok {
+  background-position: -288px 0;
+}

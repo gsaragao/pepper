@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class Vendedor < ActiveRecord::Base
   belongs_to :cidade
-  attr_accessible :cidade_id, :email, :endereco, :nome, :telefone, :observacao
+  attr_accessible :cidade_id, :email, :endereco, :nome, :telefone, :observacao, :default
   validates_presence_of :nome
   validates_uniqueness_of :nome, :scope => :cidade_id, :message => "Este registro já foi cadastrado para esta cidade!"
   validates_format_of :email, 

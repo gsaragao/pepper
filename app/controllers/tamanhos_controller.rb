@@ -28,25 +28,29 @@ class TamanhosController < ApplicationController
 
   def create
     @tamanho = Tamanho.new(params[:tamanho])
-    
-    if @tamanho.save
-      flash[:notice] = t('msg.create_sucess')
-      redirect_to tamanhos_path
-    else
-      load_combos
-      render :action => :new 
-    end
-     
+    Tamanho.transaction do
+      valida_check(@tamanho.default)
+      if @tamanho.save
+        flash[:notice] = t('msg.create_sucess')
+        redirect_to tamanhos_path
+      else
+        load_combos
+        render :action => :new 
+      end
+    end 
   end
 
   def update
-    if @tamanho.update_attributes(params[:tamanho])
-      flash[:notice] = t('msg.update_sucess')
-      redirect_to tamanhos_path
-    else
-      load_combos
-      render :action => :edit
-    end
+    Tamanho.transaction do
+      valida_check(params[:tamanho][:default])
+      if @tamanho.update_attributes(params[:tamanho])
+        flash[:notice] = t('msg.update_sucess')
+        redirect_to tamanhos_path
+      else
+        load_combos
+        render :action => :edit
+      end
+   end
   end
 
   def destroy
@@ -79,5 +83,13 @@ class TamanhosController < ApplicationController
        params[:tamanho].delete_if{|k,v| v.blank?}
     end
   end
+  
+  
+  def valida_check(value)
+     if (value == 1 || value == '1')
+       Tamanho.update_all(:default => nil)
+     end   
+  end
+  
   
 end

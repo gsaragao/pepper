@@ -19,12 +19,23 @@ class ProdutosController < ApplicationController
 
   def new
     load_combos
+    @compra_default = Compra.find_by_default(1)
+    @tamanho_default = Tamanho.find_by_default(1)
     @produto = Produto.new
+    @produto.compra_id = @compra_default.id
+    @produto.tamanho_id = @tamanho_default.id
     respond_with @produto
   end
-
+  
   def edit
     load_combos
+ 
+    if (!params[:acao].nil? && params[:acao] == Produto::COPY)
+      @produto = @produto.dup
+      @produto.codigo_interno = nil
+      @produto.descricao = nil
+      @produto.acao = Produto::COPY
+    end  
   end
 
   def create

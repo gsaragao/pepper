@@ -1,2 +1,6 @@
+<% if @produto.acao == Produto::COPY %>
+<h2><%= t("produto.acao.novo") %></h2>
+<% else %>
 <h2><%= t("produto.acao.editar") %></h2>
+<% end %>
 <%= render 'form' %>

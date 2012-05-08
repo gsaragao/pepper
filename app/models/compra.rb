@@ -2,7 +2,7 @@
 class Compra < ActiveRecord::Base
   has_many :despesas
   before_destroy :no_despesas
-  attr_accessible :data, :descricao, :observacao
+  attr_accessible :data, :descricao, :observacao, :default
   validates_presence_of :descricao, :data
   
   self.per_page = 10

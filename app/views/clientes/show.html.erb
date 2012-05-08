@@ -30,7 +30,7 @@
 	
 	<p>
 	  <b><%= t('cliente.data_cadastro')%>:</b>
-	  <%= I18n.l(@cliente.created_at, :format => :short) if @cliente.created_at  %>
+	  <span style="color:#1E90FF"><%= I18n.l(@cliente.created_at, :format => :short) if @cliente.created_at  %></span>
 	</p>
 	
 	<p>

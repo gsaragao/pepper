@@ -6,6 +6,7 @@ class CreateVendedores < ActiveRecord::Migration
       t.string :telefone
       t.references :cidade
       t.text :endereco
+      t.integer :default
       t.text :observacao
 
       t.timestamps

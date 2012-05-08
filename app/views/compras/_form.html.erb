@@ -21,13 +21,19 @@
 	     <%= f.text_field :descricao %>
 	    </div>
       </div>
-          <div class="clearfix">    
+       <div class="clearfix">    
    	     <%= f.label :data %>
 		<div class="input">
 		 <%= f.text_field :data, :value => (I18n.l(@compra.data) if @compra.data) %>
 	    </div>
       </div>
-          <div class="clearfix">    
+       <div class="clearfix">    
+   	     <%= f.label :default %>
+		<div class="input">
+		 <%= f.check_box :default %>
+	    </div>
+      </div>
+       <div class="clearfix">    
    	     <%= f.label :observacao %>
 		<div class="input">
 	     <%= f.text_area :observacao, :rows => 10, :cols => 50 %>

@@ -33,7 +33,12 @@
 		  <b><%= t('vendedor.data_cadastro')%>:</b>
 		  <%= I18n.l(@vendedor.created_at, :format => :short) if @vendedor.created_at  %>
 		</p>
- 
+ 		
+		<p>
+		  <b><%= t('vendedor.default')%>:</b>
+			<%= show_check(@vendedor.default) if @vendedor %>
+		</p>
+
 		<p>
 		  <b><%= t('vendedor.observacao')%>:</b>
 		  <%= @vendedor.observacao if @vendedor  %>

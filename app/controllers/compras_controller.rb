@@ -28,25 +28,29 @@ class ComprasController < ApplicationController
 
   def create
     @compra = Compra.new(params[:compra])
-    
-    if @compra.save
-      flash[:notice] = t('msg.create_sucess')
-      redirect_to compras_path
-    else
-      load_combos
-      render :action => :new 
+    Compra.transaction do
+      valida_check(@compra.default)
+      if @compra.save
+        flash[:notice] = t('msg.create_sucess')
+        redirect_to compras_path
+      else
+        load_combos
+        render :action => :new 
+      end
     end
-     
   end
 
   def update
-    if @compra.update_attributes(params[:compra])
-      flash[:notice] = t('msg.update_sucess')
-      redirect_to compras_path
-    else
-      load_combos
-      render :action => :edit
-    end
+    Compra.transaction do
+      valida_check(params[:compra][:default])
+      if @compra.update_attributes(params[:compra])
+        flash[:notice] = t('msg.update_sucess')
+        redirect_to compras_path
+      else
+        load_combos
+        render :action => :edit
+      end
+    end  
   end
 
   def destroy
@@ -83,6 +87,12 @@ class ComprasController < ApplicationController
        params[:compra][:data] = trata_data(params[:compra][:data]) if params[:compra][:data]
        params[:compra].delete_if{|k,v| v.blank?}
     end
+  end
+  
+  def valida_check(value)
+     if (value == 1 || value == '1')
+       Compra.update_all(:default => nil)
+     end   
   end
   
 end

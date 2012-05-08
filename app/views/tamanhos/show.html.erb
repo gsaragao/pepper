@@ -8,7 +8,12 @@
 		  <b><%= t('tamanho.descricao')%>:</b>
 		  <%= @tamanho.descricao if @tamanho  %>
 		</p>
- 
+ 		
+		<p>
+		  <b><%= t('tamanho.default')%>:</b>
+			<%= show_check(@tamanho.default) if @tamanho %>
+		</p>
+	
 		<p>
 		  <b><%= t('tamanho.observacao')%>:</b>
 		  <%= @tamanho.observacao if @tamanho  %>

@@ -50,22 +50,22 @@
  
 		<p>
 		  <b><%= t('produto.valor_compra')%>:</b>
-		  <%= @produto.valor_compra if @produto  %>
+		  <span style="color:#006400"><%= number_to_currency(@produto.valor_compra) if @produto  %></span>
 		</p>
  
 		<p>
 		  <b><%= t('produto.valor_venda')%>:</b>
-		  <%= @produto.valor_venda if @produto  %>
+		  <span style="color:#006400"><%= number_to_currency(@produto.valor_venda) if @produto  %></span>
 		</p>
  
 		<p>
 		  <b><%= t('produto.valor_minimo')%>:</b>
-		  <%= @produto.valor_minimo if @produto  %>
+		  <span style="color:#006400"><%= number_to_currency(@produto.valor_minimo) if @produto  %></span>
 		</p>
    </td><td>
 		<p>
 		  <b><%= t('produto.margem_lucro')%>:</b>
-		  <%= @produto.margem_lucro if @produto  %>
+		  <%= number_to_percentage(@produto.margem_lucro) if @produto  %>
 		</p>
  
 		<p>
@@ -74,15 +74,22 @@
 		</p>
  
 		<p>
-		  <b><%= t('produto.foto_file_name')%>:</b>
+		  <b><%= t('produto.foto')%>:</b>
 		  <%= link_to "#{@produto.foto_file_name}", @produto.foto.url, :target => "_blank" %>
+		</p>
+		
+		<p>
+			<%= image_tag @produto.foto.url(:pequeno) if @produto.foto.file?  %>
 		</p>
 
     </td>
+  <td width="30%"></td>
   </tr>
 </table>
 <div class="actionsShow">
 	<a href="<%= edit_produto_path %>">
 		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= edit_produto_path(:acao => Produto::COPY) %>">
+		<button class="btn primary" name="btnback">+&nbsp;<%= t('botao.copiar')%></button></a>&nbsp; 	
 	<a href="<%= produtos_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
 </div>

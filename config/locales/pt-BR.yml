@@ -39,6 +39,7 @@
     email: Email
     observacao: Observação
     cidade: Cidade
+    default: Padrão
 
   compra:
     self: Compra
@@ -50,6 +51,7 @@
     descricao: Descrição
     data: Data
     observacao: Observação
+    default: Atual
     total_despesas: Total Despesas
 
   cor:
@@ -81,6 +83,8 @@
       detalhar: Detalhes Tamanho
     descricao: Descrição
     observacao: Observação
+    default: Padrão
+      
 
   cidade:
     self: Cidade
@@ -148,6 +152,7 @@
        detalhar: Detalhes Produto
      descricao: Descrição
      codigo_interno: Cód. Interno
+     codigo: Código
      codigo_fabricante: Código Fabricante
      categoria: Categoria
      fornecedor: Fornecedor
@@ -170,6 +175,7 @@
     criar: Criar
     salvar: Salvar
     editar: Editar
+    copiar: Copiar
     excluir: Excluir
     pesquisar: Pesquisar    
     detalhes: Detalhes
@@ -438,6 +444,7 @@
       compra:
         descricao: Descrição
         data: Data
+        default: Atual
         observacao: Observação
       
       cor:
@@ -453,6 +460,7 @@
 
       tamanho:
         descricao: Descrição
+        default: Padrão
         observacao: Observação
 
       tipo_despesa:
@@ -486,6 +494,7 @@
         telefone: Telefone
         email: Email
         observacao: Observação
+        default: Padrão
     
       produto:  
          descricao: Descrição

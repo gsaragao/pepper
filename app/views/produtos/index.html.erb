@@ -18,9 +18,8 @@
 <% if @produtos.size > 0  %>
  <table class="zebra-striped">
   <tr>
-        <th width="10%"><%= t('produto.codigo_interno')%></th>
+        <th width="5%"><%= t('produto.codigo')%></th>
 	    <th width="10%"><%= t('produto.descricao')%></th>
-        <th width="10%"><%= t('produto.categoria')%></th>
         <th width="10%"><%= t('produto.fornecedor')%></th>
         <th width="10%"><%= t('produto.compra')%></th>
         <th width="10%"><%= t('produto.marca')%></th>
@@ -37,7 +36,6 @@
   <tr>
         <td style="color:#1E90FF"><%= produto.codigo_interno %></td>
 	    <td style="color:#666"><%= produto.descricao %></td>
-        <td style="color:#666"><%= produto.categoria.descricao if produto.categoria %></td>
         <td style="color:#666"><%= produto.fornecedor.nome if produto.fornecedor %></td>
         <td style="color:#666"><%= produto.compra.descricao if produto.compra %></td>
         <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>

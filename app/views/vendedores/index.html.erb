@@ -16,10 +16,11 @@
 <% if @vendedores.size > 0  %>
  <table class="zebra-striped">
   <tr>
-	    <th width="20%"><%= t('vendedor.nome')%></th>
-        <th width="20%"><%= t('vendedor.email')%></th>
-        <th width="20%"><%= t('vendedor.telefone')%></th>
-        <th width="20%"><%= t('vendedor.cidade')%></th>
+	    <th width="16%"><%= t('vendedor.nome')%></th>
+        <th width="16%"><%= t('vendedor.email')%></th>
+        <th width="16%"><%= t('vendedor.telefone')%></th>
+        <th width="16%"><%= t('vendedor.cidade')%></th>
+        <th width="16%"><%= t('vendedor.default')%></th>
     	<th></th>
     <th></th>
     <th></th>
@@ -31,6 +32,7 @@
         <td style="color:#666"><%= vendedor.email %></td>
         <td style="color:#666"><%= vendedor.telefone %></td>
         <td style="color:#666"><%= vendedor.cidade.nome if vendedor.cidade %></td>
+        <td style="color:#666"><% if (vendedor.default == 1) %><i class="icon-ok"></i><% end %></td>
         <td><%= link_to t('botao.detalhes'), vendedor %></td>
     <td><%= link_to t('botao.editar'), edit_vendedor_path(vendedor)%></td>
     <td><%= link_to t('botao.excluir'), vendedor, 

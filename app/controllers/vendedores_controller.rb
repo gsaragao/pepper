@@ -29,25 +29,29 @@ class VendedoresController < ApplicationController
 
   def create
     @vendedor = Vendedor.new(params[:vendedor])
-    
-    if @vendedor.save
-      flash[:notice] = t('msg.create_sucess')
-      redirect_to vendedores_path
-    else
-      load_combos
-      render :action => :new 
-    end
-     
+    Vendedor.transaction do
+      valida_check(@vendedor.default)
+      if @vendedor.save
+        flash[:notice] = t('msg.create_sucess')
+        redirect_to vendedores_path
+      else
+        load_combos
+        render :action => :new 
+      end
+    end 
   end
 
   def update
-    if @vendedor.update_attributes(params[:vendedor])
-      flash[:notice] = t('msg.update_sucess')
-      redirect_to vendedores_path
-    else
-      load_combos
-      render :action => :edit
-    end
+    Vendedor.transaction do
+      valida_check(params[:vendedor][:default])
+      if @vendedor.update_attributes(params[:vendedor])
+        flash[:notice] = t('msg.update_sucess')
+        redirect_to vendedores_path
+      else
+        load_combos
+        render :action => :edit
+      end
+    end  
   end
 
   def destroy
@@ -86,4 +90,10 @@ class VendedoresController < ApplicationController
     end
   end
   
+  def valida_check(value)
+     if (value == 1 || value == '1')
+       Vendedor.update_all(:default => nil)
+     end   
+  end
+
 end
