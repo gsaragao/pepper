@@ -19,11 +19,12 @@ class ProdutosController < ApplicationController
 
   def new
     load_combos
-    @compra_default = Compra.find_by_default(1)
-    @tamanho_default = Tamanho.find_by_default(1)
+    @compra_default = Compra.find_by_default(Produto::COPY)
+    @tamanho_default = Tamanho.find_by_default(Produto::COPY)
     @produto = Produto.new
     @produto.compra_id = @compra_default.id
     @produto.tamanho_id = @tamanho_default.id
+    @produto.quantidade = 1
     respond_with @produto
   end
   
@@ -40,15 +41,26 @@ class ProdutosController < ApplicationController
 
   def create
     @produto = Produto.new(params[:produto])
-    
-    if @produto.save
-      flash[:notice] = t('msg.create_sucess')
-      redirect_to produtos_path
-    else
-      load_combos
-      render :action => :new 
+    save = false
+    codigo = @produto.codigo_interno.to_i
+    Produto.transaction do
+      
+      if (@produto.quantidade && @produto.quantidade.to_i > 0)
+        @produto.quantidade.to_i.times { |i|
+          save = @produto.save
+          @produto = @produto.dup
+          @produto.codigo_interno = codigo + i
+        }
+      end
+            
+      if save
+        flash[:notice] = t('msg.create_sucess')
+        redirect_to produtos_path
+      else
+        load_combos
+        render :action => :new 
+      end
     end
-     
   end
 
   def update

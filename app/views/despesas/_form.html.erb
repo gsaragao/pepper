@@ -54,7 +54,42 @@
 	     <%= f.text_field :valor, :alt => 'decimal', :value => @despesa.valor %>
 	    </div>
       </div>
-    </td></tr>
+    </td>
+    <td>
+  	<div class="clearfix">    
+   	     <%= f.label :forma_pagamento %>
+		<div class="input">
+	     	<%= f.select :forma_pagamento, options_for_select(@despesa.lista_formas, @despesa.forma_pagamento) %>
+	    </div>
+      </div>
+	<div class="clearfix">    
+   	     <%= f.label :parcela %>
+		<div class="input">
+			<%= f.select :parcela, options_for_select(['1','2','3','4','5','6'])  %>
+	    </div>
+      </div>
+	<div class="clearfix">    
+ 	     <%= f.label :valor_pagamento %>
+		<div class="input">
+	     <%= f.text_field :valor_pagamento, :alt => 'decimal', :value => @despesa.valor_pagamento, :onblur => 'calcula();' %>
+	    </div>
+    </div>
+	<div class="clearfix">    
+ 	     <%= f.label :valor_total %>
+		<div class="input">
+	    	<input type="text" id="valor_total" name="valor_total" alt="decimal" readonly sytle="text-align:right;" /> 
+	    </div>
+    </div>
+	   <div class="clearfix">    
+   	     <%= f.label :data_pagamento %>
+		<div class="input">
+	     <%= f.text_field :data_pagamento, :value => (I18n.l(@despesa.data_pagamento) if @despesa.data_pagamento) %>
+	    </div>
+      </div>
+	
+	 </td>
+    <td width="30%"></td>
+</tr>
 </table> 
   <div class="actions">
     <%= f.submit t('botao.salvar'), :class => "btn primary" %>
@@ -64,7 +99,31 @@
 
 <script>
 
+ function calcula() {
+	
+	vp = $('#despesa_valor_pagamento').val();
+	pa = $('#despesa_parcela').val();
+	vp = vp.replace('.','');	
+    vp = vp.replace(',','.');	
+	result = 0;
+
+	if (vp != null && pa != "") {
+		result = parseFloat(vp) * parseInt(pa);
+		result = result.toFixed(2);
+		result = result.replace('.','');
+		$('#valor_total').val(result);
+		$('#valor_total').setMask();
+	} else {
+		$('#valor_total').val('0,00');
+	}
+ }
+
+$('#despesa_parcela').change(function() {calcula();});
+
 $('#despesa_data').datepicker({dateFormat : 'dd/mm/yy'});
+$('#despesa_data_pagamento').datepicker({dateFormat : 'dd/mm/yy'});
 $('#despesa_valor').setMask();
+
+$('#despesa_valor_pagamento').setMask();
 
 </script>

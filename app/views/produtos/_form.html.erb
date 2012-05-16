@@ -107,14 +107,23 @@
 	     <%= f.text_area :observacao, :rows => 10, :cols => 50  %>
 	    </div>
       </div>
-          <div class="clearfix">    
+	</td>
+	<td>
+     <div class="clearfix">    
    	     <%= f.label :foto %>
 		<div class="input">
 	     	<%= f.file_field :foto %>
 	    </div>
       </div>
-	</td>
-	<td width="30%"></td>
+	<% if (!@produto.id) %>
+		<div class="clearfix">    
+   	     <%= f.label :quantidade %>
+		<div class="input">
+	     	<%= f.number_field :quantidade, :style => 'width:50px; text-align:center;' %>
+	    </div>
+      </div>
+    <% end %>
+    </td>
 	</tr>
 </table> 
   <div class="actions">

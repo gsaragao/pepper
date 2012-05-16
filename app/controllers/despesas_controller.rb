@@ -42,13 +42,31 @@ class DespesasController < ApplicationController
   end
 
   def update
-    if @despesa.update_attributes(params[:despesa])
-      flash[:notice] = t('msg.update_sucess')
-      redirect_to despesas_path
-    else
-      load_combos
-      render :action => :edit
-    end
+    Despesa.transaction do
+      
+      PagamentoDespesa.destroy_all(:despesa_id => @despesa.id)
+      
+      @despesa.parcela.times {|i|
+        
+        puts "PAGAMENTO: #{i}"  
+          
+        @pagamento = PagamentoDespesa.new
+        @pagamento.despesa_id = @despesa.id
+        @pagamento.forma_pagamento = @despesa.forma_pagamento
+        @pagamento.parcela = i
+        @pagamento.valor = @despesa.valor_pagamento
+        @pagamento.data = @despesa.data_pagamento + (30 * i)
+        @pagamento.save
+      }
+      
+      if @despesa.update_attributes(params[:despesa])
+        flash[:notice] = t('msg.update_sucess')
+        redirect_to despesas_path
+      else
+        load_combos
+        render :action => :edit
+      end
+    end  
   end
 
   def destroy
