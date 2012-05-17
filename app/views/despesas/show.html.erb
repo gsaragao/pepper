@@ -33,6 +33,26 @@
 		  <span style="color:#006400"><%= number_to_currency(@despesa.valor) if @despesa  %></span>
 		</p>
     </td>
+   <td>
+   		<table class="zebra-striped">
+	        <tr>
+		        <th>Forma Pagamento</th>
+				<th>Parcela</th>
+				<th>Valor</th>
+				<th>Data</th>
+			</tr>
+			<% @despesa.pagamento_despesas.each do |pagamento| %>
+				<tr>
+					<td><%= pagamento.despesa.lista_formas.key(pagamento.forma_pagamento) %></td>
+					<td><%= pagamento.parcela %></td>
+					<td><%= number_to_currency(pagamento.valor) %></td>
+					<td><%= pagamento.data %></td>
+				</tr>	
+			 <% end %>		
+        </table>
+
+   </td>
+  <td width="30%"></td>
   </tr>
 </table>
 <div class="actionsShow">

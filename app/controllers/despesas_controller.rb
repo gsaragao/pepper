@@ -25,37 +25,47 @@ class DespesasController < ApplicationController
   end
 
   def edit
+    carrega_pagamento_despesa
     load_combos
   end
 
   def create
     @despesa = Despesa.new(params[:despesa])
+    Despesa.transaction do
+
+      if @despesa.save
+        @despesa.parcela.to_i.times {|i|
+          @pagamento = PagamentoDespesa.new
+          @pagamento.despesa_id = @despesa.id
+          @pagamento.forma_pagamento = @despesa.forma_pagamento
+          @pagamento.parcela = i + 1
+          @pagamento.valor = @despesa.valor_pagamento
+          @pagamento.data = @despesa.data_pagamento + (30 * i)
+          @pagamento.save
+        }
     
-    if @despesa.save
-      flash[:notice] = t('msg.create_sucess')
-      redirect_to despesas_path
-    else
-      load_combos
-      render :action => :new 
-    end
-     
+        flash[:notice] = t('msg.create_sucess')
+        redirect_to despesas_path
+      else
+        carrega_pagamento_despesa
+        load_combos
+        render :action => :new 
+      end
+    end     
   end
 
   def update
     Despesa.transaction do
-      
       PagamentoDespesa.destroy_all(:despesa_id => @despesa.id)
       
-      @despesa.parcela.times {|i|
-        
-        puts "PAGAMENTO: #{i}"  
+      params[:despesa][:parcela].to_i.times {|i|
           
         @pagamento = PagamentoDespesa.new
         @pagamento.despesa_id = @despesa.id
-        @pagamento.forma_pagamento = @despesa.forma_pagamento
-        @pagamento.parcela = i
-        @pagamento.valor = @despesa.valor_pagamento
-        @pagamento.data = @despesa.data_pagamento + (30 * i)
+        @pagamento.forma_pagamento = params[:despesa][:forma_pagamento]
+        @pagamento.parcela = i + 1
+        @pagamento.valor = params[:despesa][:valor_pagamento]
+        @pagamento.data = Date.strptime(params[:despesa][:data_pagamento], '%d/%m/%Y') + (30 * i)
         @pagamento.save
       }
       
@@ -63,6 +73,7 @@ class DespesasController < ApplicationController
         flash[:notice] = t('msg.update_sucess')
         redirect_to despesas_path
       else
+        carrega_pagamento_despesa
         load_combos
         render :action => :edit
       end
@@ -99,12 +110,23 @@ class DespesasController < ApplicationController
   def manage_params
     if (params[:despesa]) 
 
-       if (params[:despesa][:valor])
-          params[:despesa][:valor] = params[:despesa][:valor].gsub('.','').gsub(',','.')
-       end
+       #if (params[:despesa][:valor])
+      #    params[:despesa][:valor] = params[:despesa][:valor].gsub('.','').gsub(',','.')
+      # end
 
        params[:despesa].delete_if{|k,v| v.blank?}
     end
   end
   
+  def carrega_pagamento_despesa
+    @pagamento_last = PagamentoDespesa.where(:despesa_id => @despesa.id).last
+
+      @despesa.forma_pagamento = @pagamento_last.forma_pagamento
+      @despesa.parcela = @pagamento_last.parcela
+      @despesa.valor_pagamento = @pagamento_last.valor
+
+      @pagamento_first = PagamentoDespesa.where(:despesa_id => @despesa.id).first
+
+      @despesa.data_pagamento = @pagamento_first.data
+  end
 end
