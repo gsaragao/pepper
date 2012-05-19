@@ -8,7 +8,12 @@
 		  <b><%= t('tipo_despesa.descricao')%>:</b>
 		  <%= @tipo_despesa.descricao if @tipo_despesa  %>
 		</p>
- 
+ 		
+		<p>
+		  <b><%= t('tipo_despesa.retorno')%>:</b>
+			<%= show_check(@tipo_despesa.retorno) if @tipo_despesa %>
+		</p>
+
 		<p>
 		  <b><%= t('tipo_despesa.observacao')%>:</b>
 		  <%= @tipo_despesa.observacao if @tipo_despesa  %>

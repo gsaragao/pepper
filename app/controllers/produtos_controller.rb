@@ -25,6 +25,7 @@ class ProdutosController < ApplicationController
     @produto.compra_id = @compra_default.id
     @produto.tamanho_id = @tamanho_default.id
     @produto.quantidade = 1
+    
     respond_with @produto
   end
   
@@ -43,13 +44,19 @@ class ProdutosController < ApplicationController
     @produto = Produto.new(params[:produto])
     save = false
     codigo = @produto.codigo_interno.to_i
-    Produto.transaction do
+    Produto.transaction do |t|
       
       if (@produto.quantidade && @produto.quantidade.to_i > 0)
+        
         @produto.quantidade.to_i.times { |i|
-          save = @produto.save
+          if @produto.save
+            save = true
+          else
+            save = false
+            break
+          end    
           @produto = @produto.dup
-          @produto.codigo_interno = codigo + i
+          @produto.codigo_interno = codigo + i + 1
         }
       end
             
@@ -59,6 +66,7 @@ class ProdutosController < ApplicationController
       else
         load_combos
         render :action => :new 
+        raise ActiveRecord::Rollback
       end
     end
   end

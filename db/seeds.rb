@@ -52,13 +52,13 @@ Tamanho.create!(:descricao => '44')
 Tamanho.create!(:descricao => '46')
 
 #Tipo Despesas
-@tipoAli = TipoDespesa.create!(:descricao => 'Alimentação')
-@tipoTrans = TipoDespesa.create!(:descricao => 'Transporte')
-@tipoRoup = TipoDespesa.create!(:descricao => 'Roupas')
-TipoDespesa.create!(:descricao => 'Transportadora')
-TipoDespesa.create!(:descricao => 'Acessórios')
-TipoDespesa.create!(:descricao => 'Calçados')
-TipoDespesa.create!(:descricao => 'Impostos')
+@tipoAli = TipoDespesa.create!(:descricao => 'Alimentação', :retorno => 0)
+@tipoTrans = TipoDespesa.create!(:descricao => 'Transporte', :retorno => 0)
+@tipoRoup = TipoDespesa.create!(:descricao => 'Roupas', :retorno => 1)
+TipoDespesa.create!(:descricao => 'Transportadora', :retorno => 0)
+TipoDespesa.create!(:descricao => 'Acessórios', :retorno => 1)
+TipoDespesa.create!(:descricao => 'Calçados', :retorno => 1)
+TipoDespesa.create!(:descricao => 'Impostos', :retorno => 0)
 
 #Cliente
 Cliente.create!(:nome => 'Maria Maia de Souza Mendes', :email => 'maria.maia@gmail.com', 
@@ -76,19 +76,19 @@ Cliente.create!(:nome => 'Roberta Matos Silva', :email => 'robertamatossilva@yah
 
 #Fornecedores
 @fortam = Fornecedor.create!(:nome => 'TAM', :email => 'contato@tam.com', 
-                :telefone => '(071) 2201-1100', :cidade_id => @ssa.id, :endereco => 'Av. Dois de Julho, n. 1030, Aeroporto')
+                :telefone => '(71) 2201-1100', :cidade_id => @ssa.id, :endereco => 'Av. Dois de Julho, n. 1030, Aeroporto')
 Fornecedor.create!(:nome => 'GOL', :email => 'vendas@gol.com', 
-                :telefone => '(071) 4004-4422', :cidade_id => @ssa.id, :endereco => 'Av. Dois de Julho, n. 1490, Aeroporto')
+                :telefone => '(71) 4004-4422', :cidade_id => @ssa.id, :endereco => 'Av. Dois de Julho, n. 1490, Aeroporto')
 @fortax = Fornecedor.create!(:nome => 'Taxi')
 @formac = Fornecedor.create!(:nome => 'Mac Donalds')
 @forval = Fornecedor.create!(:nome => 'Valente', :email => 'vendas@valente.com.br', 
-                :telefone => '(011) 3380-1200', :cidade_id => @sp.id, :endereco => 'Shopping Mega Polo, 1o andar, n. 1002, Brás' )
+                :telefone => '(11) 3380-1200', :cidade_id => @sp.id, :endereco => 'Shopping Mega Polo, 1o andar, n. 1002, Brás' )
 @fortnt = Fornecedor.create!(:nome => 'TNT', :email => 'contato@tnt.com.br', 
-                :telefone => '(011) 5570-3300', :cidade_id => @sp.id, :endereco => 'Shopping Mega Polo, 3o andar, n. 1305, Brás' )
+                :telefone => '(11) 5570-3300', :cidade_id => @sp.id, :endereco => 'Shopping Mega Polo, 3o andar, n. 1305, Brás' )
 @forlim = Fornecedor.create!(:nome => 'Limelight', :email => 'vendas@limelight.com.br', 
-                :telefone => '(011) 2294-5522', :cidade_id => @sp.id, :endereco => 'Shopping Mega Polo, 2o andar, n. 1204, Brás' )
+                :telefone => '(11) 2294-5522', :cidade_id => @sp.id, :endereco => 'Shopping Mega Polo, 2o andar, n. 1204, Brás' )
 Fornecedor.create!(:nome => 'Rápido 500', :email => 'contato@rapido500.com', 
-                :telefone => '(011) 4455-3000', :cidade_id => @sp.id, :endereco => 'São Paulo, Centro' )
+                :telefone => '(11) 4455-3000', :cidade_id => @sp.id, :endereco => 'São Paulo, Centro' )
 
 #Compras
 @compra2012 = Compra.create!(:descricao => 'Maio 2012', :data => '2012-05-10', :observacao => 'Primeira compra do ano 2012')

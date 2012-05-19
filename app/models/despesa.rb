@@ -14,7 +14,6 @@ class Despesa < ActiveRecord::Base
   after_initialize :default_values  
   
   def default_values
-    self.data = Date.today
     self.data_pagamento = Date.today
     self.lista_formas = {"Dinheiro" => 1, "Cartão" => 2, "Cheque" => 3}
   end

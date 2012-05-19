@@ -108,7 +108,6 @@ ActiveRecord::Schema.define(:version => 20120510004212) do
     t.integer  "parcela"
     t.decimal  "valor",           :precision => 13, :scale => 2
     t.date     "data"
-    t.integer  "ordem"
     t.integer  "despesa_id"
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
@@ -159,9 +158,10 @@ ActiveRecord::Schema.define(:version => 20120510004212) do
 
   create_table "tipo_despesas", :force => true do |t|
     t.string   "descricao"
+    t.integer  "retorno",    :default => 0
     t.text     "observacao"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "tipo_despesas", ["descricao"], :name => "index_tipo_despesas_on_descricao", :unique => true

@@ -34,20 +34,24 @@ class DespesasController < ApplicationController
     Despesa.transaction do
 
       if @despesa.save
+        
+        data = @despesa.data_pagamento
+        
         @despesa.parcela.to_i.times {|i|
           @pagamento = PagamentoDespesa.new
           @pagamento.despesa_id = @despesa.id
           @pagamento.forma_pagamento = @despesa.forma_pagamento
           @pagamento.parcela = i + 1
           @pagamento.valor = @despesa.valor_pagamento
-          @pagamento.data = @despesa.data_pagamento + (30 * i)
+          @pagamento.data = data
           @pagamento.save
+          
+          data += 1.month
         }
     
         flash[:notice] = t('msg.create_sucess')
         redirect_to despesas_path
       else
-        carrega_pagamento_despesa
         load_combos
         render :action => :new 
       end
@@ -58,6 +62,8 @@ class DespesasController < ApplicationController
     Despesa.transaction do
       PagamentoDespesa.destroy_all(:despesa_id => @despesa.id)
       
+      data = Date.strptime(params[:despesa][:data_pagamento], '%d/%m/%Y')
+      
       params[:despesa][:parcela].to_i.times {|i|
           
         @pagamento = PagamentoDespesa.new
@@ -65,8 +71,10 @@ class DespesasController < ApplicationController
         @pagamento.forma_pagamento = params[:despesa][:forma_pagamento]
         @pagamento.parcela = i + 1
         @pagamento.valor = params[:despesa][:valor_pagamento]
-        @pagamento.data = Date.strptime(params[:despesa][:data_pagamento], '%d/%m/%Y') + (30 * i)
+        @pagamento.data = data
         @pagamento.save
+        
+        data += 1.month
       }
       
       if @despesa.update_attributes(params[:despesa])
@@ -108,25 +116,25 @@ class DespesasController < ApplicationController
   end
   
   def manage_params
-    if (params[:despesa]) 
+    if (!params[:despesa].nil?) 
 
        #if (params[:despesa][:valor])
       #    params[:despesa][:valor] = params[:despesa][:valor].gsub('.','').gsub(',','.')
       # end
-
+       params[:despesa][:data] = trata_data(params[:despesa][:data]) if params[:despesa][:data]
        params[:despesa].delete_if{|k,v| v.blank?}
     end
   end
   
   def carrega_pagamento_despesa
+    @pagamento_first = PagamentoDespesa.where(:despesa_id => @despesa.id).first
     @pagamento_last = PagamentoDespesa.where(:despesa_id => @despesa.id).last
-
+    
+    if @pagamento_first && @pagamento_last     
       @despesa.forma_pagamento = @pagamento_last.forma_pagamento
       @despesa.parcela = @pagamento_last.parcela
       @despesa.valor_pagamento = @pagamento_last.valor
-
-      @pagamento_first = PagamentoDespesa.where(:despesa_id => @despesa.id).first
-
       @despesa.data_pagamento = @pagamento_first.data
+    end
   end
 end

@@ -101,7 +101,7 @@
     //vp = vp.replace(',','.');	
 	result = 0;
 
-	if (vp != null && pa != "") {
+	if (vp != "" && pa != "") {
 		result = parseFloat(vp) / parseInt(pa);
 		result = result.toFixed(2);
 		//result = result.replace('.','');
@@ -110,8 +110,6 @@
 	} else {
 		$('#despesa_valor_pagamento').val('0,00');
 	}
-	
-
  }
 
 $('#despesa_parcela').change(function() {calcula();});
@@ -120,7 +118,6 @@ $('#despesa_data').datepicker({dateFormat : 'dd/mm/yy'});
 $('#despesa_data_pagamento').datepicker({dateFormat : 'dd/mm/yy'});
 calcula();
 //$('#despesa_valor').setMask();
-
 //$('#despesa_valor_pagamento').setMask();
 
 </script>

@@ -12,18 +12,20 @@
 <% if @tipo_despesas.size > 0  %>
  <table class="zebra-striped">
   <tr>
-	    <th width="40%"><%= t('tipo_despesa.descricao')%></th>
-        <th width="40%"><%= t('tipo_despesa.observacao')%></th>
-    	<th></th>
+    <th width="30%"><%= t('tipo_despesa.descricao')%></th>
+	<th width="20%"><%= t('tipo_despesa.retorno')%></th>
+    <th width="30%"><%= t('tipo_despesa.observacao')%></th>
+   	<th></th>
     <th></th>
     <th></th>
   </tr>
 
  <% @tipo_despesas.each do |tipo_despesa| %>
   <tr>
-	    <td style="color:#666"><%= tipo_despesa.descricao %></td>
-	    <td title="<%= tipo_despesa.observacao %>" style="color:#666"><%= show_obs(tipo_despesa.observacao) %></td>
-        <td><%= link_to t('botao.detalhes'), tipo_despesa %></td>
+    <td style="color:#666"><%= tipo_despesa.descricao %></td>
+	<td style="color:#666"><% if (tipo_despesa.retorno == 1) %><i class="icon-ok"></i><% end %></td>
+    <td title="<%= tipo_despesa.observacao %>" style="color:#666"><%= show_obs(tipo_despesa.observacao) %></td>
+    <td><%= link_to t('botao.detalhes'), tipo_despesa %></td>
     <td><%= link_to t('botao.editar'), edit_tipo_despesa_path(tipo_despesa)%></td>
     <td><%= link_to t('botao.excluir'), tipo_despesa, 
 	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
