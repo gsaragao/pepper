@@ -1,2 +1,6 @@
+<% if @despesa.acao == Despesa::COPY %>
+<h2><%= t("despesa.acao.novo") %></h2>
+<% else %>
 <h2><%= t("despesa.acao.editar") %></h2>
+<% end %>
 <%= render 'form' %>

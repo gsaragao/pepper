@@ -7,7 +7,7 @@ class ClientesController < ApplicationController
   before_filter :load_cliente , :only => [:show, :edit, :update, :destroy]
 
   def index
-    @cidades = Cidade.all
+    @cidades = Cidade.order(:nome)
     @cliente = Cliente.new(params[:cliente])
     @clientes = Cliente.pesquisar(params[:cliente],params[:page])
     respond_with @clientes
@@ -73,7 +73,7 @@ class ClientesController < ApplicationController
   end
   
   def load_combos 
-    @cidades = Cidade.all
+    @cidades = Cidade.order(:nome)
   end
   
   def manage_params

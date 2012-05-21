@@ -24,7 +24,11 @@ Pepper::Application.routes.draw do
 
   resources :tipo_despesas
 
-  resources :compras
+  resources :compras do 
+    collection do
+        get 'calcula'
+    end
+  end
 
   resources :clientes
 

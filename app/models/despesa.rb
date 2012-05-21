@@ -9,12 +9,11 @@ class Despesa < ActiveRecord::Base
   validates_presence_of :compra, :tipo_despesa, :fornecedor_id, :valor, :descricao, :data_pagamento
   validate :valida_forma_pagamento
   self.per_page = 10
-  
-  attr_accessor :lista_formas, :forma_pagamento, :parcela, :valor_pagamento, :data_pagamento
+  COPY = '1'
+  attr_accessor :lista_formas, :forma_pagamento, :parcela, :valor_pagamento, :data_pagamento, :acao
   after_initialize :default_values  
   
   def default_values
-    self.data_pagamento = Date.today
     self.lista_formas = {"Dinheiro" => 1, "Cartão" => 2, "Cheque" => 3}
   end
   
@@ -23,7 +22,7 @@ class Despesa < ActiveRecord::Base
   CHEQUE = 3
 
   def self.pesquisar(obj, page)
-    where(obj).paginate(:page => page).order("id desc")
+    where(obj).paginate(:page => page).order("data")
   end
   
   def valida_forma_pagamento

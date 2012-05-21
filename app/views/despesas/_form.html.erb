@@ -93,6 +93,10 @@
 
 <script>
 
+$('#despesa_data').change(function() {
+	$('#despesa_data_pagamento').val($(this).val());
+});
+
  function calcula() {
 	
 	vp = $('#despesa_valor').val();

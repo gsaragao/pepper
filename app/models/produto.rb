@@ -38,7 +38,7 @@ class Produto < ActiveRecord::Base
       where("produtos.descricao like ?", "%#{descricao}%").paginate(:page => page).order("codigo_interno")
   #  end    
   end
-  
+
   #def valida_quantidade_maior_que_zero
   #   errors.add :quantidade, "deve ser maior que zero!" if quantidade.to_i <= 0
   #end

@@ -7,8 +7,8 @@ class DespesasController < ApplicationController
   before_filter :load_despesa , :only => [:show, :edit, :update, :destroy]
 
   def index
-    @compras = Compra.all
-    @tipo_despesas = TipoDespesa.all
+    @compras = Compra.order(:data)
+    @tipo_despesas = TipoDespesa.order(:descricao)
     @despesa = Despesa.new(params[:despesa])
     @despesas = Despesa.pesquisar(params[:despesa],params[:page])
     respond_with @despesas
@@ -20,12 +20,21 @@ class DespesasController < ApplicationController
 
   def new
     load_combos
+    @compra_default = Compra.find_by_default(1)
     @despesa = Despesa.new
+    @despesa.compra_id = @compra_default.id if @compra_default
     respond_with @despesa
   end
 
   def edit
     carrega_pagamento_despesa
+
+    if (!params[:acao].nil? && params[:acao] == Despesa::COPY)
+      @despesa = @despesa.dup
+      @despesa.descricao = nil
+      @despesa.valor = nil
+      @despesa.acao = Despesa::COPY
+    end
     load_combos
   end
 
@@ -35,7 +44,7 @@ class DespesasController < ApplicationController
 
       if @despesa.save
         
-        data = @despesa.data_pagamento
+        data = Date.strptime(@despesa.data_pagamento)
         
         @despesa.parcela.to_i.times {|i|
           @pagamento = PagamentoDespesa.new
@@ -45,7 +54,6 @@ class DespesasController < ApplicationController
           @pagamento.valor = @despesa.valor_pagamento
           @pagamento.data = data
           @pagamento.save
-          
           data += 1.month
         }
     
@@ -62,7 +70,7 @@ class DespesasController < ApplicationController
     Despesa.transaction do
       PagamentoDespesa.destroy_all(:despesa_id => @despesa.id)
       
-      data = Date.strptime(params[:despesa][:data_pagamento], '%d/%m/%Y')
+      data = Date.strptime(params[:despesa][:data_pagamento])
       
       params[:despesa][:parcela].to_i.times {|i|
           
@@ -110,9 +118,9 @@ class DespesasController < ApplicationController
   end
   
   def load_combos 
-    @compras = Compra.all
-    @tipo_despesas = TipoDespesa.all
-    @fornecedores = Fornecedor.all
+    @compras = Compra.order(:data)
+    @tipo_despesas = TipoDespesa.order(:descricao)
+    @fornecedores = Fornecedor.order(:nome)
   end
   
   def manage_params
@@ -122,6 +130,7 @@ class DespesasController < ApplicationController
       #    params[:despesa][:valor] = params[:despesa][:valor].gsub('.','').gsub(',','.')
       # end
        params[:despesa][:data] = trata_data(params[:despesa][:data]) if params[:despesa][:data]
+       params[:despesa][:data_pagamento] = trata_data(params[:despesa][:data_pagamento]) if params[:despesa][:data_pagamento]
        params[:despesa].delete_if{|k,v| v.blank?}
     end
   end

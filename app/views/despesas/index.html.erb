@@ -28,6 +28,7 @@
     	<th></th>
 		<th></th>
 		<th></th>
+		<th></th>
   </tr>
 
  <% @despesas.each do |despesa| %>
@@ -40,6 +41,7 @@
         <td width="10%" style="color:#006400"><%= number_to_currency(despesa.valor) if despesa.valor %></td>
         <td><%= link_to t('botao.detalhes'), despesa %></td>
     <td><%= link_to t('botao.editar'), edit_despesa_path(despesa)%></td>
+	<td><%= link_to t('botao.copiar'), edit_despesa_path(despesa,:acao => Despesa::COPY)%></td>
     <td><%= link_to t('botao.excluir'), despesa, 
 	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
   </tr>

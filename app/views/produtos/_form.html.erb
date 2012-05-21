@@ -79,19 +79,19 @@
           <div class="clearfix">    
    	     <%= f.label :valor_compra %>
 		<div class="input">
-	     <%= f.text_field :valor_compra, :alt => 'decimal', :value => @produto.valor_compra, :onblur => 'calcula();' %>
+	     <%= f.text_field :valor_compra, :alt => 'decimal', :value => @produto.valor_compra %>
 	    </div>
       </div>
           <div class="clearfix">    
    	     <%= f.label :valor_venda %>
 		<div class="input">
-	     <%= f.text_field :valor_venda, :alt => 'decimal', :value => @produto.valor_venda, :onblur => 'calcula();' %>
+	     <%= f.text_field :valor_venda, :alt => 'decimal', :value => @produto.valor_venda %>
 	    </div>
       </div>
           <div class="clearfix">    
    	     <%= f.label :valor_minimo %>
 		<div class="input">
-	     <%= f.text_field :valor_minimo, :alt => 'decimal', :value => @produto.valor_minimo %>
+	     <%= f.text_field :valor_minimo, :alt => 'decimal', :value => @produto.valor_minimo, :readonly => true %>
 	    </div>
 
       </div>
@@ -133,18 +133,40 @@
 <% end %>
 
 <script>
-
+  
+  $('#produto_compra_id').change(function() {calcula();});
+  $('#produto_valor_compra').blur(function() {calcula();});
+  $('#produto_valor_venda').blur(function() {calcula();});
+  
   function calcula() {
-	$('#produto_margem_lucro').val("")
-	vc = $('#produto_valor_compra').val();
-	vv = $('#produto_valor_venda').val();
 
-    if (vc != "" && vv != "") { 
-		result = ((vv - vc) / vc) * 100; 
+	vc = $('#produto_valor_compra').val();
+	compra_id = $('#produto_compra_id').val();
+	if (vc != "" && compra_id != "") {
+		$.getJSON('/compras/calcula?compra_id=' + compra_id, function(data) {
+		     result = parseFloat(vc) + (parseFloat(vc) * (parseFloat(data) / 100))
+			 result = result.toFixed(2);
+			 $('#produto_valor_minimo').val(result);
+			 calcula_margem();
+		});
+	} else {
+		$('#produto_valor_minimo').val(vc);
+		calcula_margem();
+	}	
+  }
+  
+  function calcula_margem() {
+	
+	$('#produto_margem_lucro').val("");
+	vv = $('#produto_valor_venda').val();
+	vm = $('#produto_valor_minimo').val();
+
+	if (vv != "" && vm != "") { 
+		result = ((vv - vm) / vm) * 100; 
 		result = result.toFixed(2);
 		$('#produto_margem_lucro').val(result + "%");
     }
-  }
+}
 
  $('#produto_descricao').focus();
  //$('#produto_valor_compra').setMask();

@@ -1,7 +1,7 @@
 # encoding : utf-8
 class ComprasController < ApplicationController
 
-  respond_to :html
+  respond_to :html, :json
   before_filter :setar_classe_menu
   before_filter :manage_params, :only => [:index]
   before_filter :load_compra , :only => [:show, :edit, :update, :destroy]
@@ -60,6 +60,11 @@ class ComprasController < ApplicationController
       flash[:alert] = @compra.errors.full_messages[0]
     end  
     redirect_to compras_path
+  end
+  
+  def calcula
+    compra = Compra.find(params[:compra_id])
+    respond_with compra.calcula_percentual_despesa
   end
   
   private

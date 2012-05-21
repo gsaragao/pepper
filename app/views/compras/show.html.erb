@@ -24,6 +24,16 @@
 	</p>
  
 	<p>
+	  <b><%= t('compra.com_retorno')%>:</b>
+	  <span style="color:#006400"><%= number_to_currency(@compra.total_com_retorno) if @compra.total_com_retorno %></span>
+	</p>
+	
+	<p>
+	  <b><%= t('compra.sem_retorno')%>:</b>
+	  <span style="color:#006400"><%= number_to_currency(@compra.total_sem_retorno) if @compra.total_sem_retorno %></span>
+	</p>
+
+	<p>
 	  <b><%= t('compra.observacao')%>:</b>
 	  <%= @compra.observacao if @compra  %>
 	</p>
@@ -31,14 +41,16 @@
   <td>
  	<table class="zebra-striped">
        <tr>
+		<th width="10%"><%= t('despesa.retorno')%></th>
         <th width="20%"><%= t('despesa.tipo_despesa')%></th>
 		<th width="20%"><%= t('despesa.fornecedor')%></th>
 		<th width="20%"><%= t('despesa.descricao')%></th>
-        <th width="20%"><%= t('despesa.data')%></th>
-        <th width="20%"><%= t('despesa.valor')%></th>
+        <th width="15%"><%= t('despesa.data')%></th>
+        <th width="15%"><%= t('despesa.valor')%></th>
 	</tr>
 	 <% @compra.despesas.each do |despesa| %>
 		<tr>
+			<td style="color:#666;text-align:center;"><% if (despesa.tipo_despesa.retorno == 1) %><i class="icon-ok"></i><% end %></td>
 	        <td style="color:#666"><%= despesa.tipo_despesa.descricao if despesa.tipo_despesa %></td>
 	        <td style="color:#666"><%= despesa.fornecedor.nome if despesa.fornecedor %></td>
 			<td style="color:#666"><%= despesa.descricao %></td>
@@ -47,14 +59,14 @@
 		</tr>
 	 <% end %>	
 	    <tr>
-	    	<td colspan="3">&nbsp;</td>
+	    	<td colspan="4">&nbsp;</td>
 	        <td>TOTAL</td>
 	        <td style="color:#006400"><b><%= number_to_currency(@compra.total_despesas) if @compra.total_despesas %></b></td>  
 	    </tr>	
     </table>
 
    </td>
-  <td width="30%"></td>
+  <td width="20%"></td>
 </tr></table>
 <div class="actionsShow">
 	<a href="<%= edit_compra_path %>">

@@ -7,12 +7,12 @@ class ProdutosController < ApplicationController
   before_filter :load_produto , :only => [:show, :edit, :update, :destroy]
 
   def index
-    @compras = Compra.all
+    @compras = Compra.order(:data)
     @produto = Produto.new(params[:produto])
     @produtos = Produto.pesquisar(params[:produto],params[:page])
     respond_with @produtos
   end
-
+  
   def show
     respond_with @produto
   end
@@ -22,8 +22,8 @@ class ProdutosController < ApplicationController
     @compra_default = Compra.find_by_default(Produto::COPY)
     @tamanho_default = Tamanho.find_by_default(Produto::COPY)
     @produto = Produto.new
-    @produto.compra_id = @compra_default.id
-    @produto.tamanho_id = @tamanho_default.id
+    @produto.compra_id = @compra_default.id if @compra_default
+    @produto.tamanho_id = @tamanho_default.id if @tamanho_default
     @produto.quantidade = 1
     
     respond_with @produto
@@ -108,12 +108,12 @@ class ProdutosController < ApplicationController
   end
   
   def load_combos 
-    @categorias = Categoria.all
-    @fornecedores = Fornecedor.all 
-    @compras = Compra.all
-    @marcas = Marca.all
-    @cores = Cor.all
-    @tamanhos = Tamanho.all
+    @categorias = Categoria.order(:descricao)
+    @fornecedores = Fornecedor.order(:nome) 
+    @compras = Compra.order(:data)
+    @marcas = Marca.order(:descricao)
+    @cores = Cor.order(:descricao)
+    @tamanhos = Tamanho.order(:descricao)
   end
   
   def manage_params
