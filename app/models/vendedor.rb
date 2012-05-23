@@ -10,6 +10,7 @@ class Vendedor < ActiveRecord::Base
                       :allow_blank => true                    
   
   self.per_page = 10
+  DEFAULT = 1
 
   def self.pesquisar(obj, page)
     nome = obj ? obj[:nome] : ""

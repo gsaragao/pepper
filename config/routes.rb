@@ -1,6 +1,12 @@
 Pepper::Application.routes.draw do
 
-  resources :produtos
+  resources :vendas
+
+  resources :produtos do 
+    collection do
+        get 'auto'
+    end
+  end
 
   resources :vendedores
 

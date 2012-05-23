@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120510004212) do
+ActiveRecord::Schema.define(:version => 20120521174035) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -165,6 +165,18 @@ ActiveRecord::Schema.define(:version => 20120510004212) do
   end
 
   add_index "tipo_despesas", ["descricao"], :name => "index_tipo_despesas_on_descricao", :unique => true
+
+  create_table "vendas", :force => true do |t|
+    t.integer  "cliente_id"
+    t.integer  "vendedor_id"
+    t.date     "data"
+    t.text     "observacao"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "vendas", ["cliente_id"], :name => "index_vendas_on_cliente_id"
+  add_index "vendas", ["vendedor_id"], :name => "index_vendas_on_vendedor_id"
 
   create_table "vendedores", :force => true do |t|
     t.string   "nome"

@@ -7,6 +7,7 @@ class Compra < ActiveRecord::Base
   
   self.per_page = 10
   
+  DEFAULT = 1
   TAXA_RAVE = 5
   TAXA_CARTAO = 5
   

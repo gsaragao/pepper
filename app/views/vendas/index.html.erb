@@ -1,0 +1,51 @@
+<h2><%= t('app.menu.listagem')%>&nbsp;<%= t('app.menu.venda')%></h2>
+<br>
+<%= form_for(@venda, :html => { :method => :get }, :url => vendas_path) do |f| %>
+
+	<table class="zebra-striped">
+	  <tr class="pesquisa">
+		<th>		<%= t('venda.cliente') %>&nbsp;
+			<%= f.select :cliente_id, options_from_collection_for_select(@clientes,:id,:nome, @venda.cliente_id),  
+						:include_blank => true %>&nbsp;&nbsp;
+	    		<%= t('venda.vendedor') %>&nbsp;
+				<%= f.select :vendedor_id, options_from_collection_for_select(@vendedores,:id,:nome, @venda.vendedor_id),  
+							:include_blank => true %>&nbsp;&nbsp;
+	    		<%= t('venda.data') %>&nbsp;
+		<%= f.text_field :data, :value => (I18n.l(@venda.data) if @venda.data) %>&nbsp;&nbsp;<%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
+	 </tr>
+	</table>
+<% end %>
+<% if @vendas.size > 0  %>
+ <table class="zebra-striped">
+  <tr>
+    <th width="20%"><%= t('venda.cliente')%></th>
+    <th width="20%"><%= t('venda.vendedor')%></th>
+    <th width="20%"><%= t('venda.data')%></th>
+    <th width="20%"><%= t('venda.observacao')%></th>
+   	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+ <% @vendas.each do |venda| %>
+  <tr>
+    <td style="color:#666"><%= venda.cliente.nome if venda.cliente %></td>
+    <td style="color:#666"><%= venda.vendedor.nome if venda.vendedor %></td>
+    <td style="color:#1E90FF"><%= I18n.l(venda.data) if venda.data %></td> 
+    <td style="color:#666"><%= show_obs(venda.observacao) %></td>
+    <td><%= link_to t('botao.detalhes'), venda %></td>
+    <td><%= link_to t('botao.editar'), edit_venda_path(venda)%></td>
+    <td><%= link_to t('botao.excluir'), venda, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  </tr>
+ <% end %>
+ </table>
+	<div class="apple_pagination">
+	    <%= will_paginate @vendas, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+	</div>
+<% end %>
+
+<br />
+
+<a href="<%= new_venda_path %>">
+	<button class="btn" name="btnpesquisa"><%= t('venda.acao.novo')%></button></a>

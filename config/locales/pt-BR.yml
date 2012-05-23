@@ -54,6 +54,19 @@
     default: Atual
     total_despesas: Total Despesas
 
+  venda:
+    self: Venda
+    acao: 
+      novo: Nova Venda
+      editar: Editar Venda
+      listar: Listar Venda
+      detalhar: Detalhes Venda
+    descricao: Descrição
+    data: Data
+    observacao: Observação
+    cliente: Cliente
+    vendedor: Vendedor
+
   cor:
     self: Cor
     acao: 
@@ -445,6 +458,12 @@
         descricao: Descrição
         data: Data
         default: Atual
+        observacao: Observação
+
+      venda:
+        data: Data
+        cliente: Cliente
+        vendedor: Vendedor
         observacao: Observação
       
       cor:

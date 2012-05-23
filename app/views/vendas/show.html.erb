@@ -1,0 +1,33 @@
+<h2><%= t("venda.acao.detalhar") %></h2>
+<br>
+<table>
+  <tr>
+	<td>
+ 
+		<p>
+		  <b><%= t('venda.cliente')%>:</b>
+		  <%= @venda.cliente.nome if @venda.cliente  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('venda.vendedor')%>:</b>
+		  <%= @venda.vendedor.nome if @venda.vendedor  %>
+		</p>
+ 
+		<p>
+		  <b><%= t('venda.data')%>:</b>
+		  <span style="color:#1E90FF"><%= I18n.l(@venda.data) if @venda.data %></span>  
+		</p>
+ 
+		<p>
+		  <b><%= t('venda.observacao')%>:</b>
+		  <%= @venda.observacao if @venda  %>
+		</p>
+    </td>
+  </tr>
+</table>
+<div class="actionsShow">
+	<a href="<%= edit_venda_path %>">
+		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<a href="<%= vendas_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
+</div>

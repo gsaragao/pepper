@@ -1,0 +1,106 @@
+<%= form_for @venda do |f| %>
+<% if @venda.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <% @venda.errors.full_messages.each do |msg| %>
+         <li><%= msg %></li>
+       <% end %>
+     </ul>
+   </div>
+</fieldset>
+<% end %>
+<br>
+<table sytle="margin-top:10px;">
+	<tr><td>
+       <div class="clearfix">    
+   	     <%= f.label :vendedor %>
+		<div class="input">
+	     	<%= f.select :vendedor_id, options_from_collection_for_select(@vendedores,:id,:nome, @venda.vendedor_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :cliente %>
+		<div class="input">
+	     	<%= f.select :cliente_id, options_from_collection_for_select(@clientes,:id,:nome, @venda.cliente_id),  
+						:include_blank => true %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :data %>
+		<div class="input">
+	     <%= f.text_field :data, :value => (I18n.l(@venda.data) if @venda.data) %>
+	    </div>
+      </div>
+          <div class="clearfix">    
+   	     <%= f.label :observacao %>
+		<div class="input">
+	     <%= f.text_area :observacao, :rows => 10, :cols => 50 %>
+	    </div>
+      </div>
+    </td>
+  <td>
+	<div class="clearfix">    
+	  <%= f.label :consulta_produto %>
+	<div class="input">
+      <input type="text" name="codigo_produto" id="codigo_produto" value="" />
+    </div>
+    </div>
+	
+  	<table class="zebra-striped" id="tableprod">
+	  <thead>
+		<tr>
+			<th width="30%">Name</th>
+			<th width="30%">Col 3</th>
+			<th width="30%">Col 4</th>
+			<th width="10%">&nbsp;</th>
+		</tr>
+		</thead>
+		<tbody>
+		</tbody>	
+    </table>
+  </td>
+  <td width="10%"></td>
+</tr>
+</table> 
+  <div class="actions">
+    <%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%= vendas_path %>"><button class="btn" name="btnback"><%= t('botao.cancelar')%></button></a>
+  </div>
+<% end %>
+
+<script>
+
+ $('#venda_data').datepicker({dateFormat : 'dd/mm/yy'});
+
+ $(function() {
+	var id = 0;
+
+	$("#codigo_produto").autocomplete({
+		source: "/produtos/auto",
+		minLength: 1,
+		select: function( event, ui ) {
+			//$("codigo_produto").val(ui.item.label);
+			id++;
+			
+			var prot = '<tr id="linha'+id+'">' + 
+			'<td>'+ ui.item.id + '</td>' +
+			'<td>'+ ui.item.label + '</td>' +
+			'<td>&nbsp;</td>'+
+			'<td><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "26x26", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+')") %></td></tr>';
+
+			$("#tableprod").find("tbody").append(prot);
+			$("#venda_observacao").val("asd");
+		}
+	});
+	
+  });
+
+  function removeProduto(obj, id) {
+    $(obj).parents("#linha" + id).remove();
+  }
+	
+</script>

@@ -5,6 +5,7 @@ class Tamanho < ActiveRecord::Base
   validates_uniqueness_of :descricao, :message => "Este registro já foi cadastrado!"
   
   self.per_page = 10
+  DEFAULT = 1
 
   def self.pesquisar(obj, page)
     descricao = obj ? obj[:descricao] : ""
