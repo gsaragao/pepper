@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120521174035) do
+ActiveRecord::Schema.define(:version => 20120510004212) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -125,9 +125,11 @@ ActiveRecord::Schema.define(:version => 20120521174035) do
     t.integer  "marca_id"
     t.integer  "cor_id"
     t.integer  "tamanho_id"
+    t.integer  "venda_id"
     t.decimal  "valor_compra",      :precision => 13, :scale => 2
     t.decimal  "valor_venda",       :precision => 13, :scale => 2
     t.decimal  "valor_minimo",      :precision => 13, :scale => 2
+    t.decimal  "valor_vendido",     :precision => 13, :scale => 2
     t.decimal  "margem_lucro",      :precision => 4,  :scale => 1
     t.text     "observacao"
     t.string   "foto_file_name"
@@ -145,6 +147,7 @@ ActiveRecord::Schema.define(:version => 20120521174035) do
   add_index "produtos", ["fornecedor_id"], :name => "index_produtos_on_fornecedor_id"
   add_index "produtos", ["marca_id"], :name => "index_produtos_on_marca_id"
   add_index "produtos", ["tamanho_id"], :name => "index_produtos_on_tamanho_id"
+  add_index "produtos", ["venda_id"], :name => "index_produtos_on_venda_id"
 
   create_table "tamanhos", :force => true do |t|
     t.string   "descricao"
@@ -209,6 +212,7 @@ ActiveRecord::Schema.define(:version => 20120521174035) do
   add_foreign_key "produtos", "fornecedores", :name => "produtos_fornecedor_id_fk"
   add_foreign_key "produtos", "marcas", :name => "produtos_marca_id_fk"
   add_foreign_key "produtos", "tamanhos", :name => "produtos_tamanho_id_fk"
+  add_foreign_key "produtos", "vendas", :name => "produtos_venda_id_fk"
 
   add_foreign_key "vendedores", "cidades", :name => "vendedores_cidade_id_fk"
 

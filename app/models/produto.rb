@@ -1,11 +1,13 @@
 # encoding: UTF-8
 class Produto < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
   belongs_to :categoria
   belongs_to :fornecedor
   belongs_to :compra
   belongs_to :marca
   belongs_to :cor
   belongs_to :tamanho
+  belongs_to :venda
   has_attached_file :foto, :styles => { :pequeno => "200x230>" }
   attr_accessor :acao, :quantidade
   validates_presence_of :descricao, :categoria_id, :compra_id, :valor_compra, :fornecedor_id, :marca_id
@@ -38,7 +40,11 @@ class Produto < ActiveRecord::Base
       where("produtos.descricao like ?", "%#{descricao}%").paginate(:page => page).order("codigo_interno")
   #  end    
   end
-
+  
+  def valor_formatado
+    number_to_currency(self.valor_venda)
+  end
+  
   #def valida_quantidade_maior_que_zero
   #   errors.add :quantidade, "deve ser maior que zero!" if quantidade.to_i <= 0
   #end

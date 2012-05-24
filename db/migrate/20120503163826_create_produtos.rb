@@ -10,9 +10,11 @@ class CreateProdutos < ActiveRecord::Migration
       t.references :marca
       t.references :cor
       t.references :tamanho
+      t.references :venda
       t.decimal :valor_compra, :precision => 13, :scale => 2
       t.decimal :valor_venda, :precision => 13, :scale => 2
       t.decimal :valor_minimo, :precision => 13, :scale => 2
+      t.decimal :valor_vendido, :precision => 13, :scale => 2
       t.decimal :margem_lucro, :precision => 4, :scale => 1
       t.text :observacao
       t.string :foto_file_name
@@ -29,11 +31,13 @@ class CreateProdutos < ActiveRecord::Migration
     add_index :produtos, :marca_id
     add_index :produtos, :cor_id
     add_index :produtos, :tamanho_id
+    add_index :produtos, :venda_id
     add_foreign_key(:produtos, :categorias)
     add_foreign_key(:produtos, :fornecedores)
     add_foreign_key(:produtos, :compras)
     add_foreign_key(:produtos, :marcas)
     add_foreign_key(:produtos, :cores)
     add_foreign_key(:produtos, :tamanhos)
+    add_foreign_key(:produtos, :vendas)
   end
 end

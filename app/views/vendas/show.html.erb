@@ -24,6 +24,32 @@
 		  <%= @venda.observacao if @venda  %>
 		</p>
     </td>
+	  <td>
+	 	 <table class="zebra-striped">
+		  <tr>
+		        <th width="10%"><%= t('produto.codigo')%></th>
+			    <th width="30%"><%= t('produto.descricao')%></th>
+		        <th width="30%"><%= t('produto.marca')%></th>
+		        <th width="30%"><%= t('produto.valor_venda')%></th>
+		  </tr>
+
+		 <% @venda.produtos.each do |produto| %>
+		  <tr>
+		        <td style="color:#1E90FF"><%= produto.codigo_interno %></td>
+			    <td style="color:#666"><%= produto.descricao %></td>
+		        <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>
+		        <td style="color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
+		  </tr>
+		 <% end %>
+		<tr>
+	    	<td colspan="2">&nbsp;</td>
+	        <td>TOTAL</td>
+	        <td style="color:#006400"><b><%= number_to_currency(@venda.total_vendido) if @venda.total_vendido %></b></td>  
+	    </tr>
+		 </table>
+
+	   </td>
+	  <td width="20%"></td>
   </tr>
 </table>
 <div class="actionsShow">
