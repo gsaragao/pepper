@@ -13,7 +13,7 @@ class Produto < ActiveRecord::Base
   validates_presence_of :descricao, :categoria_id, :compra_id, :valor_compra, :fornecedor_id, :marca_id
   #validate :valida_quantidade_maior_que_zero, :unless => "quantidade.nil?"
   validates_uniqueness_of :codigo_interno, :message => " já foi cadastrado!"
-  attr_accessible :codigo_fabricante, :codigo_interno, :descricao, :foto_file_name, :categoria_id,:compra_id, :cor_id, 
+  attr_accessible :codigo_fabricante, :codigo_interno, :descricao, :foto_file_name, :categoria_id,:compra_id, :cor_id, :venda_id, 
   :margem_lucro, :observacao, :valor_compra, :valor_minimo, :valor_venda, :fornecedor_id, :tamanho_id, :marca_id, :foto, :quantidade
   
   validates_attachment_content_type :foto, 
@@ -37,7 +37,7 @@ class Produto < ActiveRecord::Base
     #if (obj && obj[:cidade_id]) 
     #  where("clientes.nome like ? and clientes.cidade_id = ?", "%#{nome}%", obj[:cidade_id]).paginate(:page => page).order("nome")
     #else
-      where("produtos.descricao like ?", "%#{descricao}%").paginate(:page => page).order("codigo_interno")
+      where("produtos.descricao like ?", "%#{descricao}%").paginate(:page => page).order("id desc")
   #  end    
   end
   

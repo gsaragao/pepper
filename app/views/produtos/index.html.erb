@@ -19,10 +19,9 @@
  <table class="zebra-striped">
   <tr>
         <th width="5%"><%= t('produto.codigo')%></th>
-	    <th width="12%"><%= t('produto.descricao')%></th>
-        <th width="12%"><%= t('produto.fornecedor')%></th>
+	    <th width="20%"><%= t('produto.descricao')%></th>
         <th width="14%"><%= t('produto.compra')%></th>
-        <th width="10%"><%= t('produto.marca')%></th>
+        <th width="14%"><%= t('produto.marca')%></th>
         <th width="8%"><%= t('produto.valor_compra')%></th>
         <th width="8%"><%= t('produto.valor_venda')%></th>
         <th width="8%"><%= t('produto.valor_minimo')%></th>
@@ -36,7 +35,6 @@
   <tr>
         <td style="color:#1E90FF"><%= produto.codigo_interno %></td>
 	    <td style="color:#666"><%= produto.descricao %></td>
-        <td style="color:#666"><%= produto.fornecedor.nome if produto.fornecedor %></td>
         <td style="color:#666"><%= produto.compra.descricao if produto.compra %></td>
         <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>
         <td style="color:#006400"><%= number_to_currency(produto.valor_compra) %></td>

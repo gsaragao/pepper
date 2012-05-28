@@ -59,7 +59,7 @@
 			<th width="10%">&nbsp;</th>
 		</tr>
 		</thead>
-		<tbody>
+		<tbody id="prod_body">
 			<% if @venda.produtos.size > 0 %>
 				<% @venda.produtos.each_with_index do |produto,i| %>
 				  <tr id="linha<%= i %>">
@@ -67,7 +67,7 @@
 				        <td style="padding:5px;color:#1E90FF;padding-left:20px;"><%= produto.codigo_interno %></td>
 					    <td style="padding:5px;color:#666"><%= produto.descricao %></td>
 				        <td style="padding:5px;color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
-				        <td style="padding:5px;color:#666"><%= image_tag("remove.jpg", :id => "removeprod#{i}", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, #{i})") %></td>
+				        <td style="padding:5px;color:#666"><%= image_tag("remove.jpg", :id => "removeprod#{i}", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, #{i},#{produto.id})") %></td>
 				  </tr>
 				 <% end %>
 				<input type="hidden" id="contador" name="contador" value="<%= @venda.produtos.size %>"/>
@@ -108,9 +108,9 @@
 			'<td style="padding:5px;padding-left:20px;color:#1E90FF;">'+ ui.item.codigo + '</td>' +
 			'<td style="padding:5px;color:#666;">'+ ui.item.descricao + '</td>' +
 			'<td style="padding:5px;color:#006400;">'+ ui.item.valor + '</td>'+
-			'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+')") %></td></tr>';
+			'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+','+ui.item.id+')") %></td></tr>';
 
-			$("#tableprod").find("tbody").append(prot);
+			$("#prod_body").append(prot);
 		}
 	});
 	
@@ -119,7 +119,11 @@
 	
   });
 
-  function removeProduto(obj, id) {
+  function removeProduto(obj, id, prodid) {
+
+	$('#prod_body').append("<input type='hidden' name='venda[produtos_attributes]["+id+"][venda_id]' value=''/>");
+	$('#prod_body').append("<input type='hidden' name='venda[produtos_attributes]["+id+"][id]' value='"+prodid+"'/>");
+	
     $(obj).parents("#linha" + id).remove();
   }
 	

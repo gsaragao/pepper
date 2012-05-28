@@ -20,9 +20,11 @@ class ProdutosController < ApplicationController
   def auto
     
     if (Rails.cache.read(:produtos)) 
+      puts '11111111111111'
       @produtos = Rails.cache.read(:produtos)  
     else
-      @produtos = Produto.order(:codigo_interno)
+      puts '2222222222222222'
+      @produtos = Produto.where(:venda_id => nil).order(:codigo_interno)
       Rails.cache.write(:produtos ,@produtos)
     end
       
@@ -39,12 +41,19 @@ class ProdutosController < ApplicationController
   
   def new
     load_combos
+    
     @compra_default = Compra.find_by_default(Compra::DEFAULT)
     @tamanho_default = Tamanho.find_by_default(Tamanho::DEFAULT)
     @produto = Produto.new
     @produto.compra_id = @compra_default.id if @compra_default
     @produto.tamanho_id = @tamanho_default.id if @tamanho_default
     @produto.quantidade = 1
+    @ultimo = Produto.last
+    if @ultimo
+      @produto.codigo_interno = 1 + @ultimo.codigo_interno.to_i
+    else
+      @produto.codigo_interno = 1
+    end    
     
     respond_with @produto
   end
@@ -81,7 +90,7 @@ class ProdutosController < ApplicationController
       end
             
       if save
-        Rails.cache.delete(:produtos)
+        #Rails.cache.delete(:produtos)
         flash[:notice] = t('msg.create_sucess')
         redirect_to produtos_path
       else
@@ -94,7 +103,7 @@ class ProdutosController < ApplicationController
 
   def update
     if @produto.update_attributes(params[:produto])
-      Rails.cache.delete(:produtos)
+      #Rails.cache.delete(:produtos)
       flash[:notice] = t('msg.update_sucess')
       redirect_to produtos_path
     else

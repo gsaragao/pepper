@@ -23,9 +23,9 @@ class Categoria < ActiveRecord::Base
     descricao = obj ? obj[:descricao] : ""
     
     if (obj && obj[:id_pai]) 
-      where("categorias.descricao like ? and categorias.id_pai = ?", "%#{descricao}%", obj[:id_pai]).paginate(:page => page).order("id_pai")
+      where("categorias.descricao like ? and categorias.id_pai = ?", "%#{descricao}%", obj[:id_pai]).paginate(:page => page).order("descricao")
     else
-      where("categorias.descricao like ?", "%#{descricao}%").paginate(:page => page).order("id_pai")
+      where("categorias.descricao like ?", "%#{descricao}%").paginate(:page => page).order("descricao")
     end
   end
   

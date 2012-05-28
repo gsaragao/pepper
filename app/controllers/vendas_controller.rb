@@ -45,17 +45,13 @@ class VendasController < ApplicationController
   end
 
   def update
-    Produto.transaction do
-      Produto.update_all('venda_id = null', ['venda_id = ?',@venda.id])
       if @venda.update_attributes(params[:venda])
         flash[:notice] = t('msg.update_sucess')
         redirect_to vendas_path
       else
         load_combos
         render :action => :edit
-        raise ActiveRecord::Rollback
       end
-    end  
   end
 
   def destroy

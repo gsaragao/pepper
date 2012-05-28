@@ -6,7 +6,7 @@ class Venda < ActiveRecord::Base
   #has_many :pagamentos_vendas
   attr_accessible :data, :observacao, :cliente_id, :vendedor_id, :lista_prod, :produtos_attributes
   validates_presence_of :data, :cliente_id, :vendedor_id
-  accepts_nested_attributes_for :produtos, :allow_destroy => true #, :reject_if => proc { |obj| obj.blank? }
+  accepts_nested_attributes_for :produtos
 
   attr_accessor :lista_prod
   
