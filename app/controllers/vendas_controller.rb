@@ -33,25 +33,57 @@ class VendasController < ApplicationController
   def create
   
     @venda = Venda.new(params[:venda])
-    
-    if @venda.save
-      flash[:notice] = t('msg.create_sucess')
-      redirect_to vendas_path
-    else
-      load_combos
-      render :action => :new 
+    @venda.produtos = []
+    if @venda.lista_prod
+      @venda.lista_prod.each {|k,v| 
+        @venda.produtos << Produto.find(v[:id]) 
+      }
     end
-     
-  end
-
-  def update
-      if @venda.update_attributes(params[:venda])
-        flash[:notice] = t('msg.update_sucess')
+    Venda.transaction do
+      if @venda.save
+  
+        @venda.produtos.each {|prod| 
+          prod.venda_id = @venda.id
+          prod.save
+        }
+        
+        flash[:notice] = t('msg.create_sucess')
         redirect_to vendas_path
       else
         load_combos
-        render :action => :edit
+        render :action => :new 
+        raise ActiveRecord::Rollback
       end
+    end 
+  end
+
+  def update
+    
+     Venda.transaction do  
+        if @venda.update_attributes(params[:venda])
+          
+          Produto.where(:venda_id => @venda.id).update_all(:venda_id => nil)
+          
+          @venda.lista_prod.each {|k,v| 
+            produto = Produto.find(v[:id]) 
+            produto.venda_id = @venda.id
+            produto.save
+          }
+          flash[:notice] = t('msg.update_sucess')
+          redirect_to vendas_path
+        else
+          
+          load_combos
+           @venda.produtos = []
+            if @venda.lista_prod
+              @venda.lista_prod.each {|k,v| 
+                @venda.produtos << Produto.find(v[:id]) 
+              }
+            end
+          render :action => :edit
+          raise ActiveRecord::Rollback
+        end
+     end  
   end
 
   def destroy

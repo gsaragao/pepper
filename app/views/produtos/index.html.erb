@@ -10,7 +10,10 @@
 		<%= f.text_field :codigo_interno %>&nbsp;&nbsp;
 	    		<%= t('produto.compra') %>&nbsp;
 				<%= f.select :compra_id, options_from_collection_for_select(@compras,:id,:descricao, @produto.compra_id),  
-							:include_blank => true %>&nbsp;&nbsp;
+							:include_blank => true %>&nbsp;&nbsp;	
+				<%= t('produto.marca') %>&nbsp;
+								<%= f.select :marca_id, options_from_collection_for_select(@marcas,:id,:descricao, @produto.marca_id),  
+											:include_blank => true %>&nbsp;&nbsp;
 	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
 	 </tr>
 	</table>
@@ -29,6 +32,7 @@
     	<th></th>
     	<th></th>
     	<th></th>
+    	<th></th>
   </tr>
 
  <% @produtos.each do |produto| %>
@@ -42,6 +46,7 @@
         <td style="color:#006400"><%= number_to_currency(produto.valor_minimo) %></td>
         <td style="color:#666"><%= number_to_percentage(produto.margem_lucro) if produto.margem_lucro %></td>
         <td><%= link_to t('botao.detalhes'), produto %></td>
+		<td><%= link_to t('botao.copiar'), edit_produto_path(produto, :acao => Produto::COPY) %></td>
     	<td><%= link_to t('botao.editar'), edit_produto_path(produto)%></td>
     	<td><%= link_to t('botao.excluir'), produto, 
 	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>

@@ -63,7 +63,7 @@
 			<% if @venda.produtos.size > 0 %>
 				<% @venda.produtos.each_with_index do |produto,i| %>
 				  <tr id="linha<%= i %>">
-					    <input type="hidden" name="venda[produtos_attributes][<%= i %>][id]" value="<%= produto.id %>"/>
+					    <input type="hidden" name="venda[lista_prod][<%= i %>][id]" value="<%= produto.id %>"/>
 				        <td style="padding:5px;color:#1E90FF;padding-left:20px;"><%= produto.codigo_interno %></td>
 					    <td style="padding:5px;color:#666"><%= produto.descricao %></td>
 				        <td style="padding:5px;color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
@@ -90,13 +90,14 @@
 
  $(function() {
 	var id = 0;
+	var valor = 0;
 	
 	cont = $("#contador").val();
 	
 	if (cont != undefined) {
 		id = cont - 1;
 	}
-
+    
 	$("#codigo_produto").autocomplete({
 		source: "/produtos/auto",
 		minLength: 1,
@@ -104,12 +105,24 @@
 			id++;
 			
 			var prot = '<tr id="linha'+id+'" >' + 
-			'<input type="hidden" name="venda[produtos_attributes]['+id+'][id]" value="'+ui.item.id+'"/>' +
+			'<input type="hidden" name="venda[lista_prod]['+id+'][id]" value="'+ui.item.id+'"/>' +
 			'<td style="padding:5px;padding-left:20px;color:#1E90FF;">'+ ui.item.codigo + '</td>' +
 			'<td style="padding:5px;color:#666;">'+ ui.item.descricao + '</td>' +
 			'<td style="padding:5px;color:#006400;">'+ ui.item.valor + '</td>'+
 			'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+','+ui.item.id+')") %></td></tr>';
-
+			
+			valor = parseFloat(valor) + parseFloat(ui.item.valor_real);
+			
+			$("#prod_body").find("#linhatotal").remove();
+			
+			linhaTotal = '<tr id="linhatotal" >' + 
+			             '<td style="padding:5px;" colspan="2">&nbsp;</td> ' +
+			             '<td style="padding:5px;color:#006400;">' + valor + '</td> ' +
+			             '<td style="padding:5px;">&nbsp;</td> ' +  
+			             '</tr>'
+			
+			prot+= linhaTotal;
+			
 			$("#prod_body").append(prot);
 		}
 	});
@@ -120,10 +133,6 @@
   });
 
   function removeProduto(obj, id, prodid) {
-
-	$('#prod_body').append("<input type='hidden' name='venda[produtos_attributes]["+id+"][venda_id]' value=''/>");
-	$('#prod_body').append("<input type='hidden' name='venda[produtos_attributes]["+id+"][id]' value='"+prodid+"'/>");
-	
     $(obj).parents("#linha" + id).remove();
   }
 	

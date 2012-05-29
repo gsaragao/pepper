@@ -13,6 +13,14 @@ class ComprasController < ApplicationController
   end
 
   def show
+    
+    @compra.despesas.each {|desp|
+      @pagamento_last = PagamentoDespesa.where(:despesa_id => desp.id).last
+         desp.forma_pagamento = @pagamento_last.forma_pagamento
+         desp.parcela = @pagamento_last.parcela
+         desp.valor_pagamento = @pagamento_last.valor  
+    }
+    
     respond_with @compra
   end
 
@@ -29,7 +37,7 @@ class ComprasController < ApplicationController
   def create
     @compra = Compra.new(params[:compra])
     Compra.transaction do
-      valida_check(@compra.default)
+      valida_check_create(@compra.default)
       if @compra.save
         flash[:notice] = t('msg.create_sucess')
         redirect_to compras_path
@@ -42,7 +50,7 @@ class ComprasController < ApplicationController
 
   def update
     Compra.transaction do
-      valida_check(params[:compra][:default])
+      valida_check_update(@compra)
       if @compra.update_attributes(params[:compra])
         flash[:notice] = t('msg.update_sucess')
         redirect_to compras_path
@@ -80,7 +88,6 @@ class ComprasController < ApplicationController
       flash[:alert] = t('msg.data_not_found')
       redirect_to compras_path
     end    
-    
   end
   
   def load_combos 
@@ -94,10 +101,16 @@ class ComprasController < ApplicationController
     end
   end
   
-  def valida_check(value)
-     if (value == 1 || value == '1')
-       Compra.update_all(:default => nil)
-     end   
+  def valida_check_create(value)
+      if (value == 1 || value == '1')  
+        Compra.update_all(:default => nil)
+      end 
+  end
+  
+  def valida_check_update(compra)
+    if (compra.default == 0 || compra.default == nil) 
+        Compra.update_all(:default => nil)
+    end 
   end
   
 end

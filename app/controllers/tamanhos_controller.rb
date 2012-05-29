@@ -29,7 +29,7 @@ class TamanhosController < ApplicationController
   def create
     @tamanho = Tamanho.new(params[:tamanho])
     Tamanho.transaction do
-      valida_check(@tamanho.default)
+      valida_check_create(@tamanho.default)
       if @tamanho.save
         flash[:notice] = t('msg.create_sucess')
         redirect_to tamanhos_path
@@ -42,7 +42,7 @@ class TamanhosController < ApplicationController
 
   def update
     Tamanho.transaction do
-      valida_check(params[:tamanho][:default])
+      valida_check_update(@tamanho)
       if @tamanho.update_attributes(params[:tamanho])
         flash[:notice] = t('msg.update_sucess')
         redirect_to tamanhos_path
@@ -84,11 +84,16 @@ class TamanhosController < ApplicationController
     end
   end
   
+  def valida_check_create(value)
+      if (value == 1 || value == '1')  
+        Tamanho.update_all(:default => nil)
+      end 
+  end
   
-  def valida_check(value)
-     if (value == 1 || value == '1')
-       Tamanho.update_all(:default => nil)
-     end   
+  def valida_check_update(tamanho)
+    if (tamanho.default == 0 || tamanho.default == nil) 
+        Tamanho.update_all(:default => nil)
+    end 
   end
   
   

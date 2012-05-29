@@ -22,7 +22,7 @@ class Despesa < ActiveRecord::Base
   CHEQUE = 3
 
   def self.pesquisar(obj, page)
-    where(obj).paginate(:page => page).order("data")
+    where(obj).paginate(:page => page).order("data desc")
   end
   
   def valida_forma_pagamento

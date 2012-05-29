@@ -8,8 +8,9 @@ class ProdutosController < ApplicationController
 
   def index
     @compras = Compra.order(:data)
+    @marcas = Marca.order(:descricao)
     @produto = Produto.new(params[:produto])
-    @produtos = Produto.pesquisar(params[:produto],params[:page])
+    @produtos = @produto.pesquisar(params[:page])
     respond_with @produtos
   end
   
@@ -18,13 +19,11 @@ class ProdutosController < ApplicationController
   end
   
   def auto
-    
+
     if (Rails.cache.read(:produtos)) 
-      puts '11111111111111'
       @produtos = Rails.cache.read(:produtos)  
     else
-      puts '2222222222222222'
-      @produtos = Produto.where(:venda_id => nil).order(:codigo_interno)
+      @produtos = Produto.where(:venda_id => nil).order("id desc")
       Rails.cache.write(:produtos ,@produtos)
     end
       
@@ -32,7 +31,7 @@ class ProdutosController < ApplicationController
     @produtos.map {|u| 
       if (u.codigo_interno.include?(params[:term])) 
         desc = u.codigo_interno + ' - ' + u.descricao + ' - ' + u.valor_formatado
-        list <<  {id: u.id, codigo: u.codigo_interno, label: desc, descricao: u.descricao, valor: u.valor_formatado}  
+        list <<  {id: u.id, codigo: u.codigo_interno, label: desc, descricao: u.descricao, valor: u.valor_formatado, valor_real: u.valor_venda}  
       end    
     }   
 
@@ -48,12 +47,7 @@ class ProdutosController < ApplicationController
     @produto.compra_id = @compra_default.id if @compra_default
     @produto.tamanho_id = @tamanho_default.id if @tamanho_default
     @produto.quantidade = 1
-    @ultimo = Produto.last
-    if @ultimo
-      @produto.codigo_interno = 1 + @ultimo.codigo_interno.to_i
-    else
-      @produto.codigo_interno = 1
-    end    
+    @produto.codigo_interno = busca_ultimo_codigo
     
     respond_with @produto
   end
@@ -63,9 +57,10 @@ class ProdutosController < ApplicationController
  
     if (!params[:acao].nil? && params[:acao] == Produto::COPY)
       @produto = @produto.dup
-      @produto.codigo_interno = nil
       @produto.descricao = nil
       @produto.acao = Produto::COPY
+      @produto.codigo_interno = busca_ultimo_codigo
+      @produto.quantidade = 1
     end  
   end
 
@@ -152,6 +147,18 @@ class ProdutosController < ApplicationController
     if (!params[:produto].nil?) 
        params[:produto].delete_if{|k,v| v.blank?}
     end
+  end
+  
+  def busca_ultimo_codigo
+    
+    @retorno = 1
+    @ultimo = Produto.last
+    
+    if @ultimo
+      @retorno = 1 + @ultimo.codigo_interno.to_i
+    end
+    
+    @retorno
   end
   
 end

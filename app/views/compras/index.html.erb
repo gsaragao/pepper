@@ -13,12 +13,12 @@
  <table class="zebra-striped">
   <tr>
 	<th width="5%" style="text-align:center;"><%= t('compra.default')%></th>
-   	<th width="15%"><%= t('compra.descricao')%></th>
- 	<th width="10%"><%= t('compra.data')%></th>
-    <th width="12%"><%= t('compra.total_despesas')%></th>
-	<th width="12%"><%= t('compra.com_retorno')%></th>
+   	<th width="20%"><%= t('compra.descricao')%></th>
+ 	<th width="11%"><%= t('compra.data')%></th>
+    <th width="11%"><%= t('compra.total_despesas')%></th>
+	<th width="11%"><%= t('compra.com_retorno')%></th>
 	<th width="11%"><%= t('compra.sem_retorno')%></th>
-    <th width="15%"><%= t('compra.observacao')%></th>
+	<th width="11%"><%= t('compra.previsao_vendas')%></th>
    	<th></th>
     <th></th>
     <th></th>
@@ -32,11 +32,11 @@
 	<td style="color:#006400"><%= number_to_currency(compra.total_despesas) if compra.total_despesas %></td>
 	<td style="color:#006400"><%= number_to_currency(compra.total_com_retorno) if compra.total_com_retorno %></td>
 	<td style="color:#006400"><%= number_to_currency(compra.total_sem_retorno) if compra.total_sem_retorno %></td>
-	<td title="<%= compra.observacao %>" style="color:#666"><%= show_obs(compra.observacao) %></td>
+	<td style="color:#006400"><%= number_to_currency(compra.total_retorno_produtos) if compra.total_retorno_produtos %></td>
     <td style="color:#1E90FF"><%= link_to t('botao.detalhes'), compra %></td>
     <td style="color:#1E90FF"><%= link_to t('botao.editar'), edit_compra_path(compra)%></td>
     <td style="color:#1E90FF"><%= link_to t('botao.excluir'), compra, 
-	confirm: 'Tem certeza que deseja excluir esta compra e suas despesas associadas?', method: :delete %></td>
+	confirm: 'Tem certeza que deseja excluir esta compra?', method: :delete %></td>
   </tr>
  <% end %>
  </table>

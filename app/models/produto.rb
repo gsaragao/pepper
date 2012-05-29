@@ -8,6 +8,7 @@ class Produto < ActiveRecord::Base
   belongs_to :cor
   belongs_to :tamanho
   belongs_to :venda
+  before_destroy :sem_vendas
   has_attached_file :foto, :styles => { :pequeno => "200x230>" }
   attr_accessor :acao, :quantidade
   validates_presence_of :descricao, :categoria_id, :compra_id, :valor_compra, :fornecedor_id, :marca_id
@@ -31,22 +32,54 @@ class Produto < ActiveRecord::Base
   
   self.per_page = 10
   COPY = '1'
-  
-  def self.pesquisar(obj, page)
-    descricao = obj ? obj[:descricao] : ""
-    #if (obj && obj[:cidade_id]) 
-    #  where("clientes.nome like ? and clientes.cidade_id = ?", "%#{nome}%", obj[:cidade_id]).paginate(:page => page).order("nome")
-    #else
-      where("produtos.descricao like ?", "%#{descricao}%").paginate(:page => page).order("id desc")
-  #  end    
-  end
-  
+
   def valor_formatado
     number_to_currency(self.valor_venda)
   end
   
-  #def valida_quantidade_maior_que_zero
-  #   errors.add :quantidade, "deve ser maior que zero!" if quantidade.to_i <= 0
-  #end
+  def pesquisar(page)
+    Produto.paginate(:conditions => conditions, :page => page).order("id desc")
+  end
   
+  private
+  
+  def descricao_conditions
+    ["produtos.descricao LIKE ?", "%#{descricao}%"] unless descricao.blank?
+  end
+
+  def compra_id_conditions
+    ["produtos.compra_id = ?", compra_id] unless compra_id.blank?
+  end
+    
+  def marca_id_conditions
+    ["produtos.marca_id = ?", marca_id] unless marca_id.blank?
+  end  
+    
+  def codigo_interno_conditions
+    ["produtos.codigo_interno = ?", codigo_interno] unless codigo_interno.blank?
+  end
+
+  def conditions
+    [conditions_clauses.join(' AND '), *conditions_options]
+  end
+
+  def conditions_clauses
+    conditions_parts.map { |condition| condition.first }
+  end
+
+  def conditions_options
+    conditions_parts.map { |condition| condition[1..-1] }.flatten
+  end
+
+  def conditions_parts
+    private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
+  end
+  
+  def sem_vendas
+    return if venda_id.nil?
+      data = I18n.l(venda.data)
+      errors[:base] << "Produto associado a venda do dia #{data} do cliente #{venda.cliente.nome}!"
+     false
+  end
+ 
 end

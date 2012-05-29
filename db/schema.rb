@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120510004212) do
+ActiveRecord::Schema.define(:version => 20120529024047) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -213,6 +213,9 @@ ActiveRecord::Schema.define(:version => 20120510004212) do
   add_foreign_key "produtos", "marcas", :name => "produtos_marca_id_fk"
   add_foreign_key "produtos", "tamanhos", :name => "produtos_tamanho_id_fk"
   add_foreign_key "produtos", "vendas", :name => "produtos_venda_id_fk"
+
+  add_foreign_key "vendas", "clientes", :name => "vendas_cliente_id_fk"
+  add_foreign_key "vendas", "vendedores", :name => "vendas_vendedor_id_fk"
 
   add_foreign_key "vendedores", "cidades", :name => "vendedores_cidade_id_fk"
 

@@ -5,7 +5,7 @@ function showNotification(success, message) {
 
   $("#divNotificacao").remove();
 
-  var body = "<div id='divNotificacao'>";
+  var body = "<div id='divNotificacao' >";
   body += "<table border='1' width='100%'>";
   body += "<tr>";
   body += "<td id='tabelaNotificacao' align='center'>";

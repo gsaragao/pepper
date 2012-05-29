@@ -30,7 +30,7 @@ class VendedoresController < ApplicationController
   def create
     @vendedor = Vendedor.new(params[:vendedor])
     Vendedor.transaction do
-      valida_check(@vendedor.default)
+      valida_check_create(@vendedor.default)
       if @vendedor.save
         flash[:notice] = t('msg.create_sucess')
         redirect_to vendedores_path
@@ -43,7 +43,7 @@ class VendedoresController < ApplicationController
 
   def update
     Vendedor.transaction do
-      valida_check(params[:vendedor][:default])
+      valida_check_update(@vendedor)
       if @vendedor.update_attributes(params[:vendedor])
         flash[:notice] = t('msg.update_sucess')
         redirect_to vendedores_path
@@ -90,10 +90,17 @@ class VendedoresController < ApplicationController
     end
   end
   
-  def valida_check(value)
-     if (value == 1 || value == '1')
-       Vendedor.update_all(:default => nil)
-     end   
+  def valida_check_create(value)
+      if (value == 1 || value == '1')  
+        Vendedor.update_all(:default => nil)
+      end 
   end
-
+  
+  def valida_check_update(vendedor)
+    if (vendedor.default == 0 || vendedor.default == nil) 
+        Vendedor.update_all(:default => nil)
+    end 
+  end
+  
+  
 end
