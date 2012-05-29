@@ -28,9 +28,10 @@
 	 	 <table class="zebra-striped">
 		  <tr>
 		        <th width="10%"><%= t('produto.codigo')%></th>
-			    <th width="30%"><%= t('produto.descricao')%></th>
-		        <th width="30%"><%= t('produto.marca')%></th>
-		        <th width="30%"><%= t('produto.valor_venda')%></th>
+			    <th width="25%"><%= t('produto.descricao')%></th>
+		        <th width="25%"><%= t('produto.marca')%></th>
+		        <th width="20%"><%= t('produto.valor_venda')%></th>
+				<th width="20%"><%= t('produto.valor_vendido')%></th>
 		  </tr>
 
 		 <% @venda.produtos.each do |produto| %>
@@ -39,10 +40,11 @@
 			    <td style="color:#666"><%= produto.descricao %></td>
 		        <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>
 		        <td style="color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
+				<td style="color:#006400"><%= number_to_currency(produto.valor_vendido) %></td>
 		  </tr>
 		 <% end %>
 		<tr>
-	    	<td colspan="2">&nbsp;</td>
+	    	<td colspan="3">&nbsp;</td>
 	        <td>TOTAL</td>
 	        <td style="color:#006400"><b><%= number_to_currency(@venda.total_vendido) if @venda.total_vendido %></b></td>  
 	    </tr>

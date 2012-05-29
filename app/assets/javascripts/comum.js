@@ -62,3 +62,58 @@ $.maxZIndex = $.fn.maxZIndex = function(opt) {
      $(this).css("z-index", zmax);
   });
 };
+
+
+function parseDoubleToMoedaPtBR (value) {
+    var v = new String(value);
+    v = v.replace(',', '.');
+    v = (Math.round((v - 0) * 100)) / 100;
+    v = (v == Math.floor(v)) ? v + ".00" : ((v * 10 == Math.floor(v * 10)) ? v + "0" : v);
+    v = String(v);
+    var ps = v.split('.');
+    var whole = ps[0];
+    var sub = ps[1] ? ',' + ps[1] : ',00';
+    var r = /(\d+)(\d{3})/;
+    while (r.test(whole)) {
+        whole = whole.replace(r, '$1' + '.' + '$2');
+    }
+    v = whole + sub;
+    if (v.charAt(0) == '-') {
+        return '-$' + v.substr(1);
+    }
+    return v;
+}
+
+function alltrim(str) {
+    if(str != null && str != ''){
+        return str.replace(/^\s+|\s+$/g, '');
+    }else{
+        return '';
+    }
+}
+
+function replaceAll(str, de, para) {
+
+   var pos = str.indexOf(de);
+   while (pos > -1) {
+       str = str.replace(de, para);
+       pos = str.indexOf(de);
+   }
+
+   return (str);
+}
+
+function Mask() {
+   this.autoDetect = function() {
+      jQuery(".mask-money").each(function() {
+         jQuery(this).setMask({mask : '99,999.999.99', type : 'reverse', defaultValue : '+'});
+      });
+      jQuery(".mask-numeric-2").each(function() {
+         jQuery(this).setMask({mask : '99'});
+      });
+      jQuery(".mask-date").each(function() {
+         jQuery(this).setMask('date');
+         jQuery(this).datepicker();
+      });
+   }
+}

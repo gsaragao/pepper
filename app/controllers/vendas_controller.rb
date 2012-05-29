@@ -34,9 +34,11 @@ class VendasController < ApplicationController
   
     @venda = Venda.new(params[:venda])
     @venda.produtos = []
-    if @venda.lista_prod
-      @venda.lista_prod.each {|k,v| 
-        @venda.produtos << Produto.find(v[:id]) 
+    if @venda.lista_produtos
+      @venda.lista_produtos.each {|k,v|
+        produto = Produto.find(v[:id]) 
+        produto.valor_vendido = v[:valor_vendido]
+        @venda.produtos << produto
       }
     end
     Venda.transaction do
@@ -64,8 +66,9 @@ class VendasController < ApplicationController
           
           Produto.where(:venda_id => @venda.id).update_all(:venda_id => nil)
           
-          @venda.lista_prod.each {|k,v| 
+          @venda.lista_produtos.each {|k,v| 
             produto = Produto.find(v[:id]) 
+            produto.valor_vendido = v[:valor_vendido]
             produto.venda_id = @venda.id
             produto.save
           }
@@ -75,9 +78,11 @@ class VendasController < ApplicationController
           
           load_combos
            @venda.produtos = []
-            if @venda.lista_prod
-              @venda.lista_prod.each {|k,v| 
-                @venda.produtos << Produto.find(v[:id]) 
+            if @venda.lista_produtos
+              @venda.lista_produtos.each {|k,v| 
+                produto = Produto.find(v[:id]) 
+                produto.valor_vendido = v[:valor_vendido]
+                @venda.produtos << produto 
               }
             end
           render :action => :edit

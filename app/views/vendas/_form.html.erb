@@ -53,23 +53,37 @@
   	<table class="zebra-striped" id="tableprod">
 	  <thead>
 		<tr>
-			<th width="20%">Código</th>
-			<th width="40%">Descrição</th>
-			<th width="30%">Valor</th>
+	        <th width="10%"><%= t('produto.codigo')%></th>
+		    <th width="20%"><%= t('produto.descricao')%></th>
+	        <th width="20%"><%= t('produto.marca')%></th>
+	        <th width="20%"><%= t('produto.sugerido')%></th>
+			<th width="20%"><%= t('produto.valor vendido')%></th>
 			<th width="10%">&nbsp;</th>
 		</tr>
 		</thead>
 		<tbody id="prod_body">
 			<% if @venda.produtos.size > 0 %>
 				<% @venda.produtos.each_with_index do |produto,i| %>
-				  <tr id="linha<%= i %>">
-					    <input type="hidden" name="venda[lista_prod][<%= i %>][id]" value="<%= produto.id %>"/>
+				  <tr id="linha<%= i %>"  class="calcula">
+					    <input type="hidden" name="venda[lista_produtos][<%= i %>][id]" value="<%= produto.id %>"/>
 				        <td style="padding:5px;color:#1E90FF;padding-left:20px;"><%= produto.codigo_interno %></td>
 					    <td style="padding:5px;color:#666"><%= produto.descricao %></td>
-				        <td style="padding:5px;color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
+						<td style="padding:5px;color:#666"><%= produto.marca.descricao %></td>
+				        <td class="valor_produto" title="<%= produto.valor_venda %>" style="padding:5px;color:#006400">
+				<%= number_to_currency(produto.valor_venda) %></td>
+						<td style="padding:5px;color:#006400">
+							<input class="valor_vendido"  type="text" style="width: 100px;" onblur="calculaTotal();" name="venda[lista_produtos][<%= i %>][valor_vendido]" value="<%= produto.valor_vendido %>"/>
+						</td>
 				        <td style="padding:5px;color:#666"><%= image_tag("remove.jpg", :id => "removeprod#{i}", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, #{i},#{produto.id})") %></td>
 				  </tr>
 				 <% end %>
+				<tr id="linhatotal" > 
+	              <td style="padding:5px;" colspan="2">&nbsp;</td>
+				  <td style="padding:5px;"><b>TOTAL</b></td>
+	              <td style="padding:5px;color:#006400;"><%= number_to_currency(@venda.total_sugerido) %></td>
+				 <td style="padding:5px;color:#006400;"><%= number_to_currency(@venda.total_vendido) %></td>
+	              <td style="padding:5px;">&nbsp;</td>  
+				</tr>
 				<input type="hidden" id="contador" name="contador" value="<%= @venda.produtos.size %>"/>
 			<% end %>	
 		</tbody>	
@@ -102,38 +116,57 @@
 		source: "/produtos/auto",
 		minLength: 1,
 		select: function( event, ui ) {
-			id++;
-			
-			var prot = '<tr id="linha'+id+'" >' + 
-			'<input type="hidden" name="venda[lista_prod]['+id+'][id]" value="'+ui.item.id+'"/>' +
-			'<td style="padding:5px;padding-left:20px;color:#1E90FF;">'+ ui.item.codigo + '</td>' +
-			'<td style="padding:5px;color:#666;">'+ ui.item.descricao + '</td>' +
-			'<td style="padding:5px;color:#006400;">'+ ui.item.valor + '</td>'+
-			'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+','+ui.item.id+')") %></td></tr>';
-			
-			valor = parseFloat(valor) + parseFloat(ui.item.valor_real);
-			
-			$("#prod_body").find("#linhatotal").remove();
-			
-			linhaTotal = '<tr id="linhatotal" >' + 
-			             '<td style="padding:5px;" colspan="2">&nbsp;</td> ' +
-			             '<td style="padding:5px;color:#006400;">' + valor + '</td> ' +
-			             '<td style="padding:5px;">&nbsp;</td> ' +  
-			             '</tr>'
-			
-			prot+= linhaTotal;
-			
-			$("#prod_body").append(prot);
+		id++;
+		
+		var prot = '<tr class="calcula" id="linha'+id+'" >' + 
+		'<input type="hidden" name="venda[lista_produtos]['+id+'][id]" value="'+ui.item.id+'"/>' +
+		'<td style="padding:5px;padding-left:20px;color:#1E90FF;">'+ ui.item.codigo + '</td>' +
+		'<td style="padding:5px;color:#666;">'+ ui.item.descricao + '</td>' +
+		'<td style="padding:5px;color:#666;">'+ ui.item.marca + '</td>' +
+		'<td class="valor_produto" title="'+ ui.item.valor_real + '" style="padding:5px;color:#006400;">'+ ui.item.valor + '</td>'+
+		'<td style="padding:5px;color:#006400">' +
+		'<input class="valor_vendido" style="width: 100px;" type="text" name="venda[lista_produtos]['+id+'][valor_vendido]" value="'+ ui.item.valor_real +'"/></td> ' +
+		'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+','+ui.item.id+')") %></td></tr>';
+		
+		$("#prod_body").append(prot);
+		calculaTotal();
 		}
 	});
 	
 	$('#codigo_produto').blur(function() { $(this).val(''); });
 	$('#codigo_produto').click(function() { $(this).val(''); });
+	$('.valor_vendido').blur(function() { calculaTotal(); });
 	
   });
 
   function removeProduto(obj, id, prodid) {
     $(obj).parents("#linha" + id).remove();
+	calculaTotal();
+  }
+
+ function calculaTotal() {
+
+	var valor = 0;
+	var valor_vendido = 0
+	$("#prod_body").each(function() {
+		$(this).children(".calcula").each(function() {
+			valor += parseFloat($(this).find(".valor_produto").attr("title"));
+			valor_vendido += parseFloat($(this).find(".valor_vendido").val());
+		});		
+	});
+
+	$("#prod_body").find("#linhatotal").remove();
+
+	linhaTotal = '<tr id="linhatotal" >' + 
+	             '<td style="padding:5px;" colspan="2">&nbsp;</td> ' +
+			     '<td style="padding:5px;"><b>TOTAL</b></td> ' + 
+	             '<td style="padding:5px;color:#006400;">R$ ' + parseDoubleToMoedaPtBR(valor) + '</td> ' +
+	             '<td style="padding:5px;color:#006400;">R$ ' + parseDoubleToMoedaPtBR(valor_vendido) + '</td> ' +
+	             '<td style="padding:5px;">&nbsp;</td> ' +  
+	             '</tr>';
+
+	$("#prod_body").append(linhaTotal);
+	
   }
 	
 </script>
