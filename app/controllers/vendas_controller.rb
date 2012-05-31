@@ -3,7 +3,7 @@ class VendasController < ApplicationController
 
   respond_to :html
   before_filter :setar_classe_menu
-  before_filter :manage_params, :only => [:index]
+  before_filter :manage_params, :only => [:index, :create, :update]
   before_filter :load_venda , :only => [:show, :edit, :update, :destroy]
 
   def index
@@ -23,24 +23,30 @@ class VendasController < ApplicationController
     @vendedor_default = Vendedor.find_by_default(Vendedor::DEFAULT)
     @venda = Venda.new
     @venda.vendedor_id = @vendedor_default.id
+    @venda.data = Date.today
+    #@venda.data_duplicata = Date.today
     respond_with @venda
   end
 
   def edit
+    carrega_pagamento_venda
+    reverte_datas_pagamento
     load_combos
   end
 
   def create
   
     @venda = Venda.new(params[:venda])
+    
     @venda.produtos = []
     if @venda.lista_produtos
-      @venda.lista_produtos.each {|k,v|
-        produto = Produto.find(v[:id]) 
-        produto.valor_vendido = v[:valor_vendido]
-        @venda.produtos << produto
+       @venda.lista_produtos.each {|k,v|
+         produto = Produto.find(v[:id]) 
+         produto.valor_vendido = v[:valor_vendido]
+         @venda.produtos << produto
       }
     end
+    
     Venda.transaction do
       if @venda.save
   
@@ -49,9 +55,12 @@ class VendasController < ApplicationController
           prod.save
         }
         
+        registra_pagamento(@venda)
+        
         flash[:notice] = t('msg.create_sucess')
         redirect_to vendas_path
       else
+        reverte_datas_pagamento
         load_combos
         render :action => :new 
         raise ActiveRecord::Rollback
@@ -72,10 +81,14 @@ class VendasController < ApplicationController
             produto.venda_id = @venda.id
             produto.save
           }
+          
+          PagamentoVenda.destroy_all(:venda_id => @venda.id)
+          registra_pagamento(@venda)
+          
           flash[:notice] = t('msg.update_sucess')
           redirect_to vendas_path
         else
-          
+          reverte_datas_pagamento
           load_combos
            @venda.produtos = []
             if @venda.lista_produtos
@@ -125,8 +138,115 @@ class VendasController < ApplicationController
   def manage_params
     if (!params[:venda].nil?) 
        params[:venda][:data] = trata_data(params[:venda][:data]) if params[:venda][:data]
+       params[:venda][:data_duplicata] = trata_data(params[:venda][:data_duplicata]) if params[:venda][:data_duplicata]
+       params[:venda][:data_cartao] = trata_data(params[:venda][:data_cartao]) if params[:venda][:data_cartao]
+       params[:venda][:data_cheque] = trata_data(params[:venda][:data_cheque]) if params[:venda][:data_cheque]
        params[:venda].delete_if{|k,v| v.blank?}
     end
+  end
+  
+  def registra_pagamento(venda)
+    
+    if (venda.valor_dinheiro && !venda.valor_dinheiro.empty? && venda.valor_dinheiro.to_f > 0)
+       pagamento = PagamentoVenda.new
+       pagamento.venda_id = venda.id
+       pagamento.forma_pagamento = Venda::DINHEIRO
+       pagamento.parcela = 1
+       pagamento.valor = venda.valor_dinheiro
+       pagamento.data = venda.data
+       pagamento.save
+    end  
+
+    if (venda.valor_duplicata && !venda.valor_duplicata.empty? && venda.valor_duplicata.to_f > 0)
+      
+      data = Date.strptime(venda.data_duplicata)
+      venda.parcela_duplicata.to_i.times {|i|
+      
+         pagamento = PagamentoVenda.new
+         pagamento.venda_id = venda.id
+         pagamento.forma_pagamento = Venda::DUPLICATA
+         pagamento.parcela = i + 1
+         pagamento.valor = (venda.valor_duplicata.to_f / venda.parcela_duplicata.to_i).round(2)
+         pagamento.data = data
+         pagamento.save
+       
+         data += 1.month
+      }   
+    end  
+    
+    if (venda.valor_cartao && !venda.valor_cartao.empty? && venda.valor_cartao.to_f > 0)
+      
+      data = Date.strptime(venda.data_cartao)
+      venda.parcela_cartao.to_i.times {|i|
+      
+         pagamento = PagamentoVenda.new
+         pagamento.venda_id = venda.id
+         pagamento.forma_pagamento = Venda::CARTAO
+         pagamento.parcela = i + 1
+         pagamento.valor = (venda.valor_cartao.to_f / venda.parcela_cartao.to_i).round(2)
+         pagamento.data = data
+         pagamento.save
+       
+         data += 1.month
+      }   
+    end  
+    
+    if (venda.valor_cheque && !venda.valor_cheque.empty? && venda.valor_cheque.to_f > 0)
+      
+      data = Date.strptime(venda.data_cheque)
+      venda.parcela_cheque.to_i.times {|i|
+      
+         pagamento = PagamentoVenda.new
+         pagamento.venda_id = venda.id
+         pagamento.forma_pagamento = Venda::CHEQUE
+         pagamento.parcela = i + 1
+         pagamento.valor = (venda.valor_cheque.to_f / venda.parcela_cheque.to_i).round(2)
+         pagamento.data = data
+         pagamento.save
+       
+         data += 1.month
+      }   
+    end  
+  end
+  
+  def carrega_pagamento_venda
+    
+    pagamentos = PagamentoVenda.pesquisar_por_venda(@venda.id)
+    
+    if (pagamentos)
+    
+      pagamentos.each {|pag|
+      
+        if (pag.forma_pagamento == Venda::DINHEIRO)
+            @venda.valor_dinheiro = pag.valor
+        end 
+      
+        if (pag.forma_pagamento == Venda::DUPLICATA)
+            @venda.valor_duplicata = pag.valor
+            @venda.parcela_duplicata = pag.parcela
+            @venda.data_duplicata = pag.data
+        end
+
+        if (pag.forma_pagamento == Venda::CARTAO)
+            @venda.valor_cartao = pag.valor
+            @venda.parcela_cartao = pag.parcela
+            @venda.data_cartao = pag.data
+        end
+
+        if (pag.forma_pagamento == Venda::CHEQUE)
+            @venda.valor_cheque = pag.valor
+            @venda.parcela_cheque = pag.parcela
+            @venda.data_cheque = pag.data
+        end
+      }
+    end
+
+  end
+  
+  def reverte_datas_pagamento
+     @venda.data_duplicata = reverte_data(@venda.data_duplicata) if @venda.data_duplicata
+     @venda.data_cartao = reverte_data(@venda.data_cartao) if @venda.data_cartao
+     @venda.data_cheque = reverte_data(@venda.data_cheque) if @venda.data_cheque
   end
   
 end

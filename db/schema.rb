@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529024047) do
+ActiveRecord::Schema.define(:version => 20120530014812) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -115,6 +115,18 @@ ActiveRecord::Schema.define(:version => 20120529024047) do
 
   add_index "pagamento_despesas", ["despesa_id"], :name => "index_pagamento_despesas_on_despesa_id"
 
+  create_table "pagamento_vendas", :force => true do |t|
+    t.integer  "forma_pagamento"
+    t.integer  "parcela"
+    t.decimal  "valor",           :precision => 13, :scale => 2
+    t.date     "data"
+    t.integer  "venda_id"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+  end
+
+  add_index "pagamento_vendas", ["venda_id"], :name => "index_pagamento_vendas_on_venda_id"
+
   create_table "produtos", :force => true do |t|
     t.string   "descricao"
     t.string   "codigo_interno"
@@ -205,6 +217,8 @@ ActiveRecord::Schema.define(:version => 20120529024047) do
   add_foreign_key "despesas", "tipo_despesas", :name => "despesas_tipo_despesa_id_fk"
 
   add_foreign_key "pagamento_despesas", "despesas", :name => "pagamento_despesas_despesa_id_fk"
+
+  add_foreign_key "pagamento_vendas", "vendas", :name => "pagamento_vendas_venda_id_fk"
 
   add_foreign_key "produtos", "categorias", :name => "produtos_categoria_id_fk"
   add_foreign_key "produtos", "compras", :name => "produtos_compra_id_fk"

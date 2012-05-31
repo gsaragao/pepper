@@ -5,17 +5,17 @@ class HomeController < ApplicationController
   before_filter :setar_classe_menu
 
   def index
-    @clientes = Cliente.all
-    @fornecedores = Fornecedor.all
-    @compras = Compra.all
-    @despesas = Despesa.all
-    @cidades = Cidade.all
-    @categorias = Categoria.all
-    @tipo_despesas = TipoDespesa.all
-    @cores = Cor.all
-    @marcas = Marca.all
-    @tamanhos = Tamanho.all
-    @vendedores = Vendedor.all
+    #@clientes = Cliente.all
+    #@fornecedores = Fornecedor.all
+    #@compras = Compra.all
+    #@despesas = Despesa.all
+    #@cidades = Cidade.all
+    #@categorias = Categoria.all
+    #@tipo_despesas = TipoDespesa.all
+    #@cores = Cor.all
+    #@marcas = Marca.all
+    #@tamanhos = Tamanho.all
+    #@vendedores = Vendedor.all
   end
  
   private

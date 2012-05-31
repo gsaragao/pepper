@@ -49,6 +49,29 @@
 	        <td style="color:#006400"><b><%= number_to_currency(@venda.total_vendido) if @venda.total_vendido %></b></td>  
 	    </tr>
 		 </table>
+<br><br>
+		<table class="zebra-striped">
+	        <tr>
+				<th width="20%">Data</th>
+		        <th width="30%">Forma Pagamento</th>
+				<th width="30%">Parcela</th>
+				<th width="20%">Valor</th>
+			</tr>
+			<% @venda.pagamento_vendas.each do |pagamento| %>
+				<tr>
+					<td style="color:#1E90FF"><%= I18n.l(pagamento.data) if pagamento.data %></td>
+					<td><%= pagamento.venda.lista_formas.key(pagamento.forma_pagamento) %></td>
+					<td><%= pagamento.parcela %></td>
+					<td style="color:#006400"><%= number_to_currency(pagamento.valor) %></td>
+				</tr>	
+			 <% end %>	
+				<tr>
+					<td colspan="2">&nbsp;</td>
+					<td style="color:#666">TOTAL</td>
+					<td style="color:#006400"><b><%= number_to_currency(@venda.total_pagamento) %></b></td>
+				</tr>	
+        </table>
+
 
 	   </td>
 	  <td width="20%"></td>
