@@ -38,24 +38,21 @@ class VendasController < ApplicationController
   
     @venda = Venda.new(params[:venda])
     
-    @venda.produtos = []
-    if @venda.lista_produtos
-       @venda.lista_produtos.each {|k,v|
-         produto = Produto.find(v[:id]) 
-         produto.valor_vendido = v[:valor_vendido]
-         @venda.produtos << produto
-      }
-    end
+    registra_produto(@venda)
+    registra_pagamento(@venda)
     
     Venda.transaction do
       if @venda.save
-  
-        @venda.produtos.each {|prod| 
-          prod.venda_id = @venda.id
-          prod.save
+
+        @venda.produtos.each {|produto| 
+          produto.venda_id = @venda.id
+          produto.save
         }
         
-        registra_pagamento(@venda)
+        @venda.pagamento_vendas.each {|pagamento| 
+          pagamento.venda_id = @venda.id
+          pagamento.save
+        }
         
         flash[:notice] = t('msg.create_sucess')
         redirect_to vendas_path
@@ -71,6 +68,11 @@ class VendasController < ApplicationController
   def update
     
      Venda.transaction do  
+       
+        @venda.attributes = params[:venda]
+       
+        registra_pagamento(@venda)
+       
         if @venda.update_attributes(params[:venda])
           
           Produto.where(:venda_id => @venda.id).update_all(:venda_id => nil)
@@ -83,7 +85,11 @@ class VendasController < ApplicationController
           }
           
           PagamentoVenda.destroy_all(:venda_id => @venda.id)
-          registra_pagamento(@venda)
+          
+          @venda.pagamento_vendas.each {|pagamento| 
+            pagamento.venda_id = @venda.id
+            pagamento.save
+          }
           
           flash[:notice] = t('msg.update_sucess')
           redirect_to vendas_path
@@ -149,60 +155,56 @@ class VendasController < ApplicationController
     
     if (venda.valor_dinheiro && !venda.valor_dinheiro.empty? && venda.valor_dinheiro.to_f > 0)
        pagamento = PagamentoVenda.new
-       pagamento.venda_id = venda.id
        pagamento.forma_pagamento = Venda::DINHEIRO
        pagamento.parcela = 1
        pagamento.valor = venda.valor_dinheiro
        pagamento.data = venda.data
-       pagamento.save
+       venda.pagamento_vendas << pagamento
     end  
 
-    if (venda.valor_duplicata && !venda.valor_duplicata.empty? && venda.valor_duplicata.to_f > 0)
+    if (venda.valor_duplicata && !venda.valor_duplicata.empty? && venda.valor_duplicata.to_f > 0 && !venda.data_duplicata.blank?)
       
       data = Date.strptime(venda.data_duplicata)
       venda.parcela_duplicata.to_i.times {|i|
       
          pagamento = PagamentoVenda.new
-         pagamento.venda_id = venda.id
          pagamento.forma_pagamento = Venda::DUPLICATA
          pagamento.parcela = i + 1
          pagamento.valor = (venda.valor_duplicata.to_f / venda.parcela_duplicata.to_i).round(2)
          pagamento.data = data
-         pagamento.save
-       
+         venda.pagamento_vendas << pagamento       
+         
          data += 1.month
       }   
     end  
     
-    if (venda.valor_cartao && !venda.valor_cartao.empty? && venda.valor_cartao.to_f > 0)
+    if (venda.valor_cartao && !venda.valor_cartao.empty? && venda.valor_cartao.to_f > 0 && !venda.data_cartao.blank?)
       
       data = Date.strptime(venda.data_cartao)
       venda.parcela_cartao.to_i.times {|i|
       
          pagamento = PagamentoVenda.new
-         pagamento.venda_id = venda.id
          pagamento.forma_pagamento = Venda::CARTAO
          pagamento.parcela = i + 1
          pagamento.valor = (venda.valor_cartao.to_f / venda.parcela_cartao.to_i).round(2)
          pagamento.data = data
-         pagamento.save
+         venda.pagamento_vendas << pagamento       
        
          data += 1.month
       }   
     end  
     
-    if (venda.valor_cheque && !venda.valor_cheque.empty? && venda.valor_cheque.to_f > 0)
+    if (venda.valor_cheque && !venda.valor_cheque.empty? && venda.valor_cheque.to_f > 0 && !venda.data_cheque.blank?)
       
       data = Date.strptime(venda.data_cheque)
       venda.parcela_cheque.to_i.times {|i|
       
          pagamento = PagamentoVenda.new
-         pagamento.venda_id = venda.id
          pagamento.forma_pagamento = Venda::CHEQUE
          pagamento.parcela = i + 1
          pagamento.valor = (venda.valor_cheque.to_f / venda.parcela_cheque.to_i).round(2)
          pagamento.data = data
-         pagamento.save
+         venda.pagamento_vendas << pagamento       
        
          data += 1.month
       }   
@@ -241,6 +243,17 @@ class VendasController < ApplicationController
       }
     end
 
+  end
+  
+  def registra_produto(venda)
+    venda.produtos = []
+    if venda.lista_produtos
+       venda.lista_produtos.each {|k,v|
+         produto = Produto.find(v[:id]) 
+         produto.valor_vendido = v[:valor_vendido]
+         venda.produtos << produto
+      }
+    end
   end
   
   def reverte_datas_pagamento

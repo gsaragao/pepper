@@ -9,6 +9,9 @@ class Venda < ActiveRecord::Base
   :valor_duplicata, :data_duplicata, :parcela_cartao, :valor_cartao, :data_cartao, :parcela_cheque, :valor_cheque, :data_cheque
   validates_presence_of :data, :cliente_id, :vendedor_id
   validates_presence_of :lista_produtos, :message => "está vazia!"
+  validates_presence_of :data_duplicata, :message => "deve ser selecionada.", :if => Proc.new { |venda| !venda.valor_duplicata.blank? }
+  validates_presence_of :data_cartao, :message => "deve ser selecionada.", :if => Proc.new { |venda| !venda.valor_cartao.blank? }
+  validates_presence_of :data_cheque, :message => "deve ser selecionada.", :if => Proc.new { |venda| !venda.valor_cheque.blank? }
   validate :valida_valor_pagamento
   attr_accessor :lista_produtos, :lista_formas, :valor_dinheiro, :parcela_duplicata, :valor_duplicata, :data_duplicata,
   :parcela_cartao, :valor_cartao, :data_cartao, :parcela_cheque, :valor_cheque, :data_cheque
@@ -76,6 +79,7 @@ class Venda < ActiveRecord::Base
     total += valor_duplicata.to_f if valor_duplicata
     total += valor_cartao.to_f if valor_cartao
     total += valor_cheque.to_f if valor_cheque
+    total
   end
   
 end

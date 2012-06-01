@@ -143,7 +143,7 @@
 			<tr id="pagamentototal" > 
               <td style="padding:5px;">&nbsp;</td>
 			  <td style="padding:5px;"><b>TOTAL</b></td>
-              <td style="padding:5px;color:#006400;"><%= @venda.total_pagamento %></td>  
+              <td style="padding:5px;color:#006400;"><%= number_to_currency(@venda.total_pagamento_tela) %></td>  
 			  <td style="padding:5px;">&nbsp;</td>  
 			</tr>
 		</tbody>	
