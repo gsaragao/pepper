@@ -28,8 +28,8 @@
 	 	 <table class="zebra-striped">
 		  <tr>
 		        <th width="10%"><%= t('produto.codigo')%></th>
-			    <th width="25%"><%= t('produto.descricao')%></th>
-		        <th width="25%"><%= t('produto.marca')%></th>
+			    <th width="30%"><%= t('produto.descricao')%></th>
+		        <th width="20%"><%= t('produto.marca')%></th>
 		        <th width="20%"><%= t('produto.valor_venda')%></th>
 				<th width="20%"><%= t('produto.valor_vendido')%></th>
 		  </tr>
@@ -61,7 +61,7 @@
 				<tr>
 					<td style="color:#1E90FF"><%= I18n.l(pagamento.data) if pagamento.data %></td>
 					<td><%= pagamento.venda.lista_formas.key(pagamento.forma_pagamento) %></td>
-					<td><%= pagamento.parcela %></td>
+					<td><%= pagamento.parcela %>ª</td>
 					<td style="color:#006400"><%= number_to_currency(pagamento.valor) %></td>
 				</tr>	
 			 <% end %>	
@@ -74,7 +74,7 @@
 
 
 	   </td>
-	  <td width="20%"></td>
+	  <td width="10%"></td>
   </tr>
 </table>
 <div class="actionsShow">

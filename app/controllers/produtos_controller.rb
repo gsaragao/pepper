@@ -29,8 +29,8 @@ class ProdutosController < ApplicationController
       
     list = [] 
     @produtos.map {|u| 
-      if (u.codigo_interno.include?(params[:term])) 
-        desc = u.codigo_interno + ' - ' + u.descricao + ' - ' + u.valor_formatado
+      desc = u.codigo_interno + ' - ' + u.descricao + ' - ' + u.valor_formatado
+      if (desc.include?(params[:term])) 
         list <<  {id: u.id, codigo: u.codigo_interno, label: desc, descricao: u.descricao, valor: u.valor_formatado, valor_real: u.valor_venda, marca: u.marca.descricao}  
       end    
     }   

@@ -14,7 +14,7 @@
 <% end %>
 <br>
 <table sytle="margin-top:10px;">
-	<tr><td>
+	<tr><td width="40%">
        <div class="clearfix">    
    	     <%= f.label :vendedor %>
 		<div class="input">
@@ -46,7 +46,7 @@
 	<div class="clearfix">    
 	  <%= f.label :consulta_produto %>
 	<div class="input">
-      <input type="text" name="codigo_produto" id="codigo_produto" value="" style="width:400px" />
+      <input type="text" name="codigo_produto" id="codigo_produto" value="" style="width:500px" />
     </div>
     </div>
 	
@@ -54,10 +54,10 @@
 	  <thead>
 		<tr>
 	        <th width="10%"><%= t('produto.codigo')%></th>
-		    <th width="20%"><%= t('produto.descricao')%></th>
+		    <th width="30%"><%= t('produto.descricao')%></th>
 	        <th width="20%"><%= t('produto.marca')%></th>
-	        <th width="20%"><%= t('produto.sugerido')%></th>
-			<th width="20%"><%= t('produto.valor vendido')%></th>
+	        <th width="15%"><%= t('produto.sugerido')%></th>
+			<th width="15%"><%= t('produto.valor vendido')%></th>
 			<th width="10%">&nbsp;</th>
 		</tr>
 		</thead>
@@ -151,7 +151,7 @@
 	
 
   </td>
-  <td width="10%"></td>
+
 </tr>
 </table> 
   <div class="actions">
@@ -190,7 +190,7 @@ $('#venda_data_cheque').datepicker({dateFormat : 'dd/mm/yy'});
 		'<td style="color:#666;">'+ ui.item.marca + '</td>' +
 		'<td class="valor_produto" title="'+ ui.item.valor_real + '" style="color:#006400;">'+ ui.item.valor + '</td>'+
 		'<td style="padding:5px;color:#006400">' +
-		'<input class="valor_vendido" style="width: 100px;" type="text" name="venda[lista_produtos]['+id+'][valor_vendido]" value="'+ ui.item.valor_real +'"/></td> ' +
+		'<input class="valor_vendido" onblur="calculaTotal();" style="width: 100px;" type="text" name="venda[lista_produtos]['+id+'][valor_vendido]" value="'+ ui.item.valor_real +'"/></td> ' +
 		'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+','+ui.item.id+')") %></td></tr>';
 		
 		$("#prod_body").append(prot);
@@ -200,7 +200,6 @@ $('#venda_data_cheque').datepicker({dateFormat : 'dd/mm/yy'});
 	
 	$('#codigo_produto').blur(function() { $(this).val(''); });
 	$('#codigo_produto').click(function() { $(this).val(''); });
-	$('.valor_vendido').blur(function() { calculaTotal(); });
 	
   });
 
@@ -272,3 +271,19 @@ $('#venda_data_cheque').datepicker({dateFormat : 'dd/mm/yy'});
 	}
 	
 </script>
+<style>
+	.ui-autocomplete {
+		max-height: 400px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+		/* add padding to account for vertical scrollbar */
+		padding-right: 20px;
+	}
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 400px;
+	}
+	</style>

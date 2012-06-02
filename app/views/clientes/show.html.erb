@@ -38,9 +38,36 @@
 	  <%= @cliente.observacao %>
 	</p>
 	
-</td></tr></table>
+</td>
+<td>
+	
+	<div id="accordion">
+	    <h3><a href="#">Nome</a></h3>
+	    <div><p>
+		  <b><%= t('cliente.nome')%>:</b>
+		  <%= @cliente.nome if @cliente  %>
+		</p></div>
+	    <h3><a href="#">Data</a></h3>
+	    <div><p>
+		  <b><%= t('cliente.data_cadastro')%>:</b>
+		  <span style="color:#1E90FF"><%= I18n.l(@cliente.created_at, :format => :short) if @cliente.created_at  %></span>
+		</p></div>
+	</div>
+	
+	
+	
+</td>
+
+</tr></table>
 <div class="actionsShow">
 	<a href="<%= edit_cliente_path %>">
 		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
 	<a href="<%= clientes_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>
 </div>
+<script>
+
+$( "#accordion" ).accordion({
+			collapsible: true
+		});
+
+</script
