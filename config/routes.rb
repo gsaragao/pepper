@@ -7,7 +7,9 @@ Pepper::Application.routes.draw do
         get 'auto'
     end
   end
-
+  
+  resources :pagamento_vendas
+  
   resources :vendedores
 
   resources :fornecedores

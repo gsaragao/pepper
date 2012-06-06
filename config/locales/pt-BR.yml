@@ -98,7 +98,18 @@
     descricao: Descrição
     observacao: Observação
     default: Padrão
-      
+
+  pagamento_venda:
+    self: Pagamento
+    acao: 
+      novo: Nova Pagamento Venda
+      editar: Editar Pagamento Venda
+      listar: Listar Pagamento Venda
+      detalhar: Detalhes Pagamento Venda
+    descricao: Descrição
+    data: Data
+    observacao: Observação
+    cliente: Cliente
 
   cidade:
     self: Cidade

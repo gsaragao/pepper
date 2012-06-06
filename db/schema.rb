@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120530014812) do
+ActiveRecord::Schema.define(:version => 20120606003548) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -118,11 +118,12 @@ ActiveRecord::Schema.define(:version => 20120530014812) do
   create_table "pagamento_vendas", :force => true do |t|
     t.integer  "forma_pagamento"
     t.integer  "parcela"
-    t.decimal  "valor",           :precision => 13, :scale => 2
+    t.decimal  "valor",                  :precision => 13, :scale => 2
     t.date     "data"
     t.integer  "venda_id"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
+    t.date     "data_pagamento_cliente"
   end
 
   add_index "pagamento_vendas", ["venda_id"], :name => "index_pagamento_vendas_on_venda_id"
