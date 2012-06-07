@@ -13,7 +13,13 @@ class PagamentoVendasController < ApplicationController
   end
   
   def destroy
-    @pagamento_venda.update_attribute(:data_pagamento_cliente, Date.today)
+    
+    if params[:acao] == 'pagar'
+      @pagamento_venda.update_attribute(:data_pagamento_cliente, Date.today)
+    elsif params[:acao] == 'desfazer'
+      @pagamento_venda.update_attribute(:data_pagamento_cliente, nil)
+    end
+    
     flash[:notice] = t('msg.update_sucess')
     redirect_to pagamento_vendas_path
   end 
