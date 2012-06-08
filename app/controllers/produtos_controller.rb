@@ -85,7 +85,7 @@ class ProdutosController < ApplicationController
       end
             
       if save
-        #Rails.cache.delete(:produtos)
+        Rails.cache.delete(:produtos)
         flash[:notice] = t('msg.create_sucess')
         redirect_to produtos_path
       else
@@ -98,7 +98,7 @@ class ProdutosController < ApplicationController
 
   def update
     if @produto.update_attributes(params[:produto])
-      #Rails.cache.delete(:produtos)
+      Rails.cache.delete(:produtos)
       flash[:notice] = t('msg.update_sucess')
       redirect_to produtos_path
     else

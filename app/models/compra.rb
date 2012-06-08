@@ -67,6 +67,45 @@ class Compra < ActiveRecord::Base
     total
   end
   
+  def total_vendido
+    total = 0.0
+
+    if !produtos.empty?
+      produtos.each {|prod| 
+           total+=prod.valor_vendido.to_f
+      }
+    end
+    total
+  end
+  
+  def lucro_real
+    total_vendido - total_despesas
+  end
+  
+  def lucratividade_real
+      retorno = 0.0
+      if (despesas.size > 0 && produtos.size > 0)
+        retorno = (((total_vendido - total_despesas) / total_vendido) * 100).round(1)
+      end  
+      retorno
+  end
+  
+  def rentabilidade_real
+    retorno = 0.0
+    if (despesas.size > 0 && produtos.size > 0)
+      retorno = (((total_vendido - total_despesas) / total_despesas) * 100).round(1)
+    end  
+    retorno
+  end
+  
+  def prazo_retorno_real
+    retorno = 0.0
+    if (despesas.size > 0 && produtos.size > 0)
+      retorno = (total_despesas / (total_vendido - total_despesas)).round(1)
+    end
+    retorno
+  end
+  
   def calcula_percentual_despesa
     
       tot_desp = total_despesas
@@ -100,7 +139,6 @@ class Compra < ActiveRecord::Base
     retorno = 0.0
     if (despesas.size > 0 && produtos.size > 0)
       retorno = (total_despesas / (total_retorno_produtos - total_despesas)).round(1)
-      retorno = number_with_delimiter(retorno).to_s + " meses"  
     end
     retorno
   end

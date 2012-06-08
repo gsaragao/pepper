@@ -53,6 +53,7 @@
     observacao: Observação
     default: Atual
     total_despesas: Total Despesas
+    previsao_lucro: Previsão Lucro
     previsao_vendas: Previsão Vendas
 
   venda:

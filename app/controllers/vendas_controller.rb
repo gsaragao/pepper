@@ -68,25 +68,22 @@ class VendasController < ApplicationController
   def update
     
      Venda.transaction do  
-       
-        @venda.attributes = params[:venda]
-       
-        registra_pagamento(@venda)
-       
+        @venda_pagamento = Venda.new(params[:venda])
+        registra_pagamento(@venda_pagamento)
+        registra_produto(@venda_pagamento)
+
         if @venda.update_attributes(params[:venda])
-          
+
           Produto.where(:venda_id => @venda.id).update_all(:venda_id => nil)
-          
-          @venda.lista_produtos.each {|k,v| 
+          @venda_pagamento.lista_produtos.each {|k,v| 
             produto = Produto.find(v[:id]) 
             produto.valor_vendido = v[:valor_vendido]
             produto.venda_id = @venda.id
             produto.save
           }
-          
+
           PagamentoVenda.destroy_all(:venda_id => @venda.id)
-          
-          @venda.pagamento_vendas.each {|pagamento| 
+          @venda_pagamento.pagamento_vendas.each {|pagamento| 
             pagamento.venda_id = @venda.id
             pagamento.save
           }
@@ -224,19 +221,19 @@ class VendasController < ApplicationController
         end 
       
         if (pag.forma_pagamento == Venda::DUPLICATA)
-            @venda.valor_duplicata = pag.valor
+            @venda.valor_duplicata = pag.valor * pag.parcela
             @venda.parcela_duplicata = pag.parcela
             @venda.data_duplicata = pag.data
         end
 
         if (pag.forma_pagamento == Venda::CARTAO)
-            @venda.valor_cartao = pag.valor
+            @venda.valor_cartao = pag.valor * pag.parcela
             @venda.parcela_cartao = pag.parcela
             @venda.data_cartao = pag.data
         end
 
         if (pag.forma_pagamento == Venda::CHEQUE)
-            @venda.valor_cheque = pag.valor
+            @venda.valor_cheque = pag.valor * pag.parcela
             @venda.parcela_cheque = pag.parcela
             @venda.data_cheque = pag.data
         end

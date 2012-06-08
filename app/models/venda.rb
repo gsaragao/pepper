@@ -40,18 +40,17 @@ class Venda < ActiveRecord::Base
         total+=pag.valor
       }
     end
-    total
+    total.round(2)
   end
   
   def total_vendido
     total = 0.0
-
     if !produtos.empty?
       produtos.each {|prod| 
         total+=prod.valor_vendido if prod.valor_vendido
       }
     end
-    total
+    total.round(2)
   end
   
   def total_sugerido
@@ -62,15 +61,25 @@ class Venda < ActiveRecord::Base
         total+=prod.valor_venda if prod.valor_venda
       }
     end
-    total
+    total.round(2)
   end
   
   def valida_valor_pagamento
     pagamento = total_pagamento_tela
-    vendido = total_vendido
+    vendido = total_vendido_tela
     if pagamento !=  vendido
       errors.add(:total_pagamento,"#{number_to_currency(pagamento)} deve ser igual ao total comprado #{number_to_currency(vendido)} .")
     end  
+  end
+  
+  def total_vendido_tela
+    total = 0.0
+    if !lista_produtos.empty?
+      lista_produtos.each {|k,v| 
+        total+=v[:valor_vendido].to_f if v[:valor_vendido]
+      }
+    end
+    total.round(2)
   end
   
   def total_pagamento_tela
@@ -79,7 +88,7 @@ class Venda < ActiveRecord::Base
     total += valor_duplicata.to_f if valor_duplicata
     total += valor_cartao.to_f if valor_cartao
     total += valor_cheque.to_f if valor_cheque
-    total
+    total.round(2)
   end
   
 end
