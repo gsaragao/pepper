@@ -1,0 +1,8 @@
+Verifica percentual de compras/despesas e aplica no valor "0.17" abaixo
+
+update produtos set valor_minimo = round((valor_compra * 0.17) + valor_compra,2)
+
+
+update produtos 
+set margem_lucro = round(((valor_venda - valor_minimo) / valor_minimo) * 100, 1)
+where margem_lucro between 1 and 500

@@ -21,9 +21,9 @@ class PagamentoVenda < ActiveRecord::Base
       end
       
       if obj && obj[:cliente_id]
-        where(sql + " forma_pagamento = ? and vendas.cliente_id = ?", Venda::DUPLICATA, obj[:cliente_id]).joins(:venda => :cliente).paginate(:page => page).order("nome, parcela")
+        where(sql + " forma_pagamento in (1,4) and vendas.cliente_id = ?", obj[:cliente_id]).joins(:venda => :cliente).paginate(:page => page).order("nome, parcela")
       else    
-        where(sql + " forma_pagamento = ?", Venda::DUPLICATA).joins(:venda => :cliente).paginate(:page => page).order("nome, parcela")
+        where(sql + " forma_pagamento in (1,4)").joins(:venda => :cliente).paginate(:page => page).order("nome, parcela")
       end
   end
   

@@ -29,7 +29,7 @@ class Venda < ActiveRecord::Base
   self.per_page = 10
   
   def self.pesquisar(obj, page)
-    where(obj).paginate(:page => page).order("data")
+    where(obj).paginate(:page => page).order("data desc, id desc")
   end
   
   def total_pagamento
