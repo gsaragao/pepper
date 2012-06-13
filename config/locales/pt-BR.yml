@@ -224,6 +224,7 @@
       default: "%d/%m/%Y"
       short: "%d de %B"
       long: "%d de %B de %Y"
+      mes: "%B"
 
     day_names:
       - Domingo

@@ -31,4 +31,17 @@ class PagamentoVenda < ActiveRecord::Base
     venda.lista_formas.key(forma_pagamento)
   end
   
+  def self.proximos_seis_meses
+      select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor").where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') >= DATE_FORMAT(sysdate() , '%m/%Y')").group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
+  end
+  
+  def self.total_proximos_seis_meses
+    retorno = 0
+    pagamentos = proximos_seis_meses
+    pagamentos.each {|pag|
+      retorno+= pag.valor
+    }
+    retorno 
+  end
+
 end
