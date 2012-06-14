@@ -47,9 +47,9 @@
         <td style="color:#666"><%= number_to_percentage(produto.margem_lucro) if produto.margem_lucro %></td>
         <td><%= link_to t('botao.detalhes'), produto %></td>
 		<td><%= link_to t('botao.copiar'), edit_produto_path(produto, :acao => Produto::COPY) %></td>
-    	<td><%= link_to t('botao.editar'), edit_produto_path(produto)%></td>
-    	<td><%= link_to t('botao.excluir'), produto, 
-	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+    	<td><% if produto.venda_id.nil? %><%= link_to t('botao.editar'), edit_produto_path(produto)%><% else %>&nbsp;<% end %></td>
+    	<td><% if produto.venda_id.nil? %><%= link_to t('botao.excluir'), produto, 
+	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %><% else %>&nbsp;<% end %></td>
   </tr>
  <% end %>
  </table>
