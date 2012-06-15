@@ -19,4 +19,14 @@ class Cliente < ActiveRecord::Base
       where("clientes.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
     end    
   end
+  
+  def self.relacao_venda
+    
+    sql  = ' select c.nome, sum(p.valor) valor from vendas v, clientes c, pagamento_vendas p '
+    sql += ' where v.cliente_id = c.id and p.venda_id = v.id '
+    sql += ' group by c.id order by 2 desc limit 10 '
+    
+    find_by_sql(sql)
+  end
+  
 end

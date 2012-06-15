@@ -9,6 +9,11 @@ class HomeController < ApplicationController
     @total_pagamento_despesa = PagamentoDespesa.total_proximos_seis_meses
     @pagamento_vendas = PagamentoVenda.proximos_seis_meses
     @total_pagamento_venda = PagamentoVenda.total_proximos_seis_meses
+    @formas_pagamento = PagamentoVenda.relacao_forma_pagamento
+    @total_formas = PagamentoVenda.total_pagamento
+    @relacao_marcas = Marca.relacao_vendidos
+    @qtde_produtos = Produto.qtde_cadastrados_vendidos
+    @relacao_clientes = Cliente.relacao_venda
   end
  
   private

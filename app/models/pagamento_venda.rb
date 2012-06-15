@@ -2,9 +2,14 @@
 class PagamentoVenda < ActiveRecord::Base
   belongs_to :venda
   validates_presence_of :forma_pagamento, :parcela, :valor, :data
-  attr_accessor :cliente_id, :lista
+  attr_accessor :cliente_id, :lista, :lista_formas
   attr_accessible :cliente_id, :lista
   self.per_page = 10
+  after_initialize :default_values  
+
+    def default_values
+      self.lista_formas = {"Dinheiro" => 1, "Cartão" => 2, "Cheque" => 3, "Duplicata" => 4}
+    end
   
   PENDENTE = 'PE'
   PAGO = 'PG'
@@ -28,11 +33,13 @@ class PagamentoVenda < ActiveRecord::Base
   end
   
   def descricao_forma
-    venda.lista_formas.key(forma_pagamento)
+    lista_formas.key(forma_pagamento)
   end
   
   def self.proximos_seis_meses
-      select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor").where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') >= DATE_FORMAT(sysdate() , '%m/%Y')").group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
+      query = where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') >= DATE_FORMAT(sysdate() , '%m/%Y')")
+      query = query.group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
+      query.select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor")
   end
   
   def self.total_proximos_seis_meses
@@ -42,6 +49,14 @@ class PagamentoVenda < ActiveRecord::Base
       retorno+= pag.valor
     }
     retorno 
+  end
+  
+  def self.relacao_forma_pagamento
+    select("forma_pagamento, sum(valor) as valor").group("forma_pagamento")
+  end
+  
+  def self.total_pagamento
+    sum("valor")
   end
 
 end

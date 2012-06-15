@@ -42,6 +42,13 @@ class Produto < ActiveRecord::Base
     Produto.paginate(:conditions => conditions, :page => page).order("id desc")
   end
   
+  def self.qtde_cadastrados_vendidos
+     retorno = []
+     retorno[0] = where("venda_id is null").count
+     retorno[1] = where("venda_id is not null").count
+     retorno
+  end
+  
   private
   
   def descricao_conditions
@@ -82,5 +89,6 @@ class Produto < ActiveRecord::Base
       errors[:base] << "Produto associado a venda do dia #{data} do cliente #{venda.cliente.nome}!"
      false
   end
- 
+
+
 end
