@@ -14,7 +14,7 @@ class Venda < ActiveRecord::Base
   validates_presence_of :data_cheque, :message => "deve ser selecionada.", :if => Proc.new { |venda| !venda.valor_cheque.blank? }
   validate :valida_valor_pagamento
   attr_accessor :lista_produtos, :lista_formas, :valor_dinheiro, :parcela_duplicata, :valor_duplicata, :data_duplicata,
-  :parcela_cartao, :valor_cartao, :data_cartao, :parcela_cheque, :valor_cheque, :data_cheque
+  :parcela_cartao, :valor_cartao, :data_cartao, :parcela_cheque, :valor_cheque, :data_cheque, :nome_cliente
   after_initialize :default_values  
 
    def default_values
@@ -74,7 +74,7 @@ class Venda < ActiveRecord::Base
   
   def total_vendido_tela
     total = 0.0
-    if !lista_produtos.empty?
+    if lista_produtos && !lista_produtos.empty?
       lista_produtos.each {|k,v| 
         total+=v[:valor_vendido].to_f if v[:valor_vendido]
       }

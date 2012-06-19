@@ -3,7 +3,7 @@ class PagamentoVenda < ActiveRecord::Base
   belongs_to :venda
   validates_presence_of :forma_pagamento, :parcela, :valor, :data
   attr_accessor :cliente_id, :lista, :lista_formas
-  attr_accessible :cliente_id, :lista
+  attr_accessible :cliente_id, :lista, :forma_pagamento
   self.per_page = 10
   after_initialize :default_values  
 
@@ -13,23 +13,25 @@ class PagamentoVenda < ActiveRecord::Base
   
   PENDENTE = 'PE'
   PAGO = 'PG'
+  DINHEIRO = 1
+  DUPLICATA = 4
   
   def self.pesquisar_por_venda(id)
     select("forma_pagamento, max(parcela) as parcela, avg(valor) as valor, min(data) as data").where("venda_id = ?", id).group("forma_pagamento")
   end
   
   def self.pesquisar(obj, page)
-      sql = "" 
-      if obj && obj[:lista]
-        sql = "data_pagamento_cliente is null and" if obj[:lista] == PagamentoVenda::PENDENTE
-        sql = "data_pagamento_cliente is not null and" if obj[:lista] == PagamentoVenda::PAGO
+    
+      query = select("pagamento_vendas.*")
+      
+      if obj 
+        query = query.where("data_pagamento_cliente is null") if obj[:lista] == PagamentoVenda::PENDENTE
+        query = query.where("data_pagamento_cliente is not null") if obj[:lista] == PagamentoVenda::PAGO
+        query = query.where("vendas.cliente_id = ?", obj[:cliente_id]) if obj[:cliente_id]
+        query = query.where("forma_pagamento = ?", obj[:forma_pagamento]) if obj[:forma_pagamento]
       end
       
-      if obj && obj[:cliente_id]
-        where(sql + " forma_pagamento in (1,4) and vendas.cliente_id = ?", obj[:cliente_id]).joins(:venda => :cliente).paginate(:page => page).order("nome, parcela")
-      else    
-        where(sql + " forma_pagamento in (1,4)").joins(:venda => :cliente).paginate(:page => page).order("nome, parcela")
-      end
+      query = query.joins(:venda => :cliente).paginate(:page => page).order("data")
   end
   
   def descricao_forma

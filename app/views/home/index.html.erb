@@ -52,15 +52,38 @@
 						<h4>Resumo de Produtos</h4><br>
 						<p>
 						  <span style="color:#666">Estoque:</span>
-						  <span style="color:#666"><%= @qtde_produtos[0] %></span>
+						  <%= @qtde_produtos[0] %>
 						</p>
 						<p>
 						  <span style="color:#666">Vendidos:</span>
-						  <span style="color:#666"><%= @qtde_produtos[1] %></span>
+						  <%= @qtde_produtos[1] %>
 						</p>
 					</div>	
 			   </td>
+			 
 			   <td>
+					<div class="hero-unit-devolucao">
+						<h4>Vendidos</h4><br>
+						<% @relacao_categorias.each do |categoria| %>
+						  <p>
+							  <span style="color:#666"><%= categoria.descricao %>:</span>
+							  <%= categoria.qtde_vendido %>
+						  </p>
+					 	<% end %>	
+					</div><br>
+			   </td>
+			   <td>
+					<div class="hero-unit-devolucao">
+						<h4>Estoque</h4><br>
+						<% @relacao_categorias.each do |categoria| %>
+						  <p>
+							  <span style="color:#666"><%= categoria.descricao %>:</span>
+							  <%= categoria.qtde_estoque %>
+						  </p>
+					 	<% end %>	
+					</div><br>
+			   </td>
+			  <td>
 				<div class="hero-unit-devolucao">
 					<h4>10 Melhores Clientes</h4><br>
 					<% @relacao_clientes.each do |cliente| %>
@@ -97,7 +120,7 @@
 					<tr>
 						<td style="color:#1E90FF"><%= cont + 1 %></td>
 						<td style="color:#666"><%= marca.descricao %></td>
-						<td style="color:#666"><%= marca.qtde_estoque %></td>
+						<td style="color:#"><%= marca.qtde_estoque %></td>
 						<td style="color:#666"><%= marca.qtde_vendido %></td>
 						<td style="color:#1E90FF"><%= number_to_percentage(marca.percentual) %></td>
 						<td style="color:#006400"><%= number_to_currency(marca.soma_estoque) if marca.soma_estoque %></td>

@@ -14,6 +14,7 @@ class HomeController < ApplicationController
     @relacao_marcas = Marca.relacao_vendidos
     @qtde_produtos = Produto.qtde_cadastrados_vendidos
     @relacao_clientes = Cliente.relacao_venda
+    @relacao_categorias = Categoria.relacao_categoria_vendas
   end
  
   private

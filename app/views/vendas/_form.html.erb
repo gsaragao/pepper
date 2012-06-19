@@ -22,13 +22,13 @@
 						:include_blank => true %>
 	    </div>
       </div>
-          <div class="clearfix">    
-   	     <%= f.label :cliente %>
-		<div class="input">
-	     	<%= f.select :cliente_id, options_from_collection_for_select(@clientes,:id,:nome, @venda.cliente_id),  
-						:include_blank => true %>
-	    </div>
-      </div>
+       <div class="clearfix">    
+		  <%= f.label :cliente %>
+	 	 <div class="input">
+		   <input type="hidden" id="cliente_id" name="venda[cliente_id]" value="<%= @venda.cliente_id %>" />
+	       <input type="text" name="nome_cliente" id="nome_cliente" value="<%= @venda.cliente.nome if @venda.cliente %>" style="width:300px" />
+	     </div>
+	   </div>
           <div class="clearfix">    
    	     <%= f.label :data %>
 		<div class="input">
@@ -166,6 +166,7 @@
 $('#venda_data_duplicata').datepicker({dateFormat : 'dd/mm/yy'});
 $('#venda_data_cartao').datepicker({dateFormat : 'dd/mm/yy'});
 $('#venda_data_cheque').datepicker({dateFormat : 'dd/mm/yy'});
+$('#nome_cliente').focus();
 
  $(function() {
 	var id = 0;
@@ -177,6 +178,15 @@ $('#venda_data_cheque').datepicker({dateFormat : 'dd/mm/yy'});
 		id = cont - 1;
 	}
     
+	$("#nome_cliente").autocomplete({
+		source: "/clientes/auto",
+		minLength: 3,
+		select: function( event, ui ) {
+		   $("#nome_cliente").val(ui.item.label);
+		   $("#cliente_id").val(ui.item.id);
+		}
+	});
+
 	$("#codigo_produto").autocomplete({
 		source: "/produtos/auto",
 		minLength: 1,

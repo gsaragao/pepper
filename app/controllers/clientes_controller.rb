@@ -1,7 +1,7 @@
 # encoding : utf-8
 class ClientesController < ApplicationController
 
-  respond_to :html
+  respond_to :html, :json
   before_filter :setar_classe_menu
   before_filter :manage_params, :only => [:index]
   before_filter :load_cliente , :only => [:show, :edit, :update, :destroy]
@@ -23,6 +23,25 @@ class ClientesController < ApplicationController
     respond_with @cliente
   end
 
+  def auto
+
+    if (Rails.cache.read(:clientes)) 
+      @clientes = Rails.cache.read(:clientes)  
+    else
+      @clientes = Cliente.order(:nome)
+      Rails.cache.write(:clientes ,@produtos)
+    end
+      
+    list = [] 
+    @clientes.map {|c| 
+      if (c.nome.downcase.include?(params[:term].downcase)) 
+        list <<  {id: c.id, label: c.nome}  
+      end    
+    }   
+
+    respond_with list
+  end
+
   def edit
     load_combos
   end
@@ -31,6 +50,7 @@ class ClientesController < ApplicationController
     @cliente = Cliente.new(params[:cliente])
     
     if @cliente.save
+      Rails.cache.delete(:clientes)
       flash[:notice] = t('msg.create_sucess')
       #ClienteMailer.enviar(@cliente).deliver
       redirect_to clientes_path
@@ -43,6 +63,7 @@ class ClientesController < ApplicationController
 
   def update
     if @cliente.update_attributes(params[:cliente])
+      Rails.cache.delete(:clientes)
       flash[:notice] = t('msg.update_sucess')
       redirect_to clientes_path
     else
@@ -53,6 +74,7 @@ class ClientesController < ApplicationController
 
   def destroy
     @cliente.destroy
+    Rails.cache.delete(:clientes)
     flash[:notice] = t('msg.destroy_sucess')
     redirect_to clientes_path
   end

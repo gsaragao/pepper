@@ -38,7 +38,11 @@ Pepper::Application.routes.draw do
     end
   end
 
-  resources :clientes
+  resources :clientes do 
+    collection do
+        get 'auto'
+    end
+  end
 
   resources :home, :only => [:index]
   

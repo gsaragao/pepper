@@ -7,7 +7,8 @@
 		<th><%= t('pagamento_venda.cliente') %>&nbsp;
 			<%= f.select :cliente_id, options_from_collection_for_select(@clientes,:id,:nome, @pagamento_venda.cliente_id),  
 			:include_blank => true %>&nbsp;&nbsp;<%= t('pagamento_venda.listar') %>&nbsp;
-			<%= f.select :lista, options_for_select([["Todos", ""], ["Pendentes", PagamentoVenda::PENDENTE], ["Pagos", PagamentoVenda::PAGO]], @pagamento_venda.lista) %>&nbsp;&nbsp;
+			<%= f.select :lista, options_for_select([["Todos", ""], ["Pendentes", PagamentoVenda::PENDENTE], ["Pagos", PagamentoVenda::PAGO]], @pagamento_venda.lista) %>&nbsp;&nbsp;<%= t('pagamento_venda.forma_pagamento') %>&nbsp;
+			<%= f.select :forma_pagamento, options_for_select([["Todos", ""], ["Dinheiro", PagamentoVenda::DINHEIRO], ["Duplicata", PagamentoVenda::DUPLICATA]], @pagamento_venda.forma_pagamento) %>&nbsp;
 			<%= f.submit t('botao.pesquisar'), :class => "btn primary" %>
 		</th>
 	 </tr>
