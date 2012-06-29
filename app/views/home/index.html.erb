@@ -102,7 +102,11 @@
 					<% @relacao_pagamentos.each do |cliente| %>
 						<p>
 						  <span style="color:#666"><%= cliente.nome %>:</span>
-						  <span style="color:#1E90FF">&nbsp; <%= I18n.l(cliente.data) %></span>  
+						  <% if (cliente.data > Date.today) %>
+						  		<span style="color:#1E90FF">&nbsp; <%= I18n.l(cliente.data) %></span>  
+						  <% else %>		
+						  		<span style="color:red">&nbsp; <%= I18n.l(cliente.data) %></span>  
+						  <% end %>
 						</p>
 				 	<% end %>	
 				</div><br>

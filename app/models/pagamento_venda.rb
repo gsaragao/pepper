@@ -11,7 +11,8 @@ class PagamentoVenda < ActiveRecord::Base
       self.lista_formas = {"Dinheiro" => 1, "Cartão" => 2, "Cheque" => 3, "Duplicata" => 4}
     end
   
-  PENDENTE = 'PE'
+  AVENCER = 'PE'
+  ATRASADO = 'AT'
   PAGO = 'PG'
   DINHEIRO = 1
   DUPLICATA = 4
@@ -25,7 +26,8 @@ class PagamentoVenda < ActiveRecord::Base
       query = select("pagamento_vendas.*")
       
       if obj 
-        query = query.where("data_pagamento_cliente is null") if obj[:lista] == PagamentoVenda::PENDENTE
+        query = query.where("data_pagamento_cliente is null and pagamento_vendas.data < ?", Date.today) if obj[:lista] == PagamentoVenda::ATRASADO
+        query = query.where("data_pagamento_cliente is null") if obj[:lista] == PagamentoVenda::AVENCER
         query = query.where("data_pagamento_cliente is not null") if obj[:lista] == PagamentoVenda::PAGO
         query = query.where("vendas.cliente_id = ?", obj[:cliente_id]) if obj[:cliente_id]
         
@@ -34,7 +36,9 @@ class PagamentoVenda < ActiveRecord::Base
         else
           query = query.where("forma_pagamento in (1,4)", obj[:forma_pagamento]) 
         end    
-      end
+      else
+        query = query.where("forma_pagamento in (1,4) and data_pagamento_cliente is null") 
+      end  
       
       query = query.joins(:venda => :cliente).paginate(:page => page).order("data")
   end
