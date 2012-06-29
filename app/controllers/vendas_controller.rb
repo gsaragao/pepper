@@ -22,7 +22,7 @@ class VendasController < ApplicationController
     load_combos
     @vendedor_default = Vendedor.find_by_default(Vendedor::DEFAULT)
     @venda = Venda.new
-    @venda.vendedor_id = @vendedor_default.id
+    @venda.vendedor_id = @vendedor_default.id if @vendedor_default
     @venda.data = Date.today
     #@venda.data_duplicata = Date.today
     respond_with @venda

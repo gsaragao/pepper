@@ -5,116 +5,132 @@
 	<td style="border-top:0px solid #ddd;">
 		<table>
 			<tr>
+				<% if !@pagamento_despesas.empty? %>
+					<td>
+						<div class="hero-unit-devolucao">
+							<h4>A Pagar</h4><br>
+							<% @pagamento_despesas.each do |pagamento| %>
+								<p>
+								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
+								  <span style="color:#006400"><%= number_to_currency(pagamento.valor) %></span>
+								</p>
+						 	<% end %>	
+						<br>
+							<p>
+							  <span style="color:#666"><b>Total:</b></span>
+							  <span style="color:#006400"><b><%= number_to_currency(@total_pagamento_despesa) %></b></span>
+							</p>
+						</div>
+		    	    </td>
+	    	    <% end %>
+	    	   <% if !@pagamento_vendas.empty? %> 
+			      <td>
+						<div class="hero-unit-devolucao">
+							<h4>A Receber</h4><br>
+							<% @pagamento_vendas.each do |pagamento| %>
+								<p>
+								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
+								  <span style="color:#006400"><%= number_to_currency(pagamento.valor) %></span>
+								</p>
+						 	<% end %>	
+						<br>
+							<p>
+							  <span style="color:#666"><b>Total:</b></span>
+							  <span style="color:#006400"><b><%= number_to_currency(@total_pagamento_venda) %></b></span>
+							</p>
+						</div>
+				   </td>	
+			   <% end %>
+			   <% if !@formas_pagamento.empty? || @qtde_produtos[4] > 0 %>
+				   <td>
+					<% if !@formas_pagamento.empty? %>
+						<div class="hero-unit-devolucao">
+							<h4>Formas de Pagamento</h4><br>
+							<% @formas_pagamento.each do |forma| %>
+								<p>
+								  <span style="color:#666"><%= forma.descricao_forma %>:</span>
+								  <span style="color:#006400"><%= number_to_currency(forma.valor) %></span>
+								  <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor / @total_formas) * 100).round(1)) %></span>
+								</p>
+						 	<% end %>	
+						</div><br>
+					<% end %>
+					<% if @qtde_produtos[4] > 0 %>
+						<div class="hero-unit-devolucao">
+						  <h4>Resumo de Produtos</h4><br>
+						  <p>
+						    <span style="color:#666">Estoque:</span>
+							<%= @qtde_produtos[0] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@qtde_produtos[2]) %></span>
+							</p>
+						   <p>
+							  <span style="color:#666">Vendidos:</span>
+							  <%= @qtde_produtos[1] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@qtde_produtos[3]) %></span>					
+							</p>
+						</div>	
+					<% end %>
+				   </td>
+			   <% end %>	   
+			   <% if !@relacao_categorias.empty? %> 
+				   <td>
+						<div class="hero-unit-devolucao">
+							<h4>Vendidos</h4><br>
+							<% @relacao_categorias.each do |categoria| %>
+							  <p>
+								  <span style="color:#666"><%= categoria.descricao %>:</span>
+								  <%= categoria.qtde_vendido %>
+							  </p>
+						 	<% end %>	
+						</div><br>
+				   </td>
+				   <td>
+						<div class="hero-unit-devolucao">
+							<h4>Estoque</h4><br>
+							<% @relacao_categorias.each do |categoria| %>
+							  <p>
+								  <span style="color:#666"><%= categoria.descricao %>:</span>
+								  <%= categoria.qtde_estoque %>
+							  </p>
+						 	<% end %>	
+						</div><br>
+				   </td>
+			   <% end %> 
+			   <% if !@relacao_clientes.empty? %>   
+				  <td>
+					<div class="hero-unit-devolucao">
+						<h4>10 Melhores Clientes</h4><br>
+						<% @relacao_clientes.each do |cliente| %>
+							<p>
+							  <span style="color:#666"><%= cliente.nome %>:</span>
+							  <span style="color:#006400"><%= number_to_currency(cliente.valor) %></span>
+							</p>
+					 	<% end %>	
+					</div>
+				   </td>
+			   <% end %>	 
+			  <% if !@relacao_pagamentos.empty? %>      
 				<td>
 					<div class="hero-unit-devolucao">
-						<h4>A Pagar</h4><br>
-						<% @pagamento_despesas.each do |pagamento| %>
+						<h4>10 Próximos Pagamentos</h4><br>
+						<% @relacao_pagamentos.each do |cliente| %>
 							<p>
-							  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
-							  <span style="color:#006400"><%= number_to_currency(pagamento.valor) %></span>
+							  <span style="color:#666"><%= cliente.nome %>:</span>
+							  <% if (cliente.data > Date.today) %>
+							  		<span style="color:#1E90FF">&nbsp; <%= I18n.l(cliente.data) %></span>  
+							  <% else %>		
+							  		<span style="color:red">&nbsp; <%= I18n.l(cliente.data) %></span>  
+							  <% end %>
 							</p>
 					 	<% end %>	
-					<br>
-						<p>
-						  <span style="color:#666"><b>Total:</b></span>
-						  <span style="color:#006400"><b><%= number_to_currency(@total_pagamento_despesa) %></b></span>
-						</p>
-					</div>
-	    	    </td>
-		      <td>
-					<div class="hero-unit-devolucao">
-						<h4>A Receber</h4><br>
-						<% @pagamento_vendas.each do |pagamento| %>
-							<p>
-							  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
-							  <span style="color:#006400"><%= number_to_currency(pagamento.valor) %></span>
-							</p>
-					 	<% end %>	
-					<br>
-						<p>
-						  <span style="color:#666"><b>Total:</b></span>
-						  <span style="color:#006400"><b><%= number_to_currency(@total_pagamento_venda) %></b></span>
-						</p>
-					</div>
-			   </td>	
-			   <td>
-				<div class="hero-unit-devolucao">
-					<h4>Formas de Pagamento</h4><br>
-					<% @formas_pagamento.each do |forma| %>
-						<p>
-						  <span style="color:#666"><%= forma.descricao_forma %>:</span>
-						  <span style="color:#006400"><%= number_to_currency(forma.valor) %></span>
-						  <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor / @total_formas) * 100).round(1)) %></span>
-						</p>
-				 	<% end %>	
-				</div><br>
-				<div class="hero-unit-devolucao">
-				  <h4>Resumo de Produtos</h4><br>
-				  <p>
-				    <span style="color:#666">Estoque:</span>
-					<%= @qtde_produtos[0] %>
-					<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@qtde_produtos[2]) %></span>
-					</p>
-				   <p>
-					  <span style="color:#666">Vendidos:</span>
-					  <%= @qtde_produtos[1] %>
-					<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@qtde_produtos[3]) %></span>					
-					</p>
-				</div>	
-			   </td>
-			 
-			   <td>
-					<div class="hero-unit-devolucao">
-						<h4>Vendidos</h4><br>
-						<% @relacao_categorias.each do |categoria| %>
-						  <p>
-							  <span style="color:#666"><%= categoria.descricao %>:</span>
-							  <%= categoria.qtde_vendido %>
-						  </p>
-					 	<% end %>	
 					</div><br>
-			   </td>
-			   <td>
-					<div class="hero-unit-devolucao">
-						<h4>Estoque</h4><br>
-						<% @relacao_categorias.each do |categoria| %>
-						  <p>
-							  <span style="color:#666"><%= categoria.descricao %>:</span>
-							  <%= categoria.qtde_estoque %>
-						  </p>
-					 	<% end %>	
-					</div><br>
-			   </td>
-			  <td>
-				<div class="hero-unit-devolucao">
-					<h4>10 Melhores Clientes</h4><br>
-					<% @relacao_clientes.each do |cliente| %>
-						<p>
-						  <span style="color:#666"><%= cliente.nome %>:</span>
-						  <span style="color:#006400"><%= number_to_currency(cliente.valor) %></span>
-						</p>
-				 	<% end %>	
-				</div>
-			   </td>
-			<td>
-				<div class="hero-unit-devolucao">
-					<h4>10 Próximos Pagamentos</h4><br>
-					<% @relacao_pagamentos.each do |cliente| %>
-						<p>
-						  <span style="color:#666"><%= cliente.nome %>:</span>
-						  <% if (cliente.data > Date.today) %>
-						  		<span style="color:#1E90FF">&nbsp; <%= I18n.l(cliente.data) %></span>  
-						  <% else %>		
-						  		<span style="color:red">&nbsp; <%= I18n.l(cliente.data) %></span>  
-						  <% end %>
-						</p>
-				 	<% end %>	
-				</div><br>
-			   </td>
+				</td>
+			  <% end %>  
 			</tr>
 		<table>
     </td>
   </tr>
+<% if !@relacao_marcas.empty? %>  
   <tr>
 	<td style="border-top:0px solid #ddd;">
 		<table>
@@ -152,4 +168,5 @@
 	   </table>
 	</td>
   </tr>
+<% end %>  
 </table>

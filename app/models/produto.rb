@@ -63,6 +63,7 @@ class Produto < ActiveRecord::Base
      
      retorno[2] = perc_e
      retorno[3] = perc_v
+     retorno[4] = cont
      retorno
   end
   
