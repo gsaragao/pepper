@@ -50,8 +50,11 @@ class MarcasController < ApplicationController
   end
 
   def destroy
-    @marca.destroy
-    flash[:notice] = t('msg.destroy_sucess')
+    if @marca.destroy
+      flash[:notice] = t('msg.destroy_sucess')
+    else
+      flash[:alert] = @marca.errors.full_messages[0]
+    end    
     redirect_to marcas_path
   end
   

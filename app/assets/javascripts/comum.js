@@ -39,7 +39,7 @@ function showNotification(success, message) {
      $("#tabelaNotificacao").css("background-color", "#D43F3F");
   }
 
-  setTimeout("hiddenNotification();", 3500);
+  setTimeout("hiddenNotification();", 2500);
 }
 
 function hiddenNotification() {

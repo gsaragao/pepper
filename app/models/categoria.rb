@@ -1,5 +1,7 @@
 # encoding: UTF-8
 class Categoria < ActiveRecord::Base
+  has_many :produtos
+  before_destroy :sem_produtos
   has_many :children, :class_name => "Categoria", :foreign_key => "id_pai"
 	belongs_to :father, :class_name => "Categoria", :foreign_key => "id_pai"
   before_destroy :no_children
@@ -51,5 +53,12 @@ class Categoria < ActiveRecord::Base
       errors[:base] << "Esta categoria tem categoria(s) associada(s): #{children.size} registro(s)!"
      false
    end
+   
+   def sem_produtos
+     return if produtos.empty?
+       errors[:base] << "Esta categoria tem produtos(s) associado(s): #{produtos.size} registro(s)!"
+      false
+   end
+   
   
 end

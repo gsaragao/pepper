@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= t("app.nome_completo") %></title>
+  <%= stylesheet_link_tag 'application' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+	<div class="top">
+      <h1 class="logo"><%= t('app.nome_completo') %></h1>
+    </div><br><br>
+	<% if notice.present? %>
+	    <script>showNotification(true,'<%= notice %>');</script>
+	<% end %>
+	<center>	
+	<table width="25%">
+	   <tr>
+		 <td>	 
+	        <%= yield %>
+	     </td>
+	   </tr>
+	</table>
+	</center>
+</body>
+</html>

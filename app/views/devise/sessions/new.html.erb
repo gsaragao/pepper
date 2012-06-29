@@ -1,0 +1,26 @@
+<table width="30%">
+	<tr><td width="30%">
+    <div class="hero-unit-devolucao">
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+			<fieldset>
+				<legend><em>Enter your AccountCenter login information below</em></legend>
+				<%= label_tag(:user_username, "Usuário") %>
+				<%= text_field_tag(:user_username, nil, :name => 'user[username]', :class => 'textinput') %>
+				<%= label_tag(:password, "Senha") %>
+				<%= password_field_tag(:password, nil, :name => 'user[password]', :class => 'textinput') %>
+				<div class="aclogin-action">
+					<div class="fl-left">
+						<% if devise_mapping.rememberable? %>
+							<%= check_box_tag(:remember_me, nil, :name => 'user[remember_me]') %>
+							<span>Lembrar-me</span>
+						<% end %>
+					</div>
+					<div><%= f.submit "Logar" %></div>
+		              <div class="clearfix">&nbsp;</div>
+				</div>		
+			</fieldset>
+		<% end %>
+	</div>
+	</td></tr>
+</table>
+

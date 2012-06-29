@@ -37,7 +37,6 @@
 		  <b><%= t('produto.marca')%>:</b>
 		  <%= @produto.marca.descricao if @produto.marca  %>
 		</p>
-    </td><td>
 		<p>
 		  <b><%= t('produto.cor')%>:</b>
 		  <%= @produto.cor.descricao if @produto.cor  %>
@@ -47,7 +46,7 @@
 		  <b><%= t('produto.tamanho')%>:</b>
 		  <%= @produto.tamanho.descricao if @produto.tamanho  %>
 		</p>
- 
+    </td><td>
 		<p>
 		  <b><%= t('produto.valor_compra')%>:</b>
 		  <span style="color:#006400"><%= number_to_currency(@produto.valor_compra) if @produto  %></span>
@@ -62,12 +61,18 @@
 		  <b><%= t('produto.valor_minimo')%>:</b>
 		  <span style="color:#006400"><%= number_to_currency(@produto.valor_minimo) if @produto  %></span>
 		</p>
-   </td><td>
 		<p>
 		  <b><%= t('produto.margem_lucro')%>:</b>
 		  <%= number_to_percentage(@produto.margem_lucro) if @produto  %>
 		</p>
- 
+		<% if (!@produto.venda_id.nil?) %>
+			<p>
+			  <b><%= t('produto.comprador')%>:</b>
+			  <span style="color:#1E90FF"><%= @produto.venda.cliente.nome if @produto.venda.cliente %></span>
+			</p>
+		<% end %>	
+		
+   </td><td> 
 		<p>
 		  <b><%= t('produto.observacao')%>:</b>
 		  <%= @produto.observacao if @produto  %>

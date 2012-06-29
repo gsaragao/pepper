@@ -10,13 +10,13 @@ class Produto < ActiveRecord::Base
   belongs_to :venda
   before_destroy :sem_vendas
   has_attached_file :foto, :styles => { :pequeno => "200x230>" }
-  attr_accessor :acao, :quantidade
+  attr_accessor :acao, :quantidade, :lista
   validates_presence_of :descricao, :categoria_id, :compra_id, :valor_compra, :fornecedor_id, :marca_id
   #validate :valida_quantidade_maior_que_zero, :unless => "quantidade.nil?"
   validates_uniqueness_of :codigo_interno, :message => " já foi cadastrado!"
   attr_accessible :codigo_fabricante, :codigo_interno, :descricao, :foto_file_name, :categoria_id,:compra_id, :cor_id, :venda_id, 
   :margem_lucro, :observacao, :valor_compra, :valor_minimo, :valor_venda, :fornecedor_id, :tamanho_id, :marca_id, :foto, :quantidade,
-  :valor_vendido
+  :valor_vendido, :lista
   
   validates_attachment_content_type :foto, 
                                     :content_type => ['image/jpg',
@@ -32,6 +32,8 @@ class Produto < ActiveRecord::Base
                                       :message => I18n.t('produto.foto_valida.tamanho')
   
   self.per_page = 10
+  ESTOQUE = 'ES'
+  VENDIDO = 'VD'
   COPY = '1'
 
   def valor_formatado
@@ -39,13 +41,28 @@ class Produto < ActiveRecord::Base
   end
   
   def pesquisar(page)
-    Produto.paginate(:conditions => conditions, :page => page).order("id desc")
+    query = Produto.paginate(:conditions => conditions, :page => page).order("id desc")
+    query = query.where("venda_id is null") if lista == Produto::ESTOQUE
+    query = query.where("venda_id is not null") if lista == Produto::VENDIDO
+    query
   end
   
   def self.qtde_cadastrados_vendidos
      retorno = []
      retorno[0] = where("venda_id is null").count
      retorno[1] = where("venda_id is not null").count
+     
+     cont = Produto.count
+     perc_e = 0
+     perc_v = 0
+     
+     if (cont > 0)
+        perc_e = ((retorno[0].to_f / cont.to_f) * 100).round(1)
+        perc_v = ((retorno[1].to_f / cont.to_f) * 100).round(1)
+     end
+     
+     retorno[2] = perc_e
+     retorno[3] = perc_v
      retorno
   end
   

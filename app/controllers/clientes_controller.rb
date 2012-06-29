@@ -73,9 +73,13 @@ class ClientesController < ApplicationController
   end
 
   def destroy
-    @cliente.destroy
-    Rails.cache.delete(:clientes)
-    flash[:notice] = t('msg.destroy_sucess')
+    if @cliente.destroy
+      Rails.cache.delete(:clientes)
+      flash[:notice] = t('msg.destroy_sucess')
+    else
+      flash[:alert] = @cliente.errors.full_messages[0]
+    end
+        
     redirect_to clientes_path
   end
   

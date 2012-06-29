@@ -4,16 +4,18 @@
 
 	<table class="zebra-striped">
 	  <tr class="pesquisa">
-		<th>		<%= t('produto.descricao') %>&nbsp;
+		<th>	<%= t('produto.codigo_interno') %>&nbsp;
+	<%= f.text_field :codigo_interno, :style=>'width: 50px;'  %>&nbsp;&nbsp;
+			<%= t('produto.descricao') %>&nbsp;
 		<%= f.text_field :descricao %>&nbsp;&nbsp;
-	    		<%= t('produto.codigo_interno') %>&nbsp;
-		<%= f.text_field :codigo_interno %>&nbsp;&nbsp;
 	    		<%= t('produto.compra') %>&nbsp;
 				<%= f.select :compra_id, options_from_collection_for_select(@compras,:id,:descricao, @produto.compra_id),  
 							:include_blank => true %>&nbsp;&nbsp;	
 				<%= t('produto.marca') %>&nbsp;
 								<%= f.select :marca_id, options_from_collection_for_select(@marcas,:id,:descricao, @produto.marca_id),  
 											:include_blank => true %>&nbsp;&nbsp;
+				<%= t('produto.listar') %>&nbsp;
+				<%= f.select :lista, options_for_select([["Todos", ""], ["Estoque", Produto::ESTOQUE], ["Vendidos", Produto::VENDIDO]], @produto.lista) %>&nbsp;&nbsp;									
 	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
 	 </tr>
 	</table>

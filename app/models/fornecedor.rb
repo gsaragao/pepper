@@ -1,5 +1,7 @@
 # encoding: UTF-8
 class Fornecedor < ActiveRecord::Base
+  has_many :produtos
+  before_destroy :sem_produtos
   belongs_to :cidade
   attr_accessible :email, :endereco, :nome, :observacao, :telefone, :cidade_id
   validates_presence_of :nome
@@ -20,4 +22,13 @@ class Fornecedor < ActiveRecord::Base
       where("fornecedores.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
     end    
   end
+  
+  private
+  
+  def sem_produtos
+    return if produtos.empty?
+      errors[:base] << "Este fornecedor tem produtos(s) associado(s): #{produtos.size} registro(s)!"
+     false
+  end
+  
 end

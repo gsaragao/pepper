@@ -28,7 +28,12 @@ class PagamentoVenda < ActiveRecord::Base
         query = query.where("data_pagamento_cliente is null") if obj[:lista] == PagamentoVenda::PENDENTE
         query = query.where("data_pagamento_cliente is not null") if obj[:lista] == PagamentoVenda::PAGO
         query = query.where("vendas.cliente_id = ?", obj[:cliente_id]) if obj[:cliente_id]
-        query = query.where("forma_pagamento = ?", obj[:forma_pagamento]) if obj[:forma_pagamento]
+        
+        if obj[:forma_pagamento] != "0"
+          query = query.where("forma_pagamento = ?", obj[:forma_pagamento]) 
+        else
+          query = query.where("forma_pagamento in (1,4)", obj[:forma_pagamento]) 
+        end    
       end
       
       query = query.joins(:venda => :cliente).paginate(:page => page).order("data")

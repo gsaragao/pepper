@@ -1,5 +1,7 @@
 # encoding: UTF-8
 class Marca < ActiveRecord::Base
+  has_many :produtos
+  before_destroy :sem_produtos
   attr_accessible :descricao, :observacao
   validates_presence_of :descricao
   validates_uniqueness_of :descricao, :message => "Este registro já foi cadastrado!"
@@ -34,6 +36,14 @@ class Marca < ActiveRecord::Base
     sql += '    order by percentual desc '
 
     find_by_sql(sql)
+  end
+  
+  private
+  
+  def sem_produtos
+    return if produtos.empty?
+      errors[:base] << "Esta marca tem produtos(s) associado(s): #{produtos.size} registro(s)!"
+     false
   end
  
 end

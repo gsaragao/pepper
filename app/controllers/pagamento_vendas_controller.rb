@@ -6,7 +6,7 @@ class PagamentoVendasController < ApplicationController
   before_filter :load_pagamento_venda , :only => [:show, :destroy]
   
   def index
-    @clientes = Cliente.order(:nome)
+    @clientes = Cliente.com_pagamento
     @pagamento_venda = PagamentoVenda.new(params[:pagamento_venda])
     @pagamento_vendas = PagamentoVenda.pesquisar(params[:pagamento_venda],params[:page])
     respond_with @pagamento_vendas

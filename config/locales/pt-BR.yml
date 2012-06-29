@@ -443,6 +443,10 @@
       odd: "deve ser ímpar"
       even: "deve ser par"
 
+  devise:
+      sessions:
+        signed_in: 'Logado com sucesso!'
+
       # ActiveRecord
   activerecord:
     errors:

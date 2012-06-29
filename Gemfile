@@ -11,6 +11,7 @@ gem "paperclip"
 gem "will_paginate", "~> 3.0.3"
 gem "capybara"
 gem 'factory_girl'
+gem 'devise'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"

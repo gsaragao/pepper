@@ -54,8 +54,11 @@ class TamanhosController < ApplicationController
   end
 
   def destroy
-    @tamanho.destroy
-    flash[:notice] = t('msg.destroy_sucess')
+    if @tamanho.destroy
+      flash[:notice] = t('msg.destroy_sucess')
+    else
+      flash[:alert] = @tamanho.errors.full_messages[0]
+    end    
     redirect_to tamanhos_path
   end
   

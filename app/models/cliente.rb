@@ -1,6 +1,8 @@
 # encoding: UTF-8
 class Cliente < ActiveRecord::Base
   belongs_to :cidade
+  has_many :vendas
+  before_destroy :sem_vendas
   attr_accessible :cidade_id, :email, :endereco, :nome, :telefone, :observacao
   validates_presence_of :nome
   validates_uniqueness_of :nome, :scope => :cidade_id, :message => "Este registro já foi cadastrado para esta cidade!"
@@ -27,6 +29,29 @@ class Cliente < ActiveRecord::Base
     sql += ' group by c.id order by 2 desc limit 10 '
     
     find_by_sql(sql)
+  end
+  
+  def self.relacao_pagamento
+    sql  = ' select c.nome, min(p.data) data, p.valor '
+    sql += ' from vendas v, clientes c, pagamento_vendas p where v.cliente_id = c.id '
+    sql += ' and p.venda_id = v.id and p.data_pagamento_cliente is null '
+    sql += ' group by c.id order by 2 limit 10 '
+    
+    find_by_sql(sql)
+  end
+  
+  
+  
+  def self.com_pagamento
+    where("pagamento_vendas.forma_pagamento in (1,4)").joins(:vendas => :pagamento_vendas).group("clientes.id").order("nome")
+  end
+  
+  private
+  
+  def sem_vendas
+    return if vendas.empty?
+      errors[:base] << "Este cliente tem venda(s) associada(s): #{vendas.size} registro(s)!"
+     false
   end
   
 end

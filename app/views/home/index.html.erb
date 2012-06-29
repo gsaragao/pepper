@@ -38,27 +38,29 @@
 					</div>
 			   </td>	
 			   <td>
-					<div class="hero-unit-devolucao">
-						<h4>Formas de Pagamento</h4><br>
-						<% @formas_pagamento.each do |forma| %>
-							<p>
-							  <span style="color:#666"><%= forma.descricao_forma %>:</span>
-							  <span style="color:#006400"><%= number_to_currency(forma.valor) %></span>
-							  <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor / @total_formas) * 100).round(1)) %></span>
-							</p>
-					 	<% end %>	
-					</div><br>
-					<div class="hero-unit-devolucao">
-						<h4>Resumo de Produtos</h4><br>
+				<div class="hero-unit-devolucao">
+					<h4>Formas de Pagamento</h4><br>
+					<% @formas_pagamento.each do |forma| %>
 						<p>
-						  <span style="color:#666">Estoque:</span>
-						  <%= @qtde_produtos[0] %>
+						  <span style="color:#666"><%= forma.descricao_forma %>:</span>
+						  <span style="color:#006400"><%= number_to_currency(forma.valor) %></span>
+						  <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor / @total_formas) * 100).round(1)) %></span>
 						</p>
-						<p>
-						  <span style="color:#666">Vendidos:</span>
-						  <%= @qtde_produtos[1] %>
-						</p>
-					</div>	
+				 	<% end %>	
+				</div><br>
+				<div class="hero-unit-devolucao">
+				  <h4>Resumo de Produtos</h4><br>
+				  <p>
+				    <span style="color:#666">Estoque:</span>
+					<%= @qtde_produtos[0] %>
+					<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@qtde_produtos[2]) %></span>
+					</p>
+				   <p>
+					  <span style="color:#666">Vendidos:</span>
+					  <%= @qtde_produtos[1] %>
+					<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@qtde_produtos[3]) %></span>					
+					</p>
+				</div>	
 			   </td>
 			 
 			   <td>
@@ -93,6 +95,17 @@
 						</p>
 				 	<% end %>	
 				</div>
+			   </td>
+			<td>
+				<div class="hero-unit-devolucao">
+					<h4>10 Próximos Pagamentos</h4><br>
+					<% @relacao_pagamentos.each do |cliente| %>
+						<p>
+						  <span style="color:#666"><%= cliente.nome %>:</span>
+						  <span style="color:#1E90FF">&nbsp; <%= I18n.l(cliente.data) %></span>  
+						</p>
+				 	<% end %>	
+				</div><br>
 			   </td>
 			</tr>
 		<table>

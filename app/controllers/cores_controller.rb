@@ -50,8 +50,13 @@ class CoresController < ApplicationController
   end
 
   def destroy
-    @cor.destroy
-    flash[:notice] = t('msg.destroy_sucess')
+    
+    if @cor.destroy
+      flash[:notice] = t('msg.destroy_sucess')
+    else
+      flash[:alert] = @cor.errors.full_messages[0]
+    end
+
     redirect_to cores_path
   end
   

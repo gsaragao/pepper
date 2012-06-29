@@ -1,6 +1,8 @@
 # encoding: UTF-8
 class Vendedor < ActiveRecord::Base
   belongs_to :cidade
+  has_many :vendas
+  before_destroy :sem_vendas
   attr_accessible :cidade_id, :email, :endereco, :nome, :telefone, :observacao, :default
   validates_presence_of :nome
   validates_uniqueness_of :nome, :scope => :cidade_id, :message => "Este registro já foi cadastrado para esta cidade!"
@@ -19,6 +21,14 @@ class Vendedor < ActiveRecord::Base
     else
       where("vendedores.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
     end    
+  end
+  
+  private
+  
+  def sem_vendas
+    return if vendas.empty?
+      errors[:base] << "Este vendedor tem venda(s) associada(s): #{vendas.size} registro(s)!"
+     false
   end
   
 end
