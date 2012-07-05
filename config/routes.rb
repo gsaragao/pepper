@@ -10,7 +10,7 @@ Pepper::Application.routes.draw do
     end
   end
   
-  resources :pagamento_vendas, :only => [:index, :destroy]
+  resources :pagamento_vendas, :except => [:new]
   
   resources :vendedores
 

@@ -111,6 +111,7 @@
     data: Data
     observacao: Observação
     cliente: Cliente
+    recalculo: Recálculo
 
   cidade:
     self: Cidade

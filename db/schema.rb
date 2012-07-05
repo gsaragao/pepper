@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120620032703) do
+ActiveRecord::Schema.define(:version => 20120703182303) do
 
   create_table "categorias", :force => true do |t|
     t.string   "descricao"
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(:version => 20120620032703) do
     t.datetime "created_at",                                            :null => false
     t.datetime "updated_at",                                            :null => false
     t.date     "data_pagamento_cliente"
+    t.decimal  "valor_pago",             :precision => 13, :scale => 2
+    t.decimal  "recalculo",              :precision => 13, :scale => 2
   end
 
   add_index "pagamento_vendas", ["venda_id"], :name => "index_pagamento_vendas_on_venda_id"

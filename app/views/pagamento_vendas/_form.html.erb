@@ -1,0 +1,37 @@
+<%= form_for @pagamento_venda do |f| %>
+<% if @pagamento_venda.errors.any? %>
+<fieldset id="erros">
+   <div class="ui-state-error ui-corner-all" style="padding: 5px; width: 50%">
+     <h3><%= t('errors.messages.titulo') %>:</h3>
+     <br>
+     <ul>
+       <% @pagamento_venda.errors.full_messages.each do |msg| %>
+         <li><%= msg %></li>
+       <% end %>
+     </ul>
+   </div>
+</fieldset>
+<% end %>
+<br>
+<table>
+	<tr><td>
+          <div class="clearfix">    
+   	     <%= f.label :valor_pago %>
+		<div class="input">
+	     <%= f.text_field :valor_pago, :value => @pagamento_venda.valor_pago %>
+	    </div>
+      </div>
+    </td>
+	</tr>
+</table> 
+  <div class="actions">
+    <%= f.submit t('botao.salvar'), :class => "btn primary" %>
+    <a href="<%= pagamento_vendas_path %>"><button class="btn" name="btnback"><%= t('botao.cancelar')%></button></a>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+
+$('#pagamento_venda_valor_pago').focus();
+
+</script>

@@ -16,8 +16,9 @@ class Marca < ActiveRecord::Base
   def self.relacao_vendidos
     
     sql  = ' select m.id, m.descricao, ifnull(estoque.qtde_estoque,0) qtde_estoque, ifnull(vendido.qtde_vendido,0) qtde_vendido, '
-    sql += ' ifnull(round(((vendido.qtde_vendido/(estoque.qtde_estoque + vendido.qtde_vendido)) * 100)),0) percentual, '
-    sql += ' ifnull(estoque.soma_estoque,0) soma_estoque, ifnull(vendido.soma_vendido,0) soma_vendido, comprado.valor total_comprado'
+    sql += ' ifnull(round(((ifnull(vendido.qtde_vendido,0)/(ifnull(estoque.qtde_estoque,0) + ifnull(vendido.qtde_vendido,0))) * 100),1),0) percentual, '
+    sql += ' ifnull(estoque.soma_estoque,0) soma_estoque, ifnull(vendido.soma_vendido,0) soma_vendido, comprado.valor total_comprado, '
+    sql += ' round(((ifnull(vendido.soma_vendido,0) - ifnull(comprado.valor,0)) / ifnull(comprado.valor,0) * 100),1) percentual_valor '
     sql += '    from '
     sql += '    (select id, descricao from marcas) m '
     sql += '    left outer join '
@@ -32,8 +33,8 @@ class Marca < ActiveRecord::Base
     sql += '    left outer join '
     sql += '    (select m.id, m.descricao, sum(p.valor_vendido) soma_vendido, count(*) qtde_vendido '
     sql += '    from produtos p, marcas m where p.venda_id is not null and p.marca_id = m.id group by m.id) vendido '
-    sql += '    on estoque.id = vendido.id '
-    sql += '    order by percentual desc '
+    sql += '    on comprado.id = vendido.id '
+    sql += '    order by percentual desc, soma_vendido desc '
 
     find_by_sql(sql)
   end

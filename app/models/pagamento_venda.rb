@@ -2,8 +2,11 @@
 class PagamentoVenda < ActiveRecord::Base
   belongs_to :venda
   validates_presence_of :forma_pagamento, :parcela, :valor, :data
+  validates_numericality_of :valor_pago, :if => Proc.new { |pagamento_venda| !pagamento_venda.valor_pago.blank? }
+  validates_numericality_of :valor_pago, :greater_than_or_equal_to => 1, :if => Proc.new { |pagamento_venda| !pagamento_venda.valor_pago.blank? }
+  validates_presence_of :valor_pago, :if => Proc.new { |pagamento_venda| !pagamento_venda.data_pagamento_cliente.blank? }
   attr_accessor :cliente_id, :lista, :lista_formas
-  attr_accessible :cliente_id, :lista, :forma_pagamento
+  attr_accessible :cliente_id, :lista, :forma_pagamento, :valor_pago, :data_pagamento_cliente, :recalculo
   self.per_page = 10
   after_initialize :default_values  
 
@@ -24,7 +27,7 @@ class PagamentoVenda < ActiveRecord::Base
   def self.pesquisar(obj, page)
     
       query = select("pagamento_vendas.*")
-      
+     
       if obj 
         query = query.where("data_pagamento_cliente is null and pagamento_vendas.data < ?", Date.today) if obj[:lista] == PagamentoVenda::ATRASADO
         query = query.where("data_pagamento_cliente is null") if obj[:lista] == PagamentoVenda::AVENCER
@@ -39,7 +42,7 @@ class PagamentoVenda < ActiveRecord::Base
       else
         query = query.where("forma_pagamento in (1,4) and data_pagamento_cliente is null") 
       end  
-      
+     
       query = query.joins(:venda => :cliente).paginate(:page => page).order("data")
   end
   
@@ -68,6 +71,22 @@ class PagamentoVenda < ActiveRecord::Base
   
   def self.total_pagamento
     sum("valor")
+  end
+
+  def self.total_por_forma_venda(venda_id)
+    sum("valor", :conditions => ["forma_pagamento = ? and venda_id = ?", PagamentoVenda::DUPLICATA, venda_id])
+  end
+
+  def self.total_pago_forma_venda(venda_id)
+    sum("valor_pago", :conditions => ["forma_pagamento = ? and venda_id = ? and data_pagamento_cliente is not null", PagamentoVenda::DUPLICATA, venda_id])
+  end
+
+  def self.qtde_parcelas_por_forma_venda(venda_id)
+    maximum("parcela", :conditions => ["forma_pagamento = ? and venda_id = ?", PagamentoVenda::DUPLICATA, venda_id])
+  end
+
+  def self.pesquisar_por_venda_duplicata(venda_id)
+    where("forma_pagamento = ? and venda_id = ? and data_pagamento_cliente is null", PagamentoVenda::DUPLICATA, venda_id)
   end
 
 end
