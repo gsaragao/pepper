@@ -33,7 +33,8 @@ class Categoria < ActiveRecord::Base
   
   def self.relacao_categoria_vendas
     
-     sql  = ' select c.descricao, vendido.valor valor_vendido, vendido.qtde qtde_vendido, estoque.valor valor_estoque, estoque.qtde qtde_estoque '
+     sql  = ' select c.descricao, ifnull(vendido.valor,0) valor_vendido, ifnull(vendido.qtde,0) qtde_vendido, '
+     sql += ' ifnull(estoque.valor,0) valor_estoque, ifnull(estoque.qtde,0) qtde_estoque '
      sql += ' from categorias c  '
      sql += ' left outer join ( '
      sql += ' select categoria_id, sum(valor_vendido) valor, count(*) qtde from produtos where venda_id is not null group by categoria_id) vendido '
