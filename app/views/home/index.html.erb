@@ -139,14 +139,15 @@
 				<table class="zebra-striped">
 			       <tr>
 					<th width="3%">#</th>
-					<th width="20%">Marca</th>
-			        <th width="11%"><%= t('qtde_estoque')%></th>
-					<th width="11%"><%= t('qtde_vendido')%></th>
-					<th width="11%"><%= t('percentual_qtde')%></th>
-					<th width="11%"><%= t('total_estoque')%></th>
-					<th width="11%"><%= t('total_vendido')%></th>
-					<th width="11%"><%= t('total_comprado')%></th>
-					<th width="11%"><%= t('percentual_valor')%></th>
+					<th width="17%">Marca</th>
+			        <th width="10%"><%= t('qtde_estoque')%></th>
+					<th width="10%"><%= t('qtde_vendido')%></th>
+					<th width="10%"><%= t('percentual_qtde')%></th>
+					<th width="10%"><%= t('total_estoque')%></th>
+					<th width="10%"><%= t('total_vendido')%></th>
+					<th width="10%"><%= t('total_comprado')%></th>
+					<th width="0%"><%= t('lucro')%></th>
+					<th width="10%"><%= t('percentual_valor')%></th>
 				</tr>
 				 <% @relacao_marcas.each_with_index do |marca, cont| %>
 					<tr>
@@ -158,7 +159,16 @@
 						<td style="color:#006400"><%= number_to_currency(marca.soma_estoque) if marca.soma_estoque %></td>
 						<td style="color:#006400"><%= number_to_currency(marca.soma_vendido) if marca.soma_vendido %></td>
 						<td style="color:#006400"><%= number_to_currency(marca.total_comprado) if marca.total_comprado %></td>
-						<td style="color:#1E90FF"><%= number_to_percentage(marca.percentual_valor)  %></td>
+						<% if (marca.lucro && marca.lucro > 0) %>
+							<td style="color:#006400"><%= number_to_currency(marca.lucro) if marca.lucro %></td>
+						<% else %>
+							<td style="color:red"><%= number_to_currency(marca.lucro) if marca.lucro %></td>
+						<% end %>
+						<% if (marca.percentual_valor && marca.percentual_valor > 0) %>
+							<td style="color:#1E90FF"><%= number_to_percentage(marca.percentual_valor)  %></td>
+						<% else %>
+							<td style="color:red"><%= number_to_percentage(marca.percentual_valor)  %></td>
+						<% end %>
 					</tr>
 				 <% end %>	
 			    </table>

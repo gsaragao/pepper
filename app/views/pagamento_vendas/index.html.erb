@@ -35,7 +35,11 @@
 	<td style="color:#666"><%= pagamento_venda.venda.cliente.nome if (pagamento_venda.venda && pagamento_venda.venda.cliente)  %></td>
     <td style="color:#666"><%= pagamento_venda.descricao_forma %></td>
     <td style="color:#666"><%= pagamento_venda.parcela %>ª</td>
-	<td style="color:#1E90FF"><%= I18n.l(pagamento_venda.data) if pagamento_venda.data %></td>
+	<% if ((pagamento_venda.data < Date.today) and (pagamento_venda.data_pagamento_cliente.blank?)) %>
+		<td style="color:red"><%= I18n.l(pagamento_venda.data) if pagamento_venda.data %></td>
+	<% else %>		
+		<td style="color:#1E90FF"><%= I18n.l(pagamento_venda.data) if pagamento_venda.data %></td>		
+	<% end %>
     <td style="color:#006400"><%= number_to_currency(pagamento_venda.valor) if pagamento_venda.valor %></td>        
     <td style="color:#006400"><%= number_to_currency(pagamento_venda.recalculo) if pagamento_venda.recalculo %></td>
     <td style="color:#006400"><%= number_to_currency(pagamento_venda.valor_pago) if pagamento_venda.valor_pago %></td>
