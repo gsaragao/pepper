@@ -21,6 +21,21 @@
 							  <span style="color:#006400"><b><%= number_to_currency(@total_pagamento_despesa) %></b></span>
 							</p>
 						</div>
+						<br>
+						<div class="hero-unit-devolucao">
+							<h4>Últimos Pag.</h4><br>
+							<% @ultimos_pagamentos.each do |pagamento| %>
+								<p>
+								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
+								  <span style="color:#006400"><%= number_to_currency(pagamento.valor) %></span>
+								</p>
+						 	<% end %>	
+						<br>
+							<p>
+							  <span style="color:#666"><b>Total:</b></span>
+							  <span style="color:#006400"><b><%= number_to_currency(@total_ultimos_pagamentos) %></b></span>
+							</p>
+						</div>
 		    	    </td>
 	    	    <% end %>
 	    	   <% if !@pagamento_vendas.empty? %> 
@@ -37,6 +52,21 @@
 							<p>
 							  <span style="color:#666"><b>Total:</b></span>
 							  <span style="color:#006400"><b><%= number_to_currency(@total_pagamento_venda) %></b></span>
+							</p>
+						</div>
+						<br>
+						<div class="hero-unit-devolucao">
+							<h4>Últimos Rec.</h4><br>
+							<% @ultimos_recebimentos.each do |recebimento| %>
+								<p>
+								  <span style="color:#666"><%= I18n.l(recebimento.data, :format => :mes) %>:</span>
+								  <span style="color:#006400"><%= number_to_currency(recebimento.valor) %></span>
+								</p>
+						 	<% end %>	
+						<br>
+							<p>
+							  <span style="color:#666"><b>Total:</b></span>
+							  <span style="color:#006400"><b><%= number_to_currency(@total_ultimos_recebimentos) %></b></span>
 							</p>
 						</div>
 				   </td>	

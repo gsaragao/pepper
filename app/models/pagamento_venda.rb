@@ -21,7 +21,10 @@ class PagamentoVenda < ActiveRecord::Base
   DUPLICATA = 4
   
   def self.pesquisar_por_venda(id)
-    select("forma_pagamento, max(parcela) as parcela, avg(valor) as valor, min(data) as data").where("venda_id = ?", id).group("forma_pagamento")
+    query = select("forma_pagamento, max(parcela) as parcela, avg(valor) as valor, min(data) as data")
+    query = query.where("venda_id = ?", id)
+    query = query.group("forma_pagamento")
+    query
   end
   
   def self.pesquisar(obj, page)
@@ -50,21 +53,36 @@ class PagamentoVenda < ActiveRecord::Base
     lista_formas.key(forma_pagamento)
   end
   
-  def self.proximos_seis_meses
+  def self.proximos_recebimentos
       query = where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') >= DATE_FORMAT(sysdate() , '%m/%Y')")
       query = query.group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
       query.select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor")
   end
   
-  def self.total_proximos_seis_meses
+  def self.total_proximos_recebimentos
     retorno = 0
-    pagamentos = proximos_seis_meses
+    pagamentos = proximos_recebimentos
     pagamentos.each {|pag|
       retorno+= pag.valor
     }
     retorno 
   end
   
+  def self.ultimos_seis_recebimentos
+      query = where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') < DATE_FORMAT(sysdate() , '%m/%Y')")
+      query = query.group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
+      query.select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor")
+  end
+  
+  def self.total_ultimos_recebimentos
+    retorno = 0
+    pagamentos = ultimos_seis_recebimentos
+    pagamentos.each {|pag|
+      retorno+= pag.valor
+    }
+    retorno 
+  end
+
   def self.relacao_forma_pagamento
     select("forma_pagamento, sum(valor) as valor").group("forma_pagamento")
   end
