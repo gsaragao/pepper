@@ -11,10 +11,8 @@ class HomeController < ApplicationController
     @total_ultimos_pagamentos = PagamentoDespesa.total_ultimos_pagamentos 
     @pagamento_vendas = PagamentoVenda.proximos_recebimentos
     @total_pagamento_venda = PagamentoVenda.total_proximos_recebimentos
-
     @ultimos_recebimentos = PagamentoVenda.ultimos_seis_recebimentos
     @total_ultimos_recebimentos = PagamentoVenda.total_ultimos_recebimentos
-
     @formas_pagamento = PagamentoVenda.relacao_forma_pagamento
     @total_formas = PagamentoVenda.total_pagamento
     @relacao_marcas = Marca.relacao_vendidos

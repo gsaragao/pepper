@@ -1,26 +1,36 @@
-<table width="30%">
-	<tr><td width="30%">
-    <div class="hero-unit-devolucao">
+<div class="row">
+  <div class="span16">
+    <div class="row">
+      <div class="span4">
+      	&nbsp;
+      </div>
+      <div class="span8">
+      	<div class="hero-unit-devolucao">
 		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-			<fieldset>
-				<legend><em>Enter your AccountCenter login information below</em></legend>
-				<%= label_tag(:user_username, "Usuário") %>
-				<%= text_field_tag(:user_username, nil, :name => 'user[username]', :class => 'textinput') %>
-				<%= label_tag(:password, "Senha") %>
-				<%= password_field_tag(:password, nil, :name => 'user[password]', :class => 'textinput') %>
-				<div class="aclogin-action">
-					<div class="fl-left">
-						<% if devise_mapping.rememberable? %>
-							<%= check_box_tag(:remember_me, nil, :name => 'user[remember_me]') %>
-							<span>Lembrar-me</span>
-						<% end %>
-					</div>
-					<div><%= f.submit "Logar" %></div>
-		              <div class="clearfix">&nbsp;</div>
-				</div>		
-			</fieldset>
-		<% end %>
-	</div>
-	</td></tr>
-</table>
-
+			<h2>Login</h2> 
+			 <br>
+			  <div class="clearfix">    
+		   	     <%= f.label :username %>
+				<div class="input">
+			     <%= f.text_field :username %>
+			    </div>
+		      </div>
+		      <div class="clearfix">    
+		   	     <%= f.label :password %>
+				<div class="input">
+			     <%= f.password_field :username %>
+			    </div>
+		      </div>
+		      <br>
+			  <div><%= f.submit "Logar", :class => "btn medium primary" %></div>
+				
+		  <% end %>
+		  <%= render "devise/shared/links" %>
+		</div>
+      </div>
+      <div class="span4">
+      	&nbsp;
+      </div>
+    </div>
+  </div>
+</div>

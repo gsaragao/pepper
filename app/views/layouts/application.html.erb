@@ -67,7 +67,7 @@ jQuery(function($) {
         </div>      
     </div>
     <footer>
-	  <p>© <%= t("app.nome_completo") %> 2012</p>
+	  <center><p><%= t("app.nome_completo") %> | Usuário: <b><%= current_user.name %></b>&nbsp;<%= link_to(t("app.sair"), destroy_user_session_path, :method => 'delete', :class => 'link-form') %></p></center>
 	</footer>
  </div>
 </body>

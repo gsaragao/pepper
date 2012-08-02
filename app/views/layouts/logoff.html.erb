@@ -7,20 +7,32 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-	<div class="top">
-      <h1 class="logo"><%= t('app.nome_completo') %></h1>
-    </div><br><br>
-	<% if notice.present? %>
-	    <script>showNotification(true,'<%= notice %>');</script>
-	<% end %>
-	<center>	
-	<table width="25%">
-	   <tr>
-		 <td>	 
-	        <%= yield %>
-	     </td>
-	   </tr>
-	</table>
-	</center>
+	<div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <center><a class="brand" href="/"><%= t("app.nome_completo") %></a></center>
+        </div>
+      </div>
+    </div>
+	<div class="container">
+    <div class="content">
+		  <div class="page-header">
+		   </div>
+
+			<% if notice.present? %>
+			    <script>showNotification(true,'<%= notice %>');</script>
+			<% end %>	
+			<% if alert.present? %>
+			    <script>showNotification(false,'<%= alert %>');</script>
+			<% end %>
+	      <br>
+        <%= yield %>
+
+    </div>
+    <br>
+    <footer>
+	  <center><p>© <%= t("app.nome_completo") %></p></center>
+	</footer>
+ </div>
 </body>
 </html>
