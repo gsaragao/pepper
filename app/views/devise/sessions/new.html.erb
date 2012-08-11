@@ -1,10 +1,10 @@
 <div class="row">
   <div class="span16">
     <div class="row">
-      <div class="span4">
+      <div class="span7">
       	&nbsp;
       </div>
-      <div class="span8">
+      <div class="span7">
       	<div class="hero-unit-devolucao">
 		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
 			<h2>Login</h2> 
@@ -18,7 +18,7 @@
 		      <div class="clearfix">    
 		   	     <%= f.label :password %>
 				<div class="input">
-			     <%= f.password_field :username %>
+			     <%= f.password_field :password %>
 			    </div>
 		      </div>
 		      <br>
@@ -28,7 +28,7 @@
 		  <%= render "devise/shared/links" %>
 		</div>
       </div>
-      <div class="span4">
+      <div class="span2">
       	&nbsp;
       </div>
     </div>
