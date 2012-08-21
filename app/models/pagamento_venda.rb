@@ -29,7 +29,7 @@ class PagamentoVenda < ActiveRecord::Base
   
   def self.pesquisar(obj, page)
     
-      query = select("pagamento_vendas.*")
+      query = includes(:venda => :cliente)
      
       if obj 
         query = query.where("data_pagamento_cliente is null and pagamento_vendas.data < ?", Date.today) if obj[:lista] == PagamentoVenda::ATRASADO
@@ -46,7 +46,7 @@ class PagamentoVenda < ActiveRecord::Base
         query = query.where("forma_pagamento in (1,4) and data_pagamento_cliente is null") 
       end  
      
-      query = query.joins(:venda => :cliente).paginate(:page => page).order("data")
+      query = query.paginate(:page => page).order("pagamento_vendas.data")
   end
   
   def descricao_forma

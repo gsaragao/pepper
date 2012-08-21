@@ -1,3 +1,4 @@
+/*
 .container { 
   margin-left: 50px !important;
 }
@@ -66,7 +67,7 @@ input, button, select, textarea {
   padding-top: 0px !important;  
   margin-left: -30px !important;
 }
-/********** teste *********/
+
 
 .form-horizontal .controls {
   margin-left: 120px !important;
@@ -109,3 +110,4 @@ input[type="checkbox"] {
   border-left: 0px solid transparent;
   content: none;
 }
+*/

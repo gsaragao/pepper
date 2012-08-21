@@ -17,9 +17,9 @@ class Fornecedor < ActiveRecord::Base
   def self.pesquisar(obj, page)
     nome = obj ? obj[:nome] : ""
     if (obj && obj[:cidade_id]) 
-      where("fornecedores.nome like ? and fornecedores.cidade_id = ?", "%#{nome}%", obj[:cidade_id]).paginate(:page => page).order("nome")
+      includes(:cidade).where("fornecedores.nome like ? and fornecedores.cidade_id = ?", "%#{nome}%", obj[:cidade_id]).paginate(:page => page).order("nome")
     else
-      where("fornecedores.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
+      includes(:cidade).where("fornecedores.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
     end    
   end
   

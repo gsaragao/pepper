@@ -16,9 +16,9 @@ class Cliente < ActiveRecord::Base
   def self.pesquisar(obj, page)
     nome = obj ? obj[:nome] : ""
     if (obj && obj[:cidade_id]) 
-      where("clientes.nome like ? and clientes.cidade_id = ?", "%#{nome}%", obj[:cidade_id]).paginate(:page => page).order("nome")
+      includes(:cidade).where("clientes.nome like ? and clientes.cidade_id = ?", "%#{nome}%", obj[:cidade_id]).paginate(:page => page).order("nome")
     else
-      where("clientes.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
+      includes(:cidade).where("clientes.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
     end    
   end
   

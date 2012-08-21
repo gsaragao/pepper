@@ -4,7 +4,7 @@ class ComprasController < ApplicationController
   respond_to :html, :json
   before_filter :setar_classe_menu
   before_filter :manage_params, :only => [:index]
-  before_filter :load_compra , :only => [:show, :edit, :update, :destroy]
+  before_filter :load_compra , :only => [:edit, :update, :destroy]
 
   def index
     @compra = Compra.new(params[:compra])
@@ -14,13 +14,36 @@ class ComprasController < ApplicationController
 
   def show
     
+    begin
+      @compra = Compra.find(params[:id], :include => {:despesas => [:tipo_despesa, :fornecedor, :pagamento_despesas]})
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = t('msg.data_not_found')
+      redirect_to compras_path
+    end 
+   
     @compra.despesas.each {|desp|
-      @pagamento_last = PagamentoDespesa.where(:despesa_id => desp.id).last
-         desp.forma_pagamento = @pagamento_last.forma_pagamento
-         desp.parcela = @pagamento_last.parcela
-         desp.valor_pagamento = @pagamento_last.valor  
+
+      parcela = 0
+      forma = ""
+      valor = 0
+
+      desp.pagamento_despesas.each {|pag|
+
+         if parcela == 0 
+           parcela = pag.parcela
+         elsif parcela < pag.parcela
+           parcela = pag.parcela
+         end   
+
+         valor = pag.valor
+         forma = pag.forma_pagamento
+      }  
+
+      desp.parcela = parcela
+      desp.forma_pagamento = forma
+      desp.valor_pagamento = valor  
     }
-    
+
     respond_with @compra
   end
 

@@ -42,6 +42,7 @@ class Produto < ActiveRecord::Base
   
   def pesquisar(page)
     query = Produto.paginate(:conditions => conditions, :page => page).order("id desc")
+    query = query.includes(:marca, :compra)
     query = query.where("venda_id is null") if lista == Produto::ESTOQUE
     query = query.where("venda_id is not null") if lista == Produto::VENDIDO
     query

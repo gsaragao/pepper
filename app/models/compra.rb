@@ -18,9 +18,9 @@ class Compra < ActiveRecord::Base
     descricao = obj ? obj[:descricao] : ""
 
     if (obj && obj[:data]) 
-      where("compras.descricao like ? and compras.data = ?", "%#{descricao}%", obj[:data]).paginate(:page => page).order("descricao, data")
+      includes(:despesas => :tipo_despesa).where("compras.descricao like ? and compras.data = ?", "%#{descricao}%", obj[:data]).paginate(:page => page).order("descricao, data")
     else
-      where("compras.descricao like ?", "%#{descricao}%").paginate(:page => page).order("descricao, data")
+      includes(:despesas => :tipo_despesa).where("compras.descricao like ?", "%#{descricao}%").paginate(:page => page).order("descricao, data")
     end  
   end
   
