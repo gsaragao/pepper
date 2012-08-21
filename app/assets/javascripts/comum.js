@@ -102,18 +102,3 @@ function replaceAll(str, de, para) {
 
    return (str);
 }
-
-function Mask() {
-   this.autoDetect = function() {
-      jQuery(".mask-money").each(function() {
-         jQuery(this).setMask({mask : '99,999.999.99', type : 'reverse', defaultValue : '+'});
-      });
-      jQuery(".mask-numeric-2").each(function() {
-         jQuery(this).setMask({mask : '99'});
-      });
-      jQuery(".mask-date").each(function() {
-         jQuery(this).setMask('date');
-         jQuery(this).datepicker();
-      });
-   }
-}

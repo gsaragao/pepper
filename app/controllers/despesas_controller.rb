@@ -124,15 +124,17 @@ class DespesasController < ApplicationController
   end
   
   def manage_params
+=begin    
     if (!params[:despesa].nil?) 
 
        #if (params[:despesa][:valor])
       #    params[:despesa][:valor] = params[:despesa][:valor].gsub('.','').gsub(',','.')
       # end
        params[:despesa][:data] = trata_data(params[:despesa][:data]) if params[:despesa][:data]
-       params[:despesa][:data_pagamento] = trata_data(params[:despesa][:data_pagamento]) if params[:despesa][:data_pagamento]
+       #params[:despesa][:data_pagamento] = trata_data(params[:despesa][:data_pagamento]) if params[:despesa][:data_pagamento]
        params[:despesa].delete_if{|k,v| v.blank?}
     end
+=end    
   end
   
   def carrega_pagamento_despesa

@@ -12,6 +12,7 @@ gem "will_paginate", "~> 3.0.3"
 gem "capybara"
 gem 'factory_girl'
 gem 'devise'
+gem "brdinheiro", "~> 3.1.0"
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"

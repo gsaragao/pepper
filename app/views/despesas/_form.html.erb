@@ -45,13 +45,13 @@
           <div class="clearfix">    
    	     <%= f.label :data %>
 		<div class="input">
-	     <%= f.text_field :data, :value => (I18n.l(@despesa.data) if @despesa.data) %>
+	     <%= f.text_field :data, :class => 'mask-date', :value => (I18n.l(@despesa.data) if @despesa.data) %>
 	    </div>
       </div>
           <div class="clearfix">    
    	     <%= f.label :valor %>
 		<div class="input">
-	     <%= f.text_field :valor, :alt => 'decimal', :value => @despesa.valor, :onblur => 'calcula();' %>
+	     <%= f.text_field :valor, :class => 'mask-money', :value => @despesa.valor, :onblur => 'calcula();' %>
 	    </div>
       </div>
     </td>
@@ -71,7 +71,7 @@
 	<div class="clearfix">    
  	     <%= f.label :valor_pagamento %>
 		<div class="input">
-	     <%= f.text_field :valor_pagamento, :alt => 'decimal', :value => @despesa.valor_pagamento, :onblur => 'calcula();', :readonly => true %>
+	     <%= f.text_field :valor_pagamento, :class => 'mask-money', :value => @despesa.valor_pagamento, :onblur => 'calcula();', :readonly => true %>
 	    </div>
     </div>
 	   <div class="clearfix">    
@@ -101,27 +101,24 @@ $('#despesa_data').change(function() {
 	
 	vp = $('#despesa_valor').val();
 	pa = $('#despesa_parcela').val();
-	//vp = vp.replace('.','');	
-    //vp = vp.replace(',','.');	
+
+	vp = vp.replace('.','');	
+    vp = vp.replace(',','.');	
+
 	result = 0;
 
 	if (vp != "" && pa != "") {
 		result = parseFloat(vp) / parseInt(pa);
 		result = result.toFixed(2);
-		//result = result.replace('.','');
+		
 		$('#despesa_valor_pagamento').val(result);
-		//$('#valor_total').setMask();
+		$('#despesa_valor_pagamento').setMask({mask:'99,999.999.99', type:'reverse'});
 	} else {
 		$('#despesa_valor_pagamento').val('0,00');
 	}
  }
 
 $('#despesa_parcela').change(function() {calcula();});
-
-$('#despesa_data').datepicker({dateFormat : 'dd/mm/yy'});
-$('#despesa_data_pagamento').datepicker({dateFormat : 'dd/mm/yy'});
 calcula();
-//$('#despesa_valor').setMask();
-//$('#despesa_valor_pagamento').setMask();
 
 </script>

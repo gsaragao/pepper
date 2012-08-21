@@ -30,7 +30,7 @@
  
 		<p>
 		  <b><%= t('despesa.valor')%>:</b>
-		  <span style="color:#006400"><%= number_to_currency(@despesa.valor) if @despesa  %></span>
+		  <span style="color:#006400"><%= @despesa.valor.real_formatado if @despesa.valor  %></span>
 		</p>
     </td>
    <td>

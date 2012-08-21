@@ -4,6 +4,7 @@ class Despesa < ActiveRecord::Base
   belongs_to :tipo_despesa
   belongs_to :fornecedor
   has_many :pagamento_despesas, :dependent => :delete_all
+  usar_como_dinheiro :valor
   attr_accessible :data, :valor, :observacao, :tipo_despesa_id, :compra_id, :fornecedor_id, :descricao,
                   :forma_pagamento, :parcela, :valor_pagamento, :data_pagamento
   validates_presence_of :compra, :tipo_despesa, :fornecedor_id, :valor, :descricao, :data_pagamento
