@@ -32,7 +32,7 @@
           <div class="clearfix">    
    	     <%= f.label :data %>
 		<div class="input">
-	     <%= f.text_field :data, :value => (I18n.l(@venda.data) if @venda.data) %>
+	     <%= f.text_field :data, :class => 'mask-date', :value => (I18n.l(@venda.data) if @venda.data) %>
 	    </div>
       </div>
           <div class="clearfix">    
@@ -103,7 +103,7 @@
 	        <td style="color:#1E90FF;padding-left:20px;">Dinheiro</td>
 		    <td style="color:#666;padding-left:20px;">1</td>
 			<td style="padding:5px;color:#666;padding-left:5px;">
-				<%= f.text_field :valor_dinheiro, :style => 'width: 100px;', :onblur => 'calculaPagamento();'  %>
+				<%= f.text_field :valor_dinheiro, :class => 'mask-money',  :onblur => 'calculaPagamento();'  %>
 			</td>
 	        <td style="padding:5px;color:#666">&nbsp;</td>
 	  	  </tr>
@@ -112,10 +112,10 @@
 		    <td style="color:#666;padding-left:10px;">
 		<%= f.select :parcela_duplicata, options_for_select(['1','2','3','4','5','6'], @venda.parcela_duplicata), {}, { :class => 'short' }  %></td>
 			<td style="padding:5px;color:#666;padding-left:5px;">
-				<%= f.text_field :valor_duplicata, :style => 'width: 100px;', :onblur => 'calculaPagamento();'  %>
+				<%= f.text_field :valor_duplicata, :class => 'mask-money', :onblur => 'calculaPagamento();'  %>
 			</td>
 	        <td style="padding:5px;color:#666">
-		<%= f.text_field :data_duplicata, :style => 'width: 100px;',:value => @venda.data_duplicata %>
+		<%= f.text_field :data_duplicata, :class => 'mask-date', :style => 'width: 100px;',:value => @venda.data_duplicata %>
 			</td>
 		  </tr>
 		<tr id="cartao">
@@ -123,10 +123,10 @@
 		    <td style="color:#666;padding-left:10px;">
 		<%= f.select :parcela_cartao, options_for_select(['1','2','3','4','5','6'], @venda.parcela_cartao), {}, { :class => 'short' }  %></td>
 			<td style="padding:5px;color:#666;padding-left:5px;">
-				<%= f.text_field :valor_cartao, :style => 'width: 100px;', :onblur => 'calculaPagamento();'  %>
+				<%= f.text_field :valor_cartao, :class => 'mask-money', :onblur => 'calculaPagamento();'  %>
 			</td>
 	        <td style="padding:5px;color:#666">
-		<%= f.text_field :data_cartao, :style => 'width: 100px;',:value => @venda.data_cartao %>
+		<%= f.text_field :data_cartao, :class => 'mask-date', :style => 'width: 100px;',:value => @venda.data_cartao %>
 			</td>
 		  </tr>
 		<tr id="cheque">
@@ -134,16 +134,16 @@
 		    <td style="color:#666;padding-left:10px;">
 		<%= f.select :parcela_cheque, options_for_select(['1','2','3','4','5','6'], @venda.parcela_cheque), {}, { :class => 'short' }  %></td>
 			<td style="padding:5px;color:#666;padding-left:5px;">
-				<%= f.text_field :valor_cheque, :style => 'width: 100px;', :onblur => 'calculaPagamento();'  %>
+				<%= f.text_field :valor_cheque, :class => 'mask-money', :onblur => 'calculaPagamento();'  %>
 			</td>
 	        <td style="padding:5px;color:#666">
-		<%= f.text_field :data_cheque, :style => 'width: 100px;',:value => @venda.data_cheque %>
+		<%= f.text_field :data_cheque, :class => 'mask-date', :style => 'width: 100px;',:value => @venda.data_cheque %>
 			</td>
 		  </tr>
 			<tr id="pagamentototal" > 
               <td style="padding:5px;">&nbsp;</td>
 			  <td style="padding:5px;"><b>TOTAL</b></td>
-              <td style="padding:5px;color:#006400;"><%= number_to_currency(@venda.total_pagamento_tela) %></td>  
+              <td style="text-align:right;padding:5px;color:#006400;"><%= number_to_currency(@venda.total_pagamento_tela) %></td>  
 			  <td style="padding:5px;">&nbsp;</td>  
 			</tr>
 		</tbody>	
@@ -162,10 +162,6 @@
 
 <script>
 
- $('#venda_data').datepicker({dateFormat : 'dd/mm/yy'});
-$('#venda_data_duplicata').datepicker({dateFormat : 'dd/mm/yy'});
-$('#venda_data_cartao').datepicker({dateFormat : 'dd/mm/yy'});
-$('#venda_data_cheque').datepicker({dateFormat : 'dd/mm/yy'});
 $('#nome_cliente').focus();
 
  $(function() {
@@ -200,10 +196,12 @@ $('#nome_cliente').focus();
 		'<td style="color:#666;">'+ ui.item.marca + '</td>' +
 		'<td class="valor_produto" title="'+ ui.item.valor_real + '" style="color:#006400;">'+ ui.item.valor + '</td>'+
 		'<td style="padding:5px;color:#006400">' +
-		'<input class="valor_vendido" onblur="calculaTotal();" style="width: 100px;" type="text" name="venda[lista_produtos]['+id+'][valor_vendido]" value="'+ ui.item.valor_real +'"/></td> ' +
+		'<input class="valor_vendido" id="valor_lista'+id+'" onblur="calculaTotal();" style="width: 100px;" type="text" name="venda[lista_produtos]['+id+'][valor_vendido]" value="'+ ui.item.valor_real +'"/></td> ' +
 		'<td style="padding:5px;"><%= image_tag("remove.jpg", :id => "removeprod'+id+'", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, '+id+','+ui.item.id+')") %></td></tr>';
 		
 		$("#prod_body").append(prot);
+		objmask = "#valor_lista" + id;
+		$(objmask).setMask({mask:'99,999.999.99', type:'reverse'});
 		calculaTotal();
 		}
 	});
@@ -250,21 +248,21 @@ $('#nome_cliente').focus();
 	    var valor_duplicata = $("#venda_valor_duplicata").val(); 
 		var valor_cartao = $("#venda_valor_cartao").val();
 	    var valor_cheque = $("#venda_valor_cheque").val();
-	
-		if (valor_dinheiro != "" && valor_dinheiro > 0) {
-			total_pagamento += parseFloat(valor_dinheiro);
+		
+		if (valor_dinheiro != "") {
+			total_pagamento += parseFloat(trata_valor(valor_dinheiro));
 	 	}
 	    
-	    if (valor_duplicata != "" && valor_duplicata > 0) {
-			total_pagamento += parseFloat(valor_duplicata);
+	    if (valor_duplicata != "") {
+			total_pagamento += parseFloat(trata_valor(valor_duplicata));
 		}
 		
-		if (valor_cheque != "" && valor_cheque > 0) {
-			total_pagamento += parseFloat(valor_cheque);
+		if (valor_cheque != "") {
+			total_pagamento += parseFloat(trata_valor(valor_cheque));
 	 	}
 	    
-	    if (valor_cartao != "" && valor_cartao > 0) {
-			total_pagamento += parseFloat(valor_cartao);
+	    if (valor_cartao != "") {
+			total_pagamento += parseFloat(trata_valor(valor_cartao));
 		}
 		
 		$("#pag_body").find("#pagamentototal").remove();
@@ -272,13 +270,19 @@ $('#nome_cliente').focus();
 		linha = '<tr id="pagamentototal" > ' + 
           '<td style="padding:5px;">&nbsp;</td> ' +
 		  '<td style="padding:5px;"><b>TOTAL</b></td> ' +
-          '<td style="padding:5px;color:#006400;">R$ '+ parseDoubleToMoedaPtBR(total_pagamento) + '</td> ' +  
+          '<td style="text-align:right;padding:5px;color:#006400;">R$ '+ parseDoubleToMoedaPtBR(total_pagamento) + '</td> ' +  
 		  '<td style="padding:5px;">&nbsp;</td> ' +  
 		  '</tr>';
 		
 		$("#pag_body").append(linha);
 		
 	}
+
+	function trata_valor(valor) {
+  	   valor = valor.replace('.','');	
+	   valor = valor.replace(',','.');		
+	   return valor;
+  	}
 	
 </script>
 <style>

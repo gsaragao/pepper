@@ -37,10 +37,6 @@ class Produto < ActiveRecord::Base
   VENDIDO = 'VD'
   COPY = '1'
 
-  def valor_formatado
-    number_to_currency(self.valor_venda)
-  end
-  
   def pesquisar(page)
     query = Produto.paginate(:conditions => conditions, :page => page).order("id desc")
     query = query.includes(:marca, :compra)

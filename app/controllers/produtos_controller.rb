@@ -29,9 +29,9 @@ class ProdutosController < ApplicationController
       
     list = [] 
     @produtos.map {|u| 
-      desc = u.codigo_interno + ' - ' + u.descricao + ' - ' + u.valor_formatado
+      desc = u.codigo_interno + ' - ' + u.descricao + ' - ' + u.valor_venda.real_formatado
       if (desc.downcase.include?(params[:term].downcase)) 
-        list <<  {id: u.id, codigo: u.codigo_interno, label: desc, descricao: u.descricao, valor: u.valor_formatado, valor_real: u.valor_venda, marca: u.marca.descricao}  
+        list <<  {id: u.id, codigo: u.codigo_interno, label: desc, descricao: u.descricao, valor: u.valor_venda.real_formatado, valor_real: u.valor_venda.to_s, marca: u.marca.descricao}  
       end    
     }   
 
@@ -53,8 +53,14 @@ class ProdutosController < ApplicationController
   end
   
   def edit
+    
+    if !@produto.venda_id.nil?
+      flash[:alert] = t('msg.edit_produto_vendido')
+      redirect_to produtos_path
+    end
+
     load_combos
- 
+    
     if (!params[:acao].nil? && params[:acao] == Produto::COPY)
       @produto = @produto.dup
       @produto.descricao = nil

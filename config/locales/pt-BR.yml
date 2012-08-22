@@ -218,6 +218,7 @@
     sem_registro_cadastrado: Não existem registros cadastrados!
     confirm_delete: Deseja excluir o registro %{name} ?
     data_not_found: Este registro não existe!
+    edit_produto_vendido: 'Não pode editar produto vendido!'
 
   # formatos de data e hora
   date:

@@ -61,7 +61,7 @@ class Venda < ActiveRecord::Base
         total+=prod.valor_venda if prod.valor_venda
       }
     end
-    total.round(2)
+    total
   end
   
   def valida_valor_pagamento
@@ -84,11 +84,17 @@ class Venda < ActiveRecord::Base
   
   def total_pagamento_tela
     total = 0;
-    total += valor_dinheiro.to_f if valor_dinheiro
-    total += valor_duplicata.to_f if valor_duplicata
-    total += valor_cartao.to_f if valor_cartao
-    total += valor_cheque.to_f if valor_cheque
+    total += trata_valor(valor_dinheiro.to_s).to_f if valor_dinheiro
+    total += trata_valor(valor_duplicata.to_s).to_f if valor_duplicata
+    total += trata_valor(valor_cartao.to_s).to_f if valor_cartao
+    total += trata_valor(valor_cheque.to_s).to_f if valor_cheque
     total.round(2)
   end
+
+  def trata_valor(valor) 
+     valor = valor.sub('.',''); 
+     valor = valor.sub(',','.');    
+  end     
+
   
 end
