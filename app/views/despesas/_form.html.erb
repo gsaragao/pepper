@@ -77,7 +77,7 @@
 	   <div class="clearfix">    
    	     <%= f.label :data_pagamento %>
 		<div class="input">
-	     <%= f.text_field :data_pagamento, :value => (I18n.l(@despesa.data_pagamento) if @despesa.data_pagamento) %>
+		<%= f.text_field :data_pagamento, :class => 'mask-date', :value => @despesa.data_pagamento %>
 	    </div>
       </div>
 	

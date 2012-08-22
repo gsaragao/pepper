@@ -24,6 +24,9 @@
          $(".mask-cnpj").each(function () {
             $(this).setMask('cnpj');
          });
+         $(".mask-phone").each(function () {
+            $(this).setMask('phone');
+         });
       }
    };
 

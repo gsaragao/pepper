@@ -49,17 +49,17 @@
     </td><td>
 		<p>
 		  <b><%= t('produto.valor_compra')%>:</b>
-		  <span style="color:#006400"><%= number_to_currency(@produto.valor_compra) if @produto  %></span>
+		  <span style="color:#006400"><%= @produto.valor_compra.real_formatado if @produto  %></span>
 		</p>
  
 		<p>
 		  <b><%= t('produto.valor_venda')%>:</b>
-		  <span style="color:#006400"><%= number_to_currency(@produto.valor_venda) if @produto  %></span>
+		  <span style="color:#006400"><%= @produto.valor_venda.real_formatado if @produto  %></span>
 		</p>
  
 		<p>
 		  <b><%= t('produto.valor_minimo')%>:</b>
-		  <span style="color:#006400"><%= number_to_currency(@produto.valor_minimo) if @produto  %></span>
+		  <span style="color:#006400"><%= @produto.valor_minimo.real_formatado if @produto  %></span>
 		</p>
 		<p>
 		  <b><%= t('produto.margem_lucro')%>:</b>
@@ -69,6 +69,10 @@
 			<p>
 			  <b><%= t('produto.comprador')%>:</b>
 			  <span style="color:#1E90FF"><%= @produto.venda.cliente.nome if @produto.venda.cliente %></span>
+			</p>
+			<p>
+		  		<b><%= t('produto.valor_vendido')%>:</b>
+		  		<span style="color:#006400"><%= @produto.valor_vendido.real_formatado if @produto  %></span>
 			</p>
 		<% end %>	
 		
@@ -92,8 +96,10 @@
   </tr>
 </table>
 <div class="actionsShow">
-	<a href="<%= edit_produto_path %>">
+	<% if @produto.venda_id.nil? %>
+		<a href="<%= edit_produto_path %>">
 		<button class="btn primary" name="btnback"><%= t('botao.editar')%></button></a>&nbsp; 
+	<% end %>	
 	<a href="<%= edit_produto_path(:acao => Produto::COPY) %>">
 		<button class="btn primary" name="btnback">+&nbsp;<%= t('botao.copiar')%></button></a>&nbsp; 	
 	<a href="<%= produtos_path %>"><button class="btn" name="btnback"><%= t('botao.voltar')%></button></a>

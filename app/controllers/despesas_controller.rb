@@ -43,9 +43,8 @@ class DespesasController < ApplicationController
     Despesa.transaction do
 
       if @despesa.save
-        
         data = Date.strptime(@despesa.data_pagamento)
-        
+
         @despesa.parcela.to_i.times {|i|
           @pagamento = PagamentoDespesa.new
           @pagamento.despesa_id = @despesa.id
@@ -60,6 +59,7 @@ class DespesasController < ApplicationController
         flash[:notice] = t('msg.create_sucess')
         redirect_to despesas_path
       else
+        reverte_data_pagamento
         load_combos
         render :action => :new 
       end
@@ -124,19 +124,18 @@ class DespesasController < ApplicationController
   end
   
   def manage_params
-=begin    
+   
     if (!params[:despesa].nil?) 
-
-       #if (params[:despesa][:valor])
-      #    params[:despesa][:valor] = params[:despesa][:valor].gsub('.','').gsub(',','.')
-      # end
        params[:despesa][:data] = trata_data(params[:despesa][:data]) if params[:despesa][:data]
-       #params[:despesa][:data_pagamento] = trata_data(params[:despesa][:data_pagamento]) if params[:despesa][:data_pagamento]
+       params[:despesa][:data_pagamento] = trata_data(params[:despesa][:data_pagamento]) if params[:despesa][:data_pagamento]
        params[:despesa].delete_if{|k,v| v.blank?}
     end
-=end    
   end
   
+  def reverte_data_pagamento
+     @despesa.data_pagamento = reverte_data(@despesa.data_pagamento) if @despesa.data_pagamento
+  end
+
   def carrega_pagamento_despesa
     @pagamento_first = PagamentoDespesa.where(:despesa_id => @despesa.id).first
     @pagamento_last = PagamentoDespesa.where(:despesa_id => @despesa.id).last
@@ -145,7 +144,7 @@ class DespesasController < ApplicationController
       @despesa.forma_pagamento = @pagamento_last.forma_pagamento
       @despesa.parcela = @pagamento_last.parcela
       @despesa.valor_pagamento = @pagamento_last.valor
-      @despesa.data_pagamento = @pagamento_first.data
+      @despesa.data_pagamento = reverte_data(@pagamento_first.data)
     end
   end
 end

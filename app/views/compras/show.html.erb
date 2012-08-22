@@ -20,17 +20,17 @@
 
 	<p>
 	  <b><%= t('compra.total_despesas')%>:</b>
-	  <span style="color:#006400"><%= number_to_currency(@compra.total_despesas) if @compra.total_despesas %></span>
+	  <span style="color:#006400"><%= @compra.total_despesas.real_formatado if @compra.total_despesas %></span>
 	</p>
  
 	<p>
 	  <b><%= t('compra.com_retorno')%>:</b>
-	  <span style="color:#006400"><%= number_to_currency(@compra.total_com_retorno) if @compra.total_com_retorno %></span>
+	  <span style="color:#006400"><%= @compra.total_com_retorno.real_formatado if @compra.total_com_retorno %></span>
 	</p>
 	
 	<p>
 	  <b><%= t('compra.sem_retorno')%>:</b>
-	  <span style="color:#006400"><%= number_to_currency(@compra.total_sem_retorno) if @compra.total_sem_retorno %></span>
+	  <span style="color:#006400"><%= @compra.total_sem_retorno.real_formatado if @compra.total_sem_retorno %></span>
 	</p>
 
 	<p>
@@ -42,15 +42,15 @@
 	<h4>Previsão</h4><br>
 	<p>
 	  <%= t('compra.vendas')%>:
-	  <span style="color:#006400"><%= number_to_currency(@compra.total_retorno_produtos) if @compra.total_retorno_produtos %></span>
+	  <span style="color:#006400"><%= @compra.total_retorno_produtos.real_formatado if @compra.total_retorno_produtos %></span>
 	</p>
 	
 	<p>
 	  <%= t('compra.lucro')%>:
 	  <% if @compra.total_lucro > 0 %>
-	  <span style="color:#006400"><%= number_to_currency(@compra.total_lucro) if @compra.total_lucro %></span>
+	  <span style="color:#006400"><%= @compra.total_lucro.real_formatado if @compra.total_lucro %></span>
 	  <% else %> 
-	  <span style="color:red"><%= number_to_currency(@compra.total_lucro) if @compra.total_lucro %></span>
+	  <span style="color:red"><%= @compra.total_lucro.real_formatado if @compra.total_lucro %></span>
 	  <% end %>
 	</p>
 	
@@ -86,15 +86,15 @@
 	<h4>Real</h4><br>
 	<p>
 	  <%= t('compra.vendas')%>:
-	  <span style="color:#006400"><%= number_to_currency(@compra.total_vendido) if @compra.total_vendido %></span>
+	  <span style="color:#006400"><%= @compra.total_vendido.real_formatado if @compra.total_vendido %></span>
 	</p>
 	
 	<p>
 	  <%= t('compra.lucro')%>:
 	  <% if @compra.lucro_real > 0 %>
-	   <span style="color:#006400"><%= number_to_currency(@compra.lucro_real) if @compra.lucro_real %></span>
+	   <span style="color:#006400"><%= @compra.lucro_real.real_formatado if @compra.lucro_real %></span>
 	  <% else %>
-		<span style="color:red"><%= number_to_currency(@compra.lucro_real) if @compra.lucro_real %></span>
+		<span style="color:red"><%= @compra.lucro_real.real_formatado if @compra.lucro_real %></span>
 	  <% end %>
 	</p>
 	
@@ -148,16 +148,16 @@
 	        <td style="color:#666"><%= despesa.fornecedor.nome if despesa.fornecedor %></td>
 			<td style="color:#666"><%= despesa.descricao %></td>
 	        <td style="color:#1E90FF"><%= I18n.l(despesa.data) if despesa.data %></td>
-	        <td style="color:#006400"><%= number_to_currency(despesa.valor) if despesa.valor %></td>
+	        <td style="color:#006400"><%= despesa.valor.real_formatado if despesa.valor %></td>
 			<td style="color:#666"><%= despesa.lista_formas.key(despesa.forma_pagamento) %></td>
 			<td style="color:#666"><%= despesa.parcela %></td>
-			<td style="color:#006400"><%= number_to_currency(despesa.valor_pagamento) if despesa.valor_pagamento %></td>
+			<td style="color:#006400"><%= despesa.valor_pagamento.real_formatado if despesa.valor_pagamento %></td>
 		</tr>
 	 <% end %>	
 	    <tr>
 	    	<td colspan="4">&nbsp;</td>
 	        <td>TOTAL</td>
-	        <td style="color:#006400"><b><%= number_to_currency(@compra.total_despesas) if @compra.total_despesas %></b></td>  
+	        <td style="color:#006400"><b><%= @compra.total_despesas.real_formatado if @compra.total_despesas %></b></td>  
 			<td colspan="3">&nbsp;</td>
 	    </tr>	
     </table>

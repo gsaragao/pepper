@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class PagamentoVenda < ActiveRecord::Base
   belongs_to :venda
+  usar_como_dinheiro :valor, :valor_pago, :recalculo
   validates_presence_of :forma_pagamento, :parcela, :valor, :data
   validates_numericality_of :valor_pago, :if => Proc.new { |pagamento_venda| !pagamento_venda.valor_pago.blank? }
   validates_numericality_of :valor_pago, :greater_than_or_equal_to => 1, :if => Proc.new { |pagamento_venda| !pagamento_venda.valor_pago.blank? }

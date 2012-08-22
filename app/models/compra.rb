@@ -29,7 +29,7 @@ class Compra < ActiveRecord::Base
 
     if !despesas.empty?
       despesas.each {|desp| 
-        total+=desp.valor
+        total+=desp.valor if desp.valor
       }
     end
     total
@@ -41,7 +41,7 @@ class Compra < ActiveRecord::Base
     if !despesas.empty?
       despesas.each {|desp| 
         if desp.tipo_despesa.retorno == 1
-           total+=desp.valor
+           total+=desp.valor if desp.valor
         end   
       }
     end
@@ -61,7 +61,7 @@ class Compra < ActiveRecord::Base
 
     if !produtos.empty?
       produtos.each {|prod| 
-           total+=prod.valor_venda
+           total+=prod.valor_venda if prod.valor_venda
       }
     end
     total
@@ -72,7 +72,7 @@ class Compra < ActiveRecord::Base
 
     if !produtos.empty?
       produtos.each {|prod| 
-           total+=prod.valor_vendido.to_f
+           total+=prod.valor_vendido if prod.valor_vendido
       }
     end
     total
@@ -85,7 +85,7 @@ class Compra < ActiveRecord::Base
   def lucratividade_real
       retorno = 0.0
       if (despesas.size > 0 && produtos.size > 0)
-        retorno = (((total_vendido - total_despesas) / total_vendido) * 100).round(1)
+        retorno = (((total_vendido - total_despesas) / total_vendido.to_f) * 100)
       end  
       retorno
   end
@@ -93,7 +93,7 @@ class Compra < ActiveRecord::Base
   def rentabilidade_real
     retorno = 0.0
     if (despesas.size > 0 && produtos.size > 0)
-      retorno = (((total_vendido - total_despesas) / total_despesas) * 100).round(1)
+      retorno = (((total_vendido - total_despesas) / total_despesas.to_f) * 100)
     end  
     retorno
   end
@@ -101,7 +101,7 @@ class Compra < ActiveRecord::Base
   def prazo_retorno_real
     retorno = 0.0
     if (despesas.size > 0 && produtos.size > 0)
-      retorno = (total_despesas / (total_vendido - total_despesas)).round(1)
+      retorno = (total_despesas / (total_vendido - total_despesas).to_f)
     end
     retorno
   end
@@ -113,16 +113,17 @@ class Compra < ActiveRecord::Base
       retorno = 0
       
       if tot_desp_ret > 0
-         retorno = (((tot_desp - tot_desp_ret) / tot_desp_ret) * 100).round(1)
+         retorno = (((tot_desp - tot_desp_ret) / tot_desp_ret.to_f) * 100)
       end
       
-      retorno += TAXA_RAVE + TAXA_CARTAO 
+      retorno += TAXA_RAVE + TAXA_CARTAO
+      retorno.to_f 
   end
   
   def lucratividade
       retorno = 0.0
       if (despesas.size > 0 && produtos.size > 0)
-        retorno = (((total_retorno_produtos - total_despesas) / total_retorno_produtos) * 100).round(1)
+        retorno = (((total_retorno_produtos - total_despesas) / total_retorno_produtos.to_f) * 100)
       end  
       retorno
   end
@@ -130,7 +131,7 @@ class Compra < ActiveRecord::Base
   def rentabilidade
     retorno = 0.0
     if (despesas.size > 0 && produtos.size > 0)
-      retorno = (((total_retorno_produtos - total_despesas) / total_despesas) * 100).round(1)
+      retorno = (((total_retorno_produtos - total_despesas) / total_despesas.to_f) * 100)
     end  
     retorno
   end
@@ -138,7 +139,7 @@ class Compra < ActiveRecord::Base
   def prazo_retorno
     retorno = 0.0
     if (despesas.size > 0 && produtos.size > 0)
-      retorno = (total_despesas / (total_retorno_produtos - total_despesas)).round(1)
+      retorno = (total_despesas / (total_retorno_produtos - total_despesas).to_f)
     end
     retorno
   end

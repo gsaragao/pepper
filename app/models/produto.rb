@@ -14,6 +14,7 @@ class Produto < ActiveRecord::Base
   validates_presence_of :descricao, :categoria_id, :compra_id, :valor_compra, :fornecedor_id, :marca_id
   #validate :valida_quantidade_maior_que_zero, :unless => "quantidade.nil?"
   validates_uniqueness_of :codigo_interno, :message => " já foi cadastrado!"
+  usar_como_dinheiro :valor_compra, :valor_minimo, :valor_venda, :valor_vendido
   attr_accessible :codigo_fabricante, :codigo_interno, :descricao, :foto_file_name, :categoria_id,:compra_id, :cor_id, :venda_id, 
   :margem_lucro, :observacao, :valor_compra, :valor_minimo, :valor_venda, :fornecedor_id, :tamanho_id, :marca_id, :foto, :quantidade,
   :valor_vendido, :lista

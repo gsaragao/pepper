@@ -21,8 +21,7 @@ class ApplicationController < ActionController::Base
   
   def reverte_data(att_data)
       data = att_data.to_s.gsub("-", "/")
-      att_data = Time.parse(data).strftime("%d/%m/%Y")
-      att_data
+      Time.parse(data).strftime("%d/%m/%Y")
   end
   
 end

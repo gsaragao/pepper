@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class PagamentoDespesa < ActiveRecord::Base
   belongs_to :despesa
+  usar_como_dinheiro :valor
   validates_presence_of :forma_pagamento, :parcela, :valor, :data
   
   def self.proximos_pagamentos

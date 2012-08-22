@@ -49,7 +49,7 @@ class PagamentoVendasController < ApplicationController
           #novo_valor = calcula_parcelas(@pagamento_venda.valor_pago, @pagamento_venda.parcela, "D")
           #PagamentoVenda.pesquisar_por_venda_duplicata(@pagamento_venda.venda_id).update_all(:recalculo => novo_valor)
           @pagamento_venda.update_column(:valor_pago , nil)
-          #@pagamento_venda.update_column(:recalculo , nil)
+          @pagamento_venda.update_column(:recalculo , nil)
           @pagamento_venda.update_column(:data_pagamento_cliente, nil)
         end
       rescue

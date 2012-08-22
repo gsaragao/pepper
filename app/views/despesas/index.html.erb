@@ -11,7 +11,7 @@
 				<%= f.select :tipo_despesa_id, options_from_collection_for_select(@tipo_despesas,:id,:descricao, @despesa.tipo_despesa_id),  
 						:include_blank => true %>&nbsp;&nbsp;
 	    		<%= t('despesa.data') %>&nbsp;
-		<%= f.text_field :data, :value => (I18n.l(@despesa.data) if @despesa.data) %>&nbsp;&nbsp;
+		<%= f.text_field :data, :class => 'mask-date', :value => (I18n.l(@despesa.data) if @despesa.data) %>&nbsp;&nbsp;
 	    <%= f.submit t('botao.pesquisar'), :class => "btn primary" %></th>
 	 </tr>
 	</table>
@@ -56,10 +56,3 @@
 
 <a href="<%= new_despesa_path %>">
 	<button class="btn" name="btnpesquisa"><%= t('despesa.acao.novo')%></button></a>
-
-<script>
-
-$(function() {
-  $('#despesa_data').datepicker({dateFormat : 'dd/mm/yy'});
-});
-</script>

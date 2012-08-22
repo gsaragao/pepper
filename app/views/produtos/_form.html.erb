@@ -79,26 +79,27 @@
           <div class="clearfix">    
    	     <%= f.label :valor_compra %>
 		<div class="input">
-	     <%= f.text_field :valor_compra, :value => @produto.valor_compra %>
+	     <%= f.text_field :valor_compra, :class => 'mask-money', :value => @produto.valor_compra %>
 	    </div>
       </div>
           <div class="clearfix">    
    	     <%= f.label :valor_venda %>
 		<div class="input">
-	     <%= f.text_field :valor_venda, :value => @produto.valor_venda %>
+	     <%= f.text_field :valor_venda, :class => 'mask-money', :value => @produto.valor_venda %>
 	    </div>
       </div>
           <div class="clearfix">    
    	     <%= f.label :valor_minimo %>
 		<div class="input">
-	     <%= f.text_field :valor_minimo, :value => @produto.valor_minimo, :readonly => true %>
+	     <%= f.text_field :valor_minimo, :class => 'mask-money', :value => @produto.valor_minimo, :readonly => true %>
 	    </div>
 
       </div>
           <div class="clearfix">    
    	     <%= f.label :margem_lucro %>
 		<div class="input">
-	     <%= f.text_field :margem_lucro, :readonly => true %>
+			<%= f.text_field :margem_lucro, :style => 'text-align:right', :value => number_to_percentage(@produto.margem_lucro),
+			 :readonly => true %>
 	    </div>
       </div>
           <div class="clearfix">    
@@ -144,13 +145,18 @@
 	compra_id = $('#produto_compra_id').val();
 	if (vc != "" && compra_id != "") {
 		$.getJSON('/compras/calcula?compra_id=' + compra_id, function(data) {
-		     result = parseFloat(vc) + (parseFloat(vc) * (parseFloat(data) / 100))
+			
+			 vc = trata_valor(vc);
+
+			 result = parseFloat(vc) + (parseFloat(vc) * (parseFloat(data) / 100))
 			 result = result.toFixed(2);
 			 $('#produto_valor_minimo').val(result);
+			 $('#produto_valor_minimo').setMask({mask:'99,999.999.99', type:'reverse'});
 			 calcula_margem();
 		});
 	} else {
 		$('#produto_valor_minimo').val(vc);
+		$('#produto_valor_minimo').setMask({mask:'99,999.999.99', type:'reverse'});
 		calcula_margem();
 	}	
   }
@@ -161,12 +167,22 @@
 	vv = $('#produto_valor_venda').val();
 	vm = $('#produto_valor_minimo').val();
 
+	vv = trata_valor(vv);
+	vm = trata_valor(vm);	
+
 	if (vv != "" && vm != "") { 
 		result = ((vv - vm) / vm) * 100; 
-		result = result.toFixed(2);
-		$('#produto_margem_lucro').val(result + "%");
+		result = result.toFixed(1);
+		result += " %" 
+		$('#produto_margem_lucro').val(result);
     }
-}
+  }
+
+  function trata_valor(valor) {
+  	valor = valor.replace('.','');	
+	valor = valor.replace(',','.');		
+	return valor;
+  }
 
  $('#produto_descricao').focus();
 

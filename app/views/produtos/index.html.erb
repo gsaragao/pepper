@@ -43,9 +43,9 @@
 	    <td style="color:#666"><%= produto.descricao %></td>
         <td style="color:#666"><%= produto.compra.descricao if produto.compra %></td>
         <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>
-        <td style="color:#006400"><%= number_to_currency(produto.valor_compra) %></td>
-        <td style="color:#006400"><%= number_to_currency(produto.valor_venda) %></td>
-        <td style="color:#006400"><%= number_to_currency(produto.valor_minimo) %></td>
+        <td style="color:#006400"><%= produto.valor_compra.real_formatado %></td>
+        <td style="color:#006400"><%= produto.valor_venda.real_formatado %></td>
+        <td style="color:#006400"><%= produto.valor_minimo.real_formatado %></td>
         <td style="color:#666"><%= number_to_percentage(produto.margem_lucro) if produto.margem_lucro %></td>
         <td><%= link_to t('botao.detalhes'), produto %></td>
 		<td><%= link_to t('botao.copiar'), edit_produto_path(produto, :acao => Produto::COPY) %></td>

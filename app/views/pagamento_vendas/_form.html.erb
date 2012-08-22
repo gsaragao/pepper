@@ -18,7 +18,7 @@
           <div class="clearfix">    
    	     <%= f.label :valor_pago %>
 		<div class="input">
-	     <%= f.text_field :valor_pago, :value => @pagamento_venda.valor_pago %>
+	     <%= f.text_field :valor_pago, :class => 'mask-money', :value => @pagamento_venda.valor_pago %>
 	    </div>
       </div>
     </td>

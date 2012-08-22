@@ -37,10 +37,10 @@ class Venda < ActiveRecord::Base
 
     if !pagamento_vendas.empty?
       pagamento_vendas.each {|pag| 
-        total+=pag.valor
+        total+=pag.valor if pag.valor
       }
     end
-    total.round(2)
+    total
   end
   
   def total_vendido
@@ -50,7 +50,7 @@ class Venda < ActiveRecord::Base
         total+=prod.valor_vendido if prod.valor_vendido
       }
     end
-    total.round(2)
+    total
   end
   
   def total_sugerido
