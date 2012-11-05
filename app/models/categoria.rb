@@ -31,16 +31,22 @@ class Categoria < ActiveRecord::Base
     end
   end
   
-  def self.relacao_categoria_vendas
+  def self.relacao_categoria_vendas(compra)
     
      sql  = ' select c.descricao, ifnull(vendido.valor,0) valor_vendido, ifnull(vendido.qtde,0) qtde_vendido, '
      sql += ' ifnull(estoque.valor,0) valor_estoque, ifnull(estoque.qtde,0) qtde_estoque '
-     sql += ' from categorias c  '
+     sql += ' from (select distinct c.id, c.descricao from categorias c, produtos p where p.categoria_id = c.id '
+     sql += ' and compra_id = ' + compra.id.to_s if compra
+     sql += ' ) c  '
      sql += ' left outer join ( '
-     sql += ' select categoria_id, sum(valor_vendido) valor, count(*) qtde from produtos where venda_id is not null group by categoria_id) vendido '
+     sql += ' select categoria_id, sum(valor_vendido) valor, count(*) qtde from produtos where venda_id is not null '
+     sql += ' and compra_id = ' + compra.id.to_s if compra
+     sql += ' group by categoria_id) vendido '
      sql += ' on vendido.categoria_id = c.id '
      sql += ' left outer join  '
-     sql += ' (select categoria_id, sum(valor_venda) valor, count(*) qtde from produtos where venda_id is null group by categoria_id) estoque '
+     sql += ' (select categoria_id, sum(valor_venda) valor, count(*) qtde from produtos where venda_id is null '
+     sql += ' and compra_id = ' + compra.id.to_s if compra
+     sql += ' group by categoria_id) estoque '
      sql += ' on estoque.categoria_id = c.id  '
      sql += ' order by valor_vendido desc, qtde_vendido desc '
     

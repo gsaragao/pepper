@@ -24,6 +24,10 @@ class Compra < ActiveRecord::Base
     end  
   end
   
+  def self.ultimas_compras(limit)
+    order("created_at desc").limit(limit)
+  end
+
   def total_despesas
     total = 0.0
 

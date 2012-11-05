@@ -1,12 +1,28 @@
 <h2><%= t('home.titulo')%></h2>
 <br>
+
+<ul class="tabs">
+  <li class="<%=@class_geral %>"><a href="/home">Geral</a></li>
+  <% if !@ultimas_compras.empty? %>
+  	<% @ultimas_compras.each do |ult_compra| %>
+	  <% if @compra && (@compra.id == ult_compra.id ) %>
+	  	<li class="active">
+	  <% else%>
+	  	<li>
+	  <% end %>		
+	  	<a href="/home?compra=<%= ult_compra.id %>"><%= ult_compra.descricao %></a>
+	  </li>
+	<% end %>	  	  
+  <% end %>	  
+</ul>
+
 <table>
   <tr>
 	<td style="border-top:0px solid #ddd;">
 		<table>
 			<tr>
 				<% if !@pagamento_despesas.empty? %>
-					<td>
+					<td style="border-top:0px solid #ddd;"> 
 						<div class="hero-unit-devolucao">
 							<h4>A Pagar</h4><br>
 							<% @pagamento_despesas.each do |pagamento| %>
@@ -39,7 +55,7 @@
 		    	    </td>
 	    	    <% end %>
 	    	   <% if !@pagamento_vendas.empty? %> 
-			      <td>
+			      <td  style="border-top:0px solid #ddd;">
 						<div class="hero-unit-devolucao">
 							<h4>A Receber</h4><br>
 							<% @pagamento_vendas.each do |pagamento| %>
@@ -71,17 +87,17 @@
 						</div>
 				   </td>	
 			   <% end %>
-			   <% if !@formas_pagamento.empty? || @qtde_produtos[4] > 0 %>
-				   <td>
+			   <% if (!@formas_pagamento.empty? || @qtde_produtos[4] > 0) && @compra.nil? %>
+				   <td  style="border-top:0px solid #ddd;">
 					<% if !@formas_pagamento.empty? %>
 						<div class="hero-unit-devolucao">
 							<h4>Formas de Pagamento</h4><br>
 							<% @formas_pagamento.each do |forma| %>
-								<p>
-								  <span style="color:#666"><%= forma.descricao_forma %>:</span>
-								  <span style="color:#006400"><%= forma.valor.real_formatado %></span>
-								  <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor / @total_formas) * 100)) %></span>
-								</p>
+							  <p>
+								 <span style="color:#666"><%= forma.descricao_forma %>:</span>
+								 <span style="color:#006400"><%= forma.valor.real_formatado %></span>
+								 <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor.to_f / @total_formas.to_f) * 100)) %></span>
+							  </p>
 						 	<% end %>	
 						</div><br>
 					<% end %>
@@ -103,7 +119,7 @@
 				   </td>
 			   <% end %>	   
 			   <% if !@relacao_categorias.empty? %> 
-				   <td>
+				   <td  style="border-top:0px solid #ddd;">
 						<div class="hero-unit-devolucao">
 							<h4>Vendidos</h4><br>
 							<% @relacao_categorias.each do |categoria| %>
@@ -114,7 +130,7 @@
 						 	<% end %>	
 						</div><br>
 				   </td>
-				   <td>
+				   <td style="border-top:0px solid #ddd;">
 						<div class="hero-unit-devolucao">
 							<h4>Estoque</h4><br>
 							<% @relacao_categorias.each do |categoria| %>
@@ -127,7 +143,7 @@
 				   </td>
 			   <% end %> 
 			   <% if !@relacao_clientes.empty? %>   
-				  <td>
+				  <td style="border-top:0px solid #ddd;">
 					<div class="hero-unit-devolucao">
 						<h4>10 Melhores Clientes</h4><br>
 						<% @relacao_clientes.each do |cliente| %>
@@ -139,8 +155,8 @@
 					</div>
 				   </td>
 			   <% end %>	 
-			  <% if !@relacao_pagamentos.empty? %>      
-				<td>
+			  <% if !@relacao_pagamentos.empty? && @compra.nil? %>      
+				<td style="border-top:0px solid #ddd;">
 					<div class="hero-unit-devolucao">
 						<h4>10 Próximos Pagamentos</h4><br>
 						<% @relacao_pagamentos.each do |cliente| %>

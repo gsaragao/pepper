@@ -76,7 +76,7 @@ class Venda < ActiveRecord::Base
     total = 0.0
     if lista_produtos && !lista_produtos.empty?
       lista_produtos.each {|k,v| 
-        total+=v[:valor_vendido].to_f if v[:valor_vendido]
+        total+=trata_valor(v[:valor_vendido]).to_f if v[:valor_vendido]
       }
     end
     total.round(2)

@@ -72,7 +72,7 @@
 				        <td class="valor_produto" title="<%= produto.valor_venda %>" style="color:#006400">
 				<%= number_to_currency(produto.valor_venda) %></td>
 						<td style="padding:5px;color:#006400">
-							<input class="valor_vendido"  type="text" style="width: 100px;" onblur="calculaTotal();" name="venda[lista_produtos][<%= i %>][valor_vendido]" value="<%= produto.valor_vendido %>"/>
+							<input class="mask-money valor_vendido"  type="text" style="width: 100px;" onblur="calculaTotal();" name="venda[lista_produtos][<%= i %>][valor_vendido]" value="<%= produto.valor_vendido %>"/>
 						</td>
 				        <td style="padding:5px;color:#666"><%= image_tag("remove.jpg", :id => "removeprod#{i}", :size => "20x20", :style => "cursor:pointer", :title => "Remover" , :onclick => "removeProduto(this, #{i},#{produto.id})") %></td>
 				  </tr>
@@ -219,11 +219,19 @@ $('#nome_cliente').focus();
  function calculaTotal() {
 
 	var valor = 0;
-	var valor_vendido = 0
+	var valor_vendido = 0;
+	var valor_vendido_input = 0;
 	$("#prod_body").each(function() {
 		$(this).children(".calcula").each(function() {
-			valor += parseFloat($(this).find(".valor_produto").attr("title"));
-			valor_vendido += parseFloat($(this).find(".valor_vendido").val());
+
+			valor += parseFloat(trata_valor($(this).find(".valor_produto").attr("title")));
+			
+            valor_vendido_input = $(this).find(".valor_vendido").val() 
+
+            if (valor_vendido_input != '') {
+            	valor_vendido += parseFloat(trata_valor(valor_vendido_input));	
+            } 
+
 		});		
 	});
 

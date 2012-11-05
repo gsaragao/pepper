@@ -45,10 +45,16 @@ class Produto < ActiveRecord::Base
     query
   end
   
-  def self.qtde_cadastrados_vendidos
+  def self.qtde_cadastrados_vendidos(compra)
      retorno = []
-     retorno[0] = where("venda_id is null").count
-     retorno[1] = where("venda_id is not null").count
+
+     if compra.nil?
+       retorno[0] = where("venda_id is null").count
+       retorno[1] = where("venda_id is not null").count
+     else
+       retorno[0] = where("venda_id is null and compra_id = ?", compra.id).count
+       retorno[1] = where("venda_id is not null and compra_id = ?", compra.id).count
+     end  
      
      cont = Produto.count
      perc_e = 0

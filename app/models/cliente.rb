@@ -22,10 +22,11 @@ class Cliente < ActiveRecord::Base
     end    
   end
   
-  def self.relacao_venda
+  def self.relacao_venda(compra)
     
-    sql  = ' select c.nome, sum(p.valor) valor from vendas v, clientes c, pagamento_vendas p '
+    sql  = ' select c.nome, sum(p.valor_vendido) valor from vendas v, clientes c, produtos p '
     sql += ' where v.cliente_id = c.id and p.venda_id = v.id '
+    sql += ' and p.compra_id = ' + compra.id.to_s if compra
     sql += ' group by c.id order by 2 desc limit 10 '
     
     find_by_sql(sql)
