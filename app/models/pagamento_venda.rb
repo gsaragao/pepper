@@ -33,15 +33,15 @@ class PagamentoVenda < ActiveRecord::Base
       query = includes(:venda => :cliente)
      
       if obj 
-        query = query.where("data_pagamento_cliente is null and pagamento_vendas.data < ?", Date.today) if obj[:lista] == PagamentoVenda::ATRASADO
-        query = query.where("data_pagamento_cliente is null") if obj[:lista] == PagamentoVenda::AVENCER
-        query = query.where("data_pagamento_cliente is not null") if obj[:lista] == PagamentoVenda::PAGO
-        query = query.where("vendas.cliente_id = ?", obj[:cliente_id]) if obj[:cliente_id]
+        query = query.where("data_pagamento_cliente is null and pagamento_vendas.data < ?", Date.today) if obj.lista == PagamentoVenda::ATRASADO
+        query = query.where("data_pagamento_cliente is null") if obj.lista == PagamentoVenda::AVENCER
+        query = query.where("data_pagamento_cliente is not null") if obj.lista == PagamentoVenda::PAGO
+        query = query.where("vendas.cliente_id = ?", obj.cliente_id) if obj.cliente_id
         
-        if obj[:forma_pagamento] != "0"
-          query = query.where("forma_pagamento = ?", obj[:forma_pagamento]) 
+        if obj.forma_pagamento != 0
+          query = query.where("forma_pagamento = ?", obj.forma_pagamento) 
         else
-          query = query.where("forma_pagamento in (1,4)", obj[:forma_pagamento]) 
+          query = query.where("forma_pagamento in (1,4)", obj.forma_pagamento) 
         end    
       else
         query = query.where("forma_pagamento in (1,4) and data_pagamento_cliente is null") 

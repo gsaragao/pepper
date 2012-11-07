@@ -24,7 +24,6 @@ class VendasController < ApplicationController
     @venda = Venda.new
     @venda.vendedor_id = @vendedor_default.id if @vendedor_default
     @venda.data = Date.today
-    #@venda.data_duplicata = Date.today
     respond_with @venda
   end
 
@@ -38,10 +37,11 @@ class VendasController < ApplicationController
   
     @venda = Venda.new(params[:venda])
     
-    registra_produto(@venda)
-    registra_pagamento(@venda)
-    
     Venda.transaction do
+
+      registra_produto(@venda)
+      registra_pagamento(@venda)
+
       if @venda.save
 
         @venda.produtos.each {|produto| 
@@ -68,6 +68,7 @@ class VendasController < ApplicationController
   def update
     
      Venda.transaction do  
+
         @venda_pagamento = Venda.new(params[:venda])
         registra_pagamento(@venda_pagamento)
         registra_produto(@venda_pagamento)
@@ -167,7 +168,7 @@ class VendasController < ApplicationController
          pagamento = PagamentoVenda.new
          pagamento.forma_pagamento = Venda::DUPLICATA
          pagamento.parcela = i + 1
-         pagamento.valor = (venda.valor_duplicata.to_f / venda.parcela_duplicata.to_i).round(2)
+         pagamento.valor = (trata_valor(venda.valor_duplicata).to_f / venda.parcela_duplicata.to_i).round(2)
          pagamento.data = data
          venda.pagamento_vendas << pagamento       
          
@@ -183,7 +184,7 @@ class VendasController < ApplicationController
          pagamento = PagamentoVenda.new
          pagamento.forma_pagamento = Venda::CARTAO
          pagamento.parcela = i + 1
-         pagamento.valor = (venda.valor_cartao.to_f / venda.parcela_cartao.to_i).round(2)
+         pagamento.valor = (trata_valor(venda.valor_cartao).to_f / venda.parcela_cartao.to_i).round(2)
          pagamento.data = data
          venda.pagamento_vendas << pagamento       
        
@@ -199,7 +200,7 @@ class VendasController < ApplicationController
          pagamento = PagamentoVenda.new
          pagamento.forma_pagamento = Venda::CHEQUE
          pagamento.parcela = i + 1
-         pagamento.valor = (venda.valor_cheque.to_f / venda.parcela_cheque.to_i).round(2)
+         pagamento.valor = (trata_valor(venda.valor_cheque).to_f / venda.parcela_cheque.to_i).round(2)
          pagamento.data = data
          venda.pagamento_vendas << pagamento       
        
@@ -253,6 +254,11 @@ class VendasController < ApplicationController
     end
   end
   
+  def trata_valor(valor) 
+     valor = valor.sub('.',''); 
+     valor = valor.sub(',','.');    
+  end
+
   def reverte_datas_pagamento
      @venda.data_duplicata = reverte_data(@venda.data_duplicata) if @venda.data_duplicata
      @venda.data_cartao = reverte_data(@venda.data_cartao) if @venda.data_cartao

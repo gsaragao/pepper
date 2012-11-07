@@ -8,7 +8,13 @@ class PagamentoVendasController < ApplicationController
   def index
     @clientes = Cliente.com_pagamento
     @pagamento_venda = PagamentoVenda.new(params[:pagamento_venda])
-    @pagamento_vendas = PagamentoVenda.pesquisar(params[:pagamento_venda],params[:page])
+
+    if params[:cliente]
+       @pagamento_venda.cliente_id = params[:cliente].to_i    
+       @pagamento_venda.forma_pagamento = 0       
+    end
+
+    @pagamento_vendas = PagamentoVenda.pesquisar(@pagamento_venda,params[:page])
     respond_with @pagamento_vendas
   end
    
@@ -34,7 +40,7 @@ class PagamentoVendasController < ApplicationController
           end  
         end  
         flash[:notice] = t('msg.update_sucess')
-        redirect_to pagamento_vendas_path
+        redirect_to pagamento_vendas_path(:cliente => @pagamento_venda.venda.cliente_id)
       else
         render :action => :edit
         raise ActiveRecord::Rollback
