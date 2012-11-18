@@ -21,7 +21,7 @@
 	<td style="border-top:0px solid #ddd;">
 		<table>
 			<tr>
-				<% if !@pagamento_despesas.empty? %>
+				<% if !@pagamento_despesas.empty? && @compra.nil? %>
 					<td style="border-top:0px solid #ddd;"> 
 						<div class="hero-unit-devolucao">
 							<h4>A Pagar</h4><br>
@@ -54,7 +54,7 @@
 						</div>
 		    	    </td>
 	    	    <% end %>
-	    	   <% if !@pagamento_vendas.empty? %> 
+	    	   <% if !@pagamento_vendas.empty? && @compra.nil? %> 
 			      <td  style="border-top:0px solid #ddd;">
 						<div class="hero-unit-devolucao">
 							<h4>A Receber</h4><br>
@@ -87,9 +87,9 @@
 						</div>
 				   </td>	
 			   <% end %>
-			   <% if (!@formas_pagamento.empty? || @qtde_produtos[4] > 0) && @compra.nil? %>
+			   <% if (!@formas_pagamento.empty? || @qtde_produtos[4] > 0) %>
 				   <td  style="border-top:0px solid #ddd;">
-					<% if !@formas_pagamento.empty? %>
+					<% if !@formas_pagamento.empty? && @compra.nil? %>
 						<div class="hero-unit-devolucao">
 							<h4>Formas de Pagamento</h4><br>
 							<% @formas_pagamento.each do |forma| %>
@@ -142,23 +142,47 @@
 						</div><br>
 				   </td>
 			   <% end %> 
-			   <% if !@relacao_clientes.empty? %>   
+			   <% if !@situacao_pagamento.empty?  && @compra.nil? %>   
 				  <td style="border-top:0px solid #ddd;">
 					<div class="hero-unit-devolucao">
-						<h4>10 Melhores Clientes</h4><br>
-						<% @relacao_clientes.each do |cliente| %>
-							<p>
-							  <span style="color:#666"><%= cliente.nome %>:</span>
-							  <span style="color:#006400"><%= number_to_currency(cliente.valor) %></span>
-							</p>
-					 	<% end %>	
+						<h4>Situação Pagamentos</h4><br>
+						<p>
+							<span style="color:#666">Parcelas:</span>
+							<%= @situacao_pagamento[3] %>
+						</p>	
+						<p>
+							<span style="color:#666">À vista:</span>
+							<%= @situacao_pagamento[4] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@situacao_pagamento[4] / @situacao_pagamento[3].to_f * 100) %></span>
+						</p>	
+						<p>
+							<span style="color:#666">Antecipado:</span>
+							<%= @situacao_pagamento[5] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@situacao_pagamento[5] / @situacao_pagamento[3].to_f * 100) %></span>
+						</p>	
+						<p>
+							<span style="color:#666">No Prazo:</span>
+							<%= @situacao_pagamento[6] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@situacao_pagamento[6] / @situacao_pagamento[3].to_f * 100) %></span>
+						</p>	
+						<p>
+							<span style="color:#666">15 a 30 dias:</span>
+							<%= @situacao_pagamento[7] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@situacao_pagamento[7] / @situacao_pagamento[3].to_f * 100) %></span>
+						</p>	
+						<p>
+							<span style="color:#666">+ de 30 dias:</span>
+							<%= @situacao_pagamento[8] %>
+							<span style="color:#1E90FF">&nbsp;<%= number_to_percentage(@situacao_pagamento[8] / @situacao_pagamento[3].to_f * 100) %></span>
+						</p>	
+					 	
 					</div>
 				   </td>
 			   <% end %>	 
 			  <% if !@relacao_pagamentos.empty? && @compra.nil? %>      
 				<td style="border-top:0px solid #ddd;">
 					<div class="hero-unit-devolucao">
-						<h4>10 Próximos Pagamentos</h4><br>
+						<h4>15 Próximos Pagamentos</h4><br>
 						<% @relacao_pagamentos.each do |cliente| %>
 							<p>
 							  <span style="color:#666"><%= cliente.nome %>:</span>

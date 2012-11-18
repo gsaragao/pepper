@@ -47,6 +47,8 @@ Pepper::Application.routes.draw do
   end
 
   resources :home, :only => [:index]
+
+  resources :analise, :only => [:index]
   
   root :to => 'home#index'
   

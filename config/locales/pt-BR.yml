@@ -7,10 +7,14 @@
     menu: 
       home: Home
       administracao: Administração
+      analise: Análise
 
   home:
     titulo: Painel Geral
     registros: registro(s)
+
+  analise:
+    titulo: Análise Cliente  
   
   cliente:
     self: Cliente

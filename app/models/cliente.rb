@@ -21,28 +21,16 @@ class Cliente < ActiveRecord::Base
       includes(:cidade).where("clientes.nome like ?", "%#{nome}%").paginate(:page => page).order("nome")
     end    
   end
-  
-  def self.relacao_venda(compra)
-    
-    sql  = ' select c.nome, sum(p.valor_vendido) valor from vendas v, clientes c, produtos p '
-    sql += ' where v.cliente_id = c.id and p.venda_id = v.id '
-    sql += ' and p.compra_id = ' + compra.id.to_s if compra
-    sql += ' group by c.id order by 2 desc limit 10 '
-    
-    find_by_sql(sql)
-  end
-  
+
   def self.relacao_pagamento
     sql  = ' select c.nome, min(p.data) data, p.valor '
     sql += ' from vendas v, clientes c, pagamento_vendas p where v.cliente_id = c.id '
     sql += ' and p.venda_id = v.id and p.data_pagamento_cliente is null '
     sql += ' and p.forma_pagamento in (1,4) '
-    sql += ' group by c.id order by 2 limit 10 '
+    sql += ' group by c.id order by 2 limit 15 '
     
     find_by_sql(sql)
   end
-  
-  
   
   def self.com_pagamento
     where(" pagamento_vendas.forma_pagamento in (1,4) ").joins(:vendas => :pagamento_vendas).group("clientes.id").order("nome")

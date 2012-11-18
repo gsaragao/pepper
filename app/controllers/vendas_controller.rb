@@ -185,7 +185,9 @@ class VendasController < ApplicationController
          pagamento.forma_pagamento = Venda::CARTAO
          pagamento.parcela = i + 1
          pagamento.valor = (trata_valor(venda.valor_cartao).to_f / venda.parcela_cartao.to_i).round(2)
+         pagamento.valor_pago = pagamento.valor
          pagamento.data = data
+         pagamento.data_pagamento_cliente = data
          venda.pagamento_vendas << pagamento       
        
          data += 1.month
@@ -201,7 +203,9 @@ class VendasController < ApplicationController
          pagamento.forma_pagamento = Venda::CHEQUE
          pagamento.parcela = i + 1
          pagamento.valor = (trata_valor(venda.valor_cheque).to_f / venda.parcela_cheque.to_i).round(2)
+         pagamento.valor_pago = pagamento.valor
          pagamento.data = data
+         pagamento.data_pagamento_cliente = data
          venda.pagamento_vendas << pagamento       
        
          data += 1.month

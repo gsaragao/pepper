@@ -25,7 +25,7 @@ class HomeController < ApplicationController
     @total_formas = PagamentoVenda.total_pagamento
     @relacao_marcas = Marca.relacao_vendidos(@compra)
     @qtde_produtos = Produto.qtde_cadastrados_vendidos(@compra)
-    @relacao_clientes = Cliente.relacao_venda(@compra)
+    @situacao_pagamento = totalizador(Analise.analise_completa)
     @relacao_pagamentos = Cliente.relacao_pagamento
     @relacao_categorias = Categoria.relacao_categoria_vendas(@compra)
     
@@ -48,5 +48,35 @@ class HomeController < ApplicationController
       redirect_to home_index_path
     end    
   end 
+
+    def totalizador(lista)
+    
+    retorno = []
+    retorno[0] = 0
+    retorno[1] = 0
+    retorno[2] = 0 
+    retorno[3] = 0
+    retorno[4] = 0
+    retorno[5] = 0
+    retorno[6] = 0  
+    retorno[7] = 0  
+    retorno[8] = 0  
+
+    if !lista.empty?
+
+      lista.each {|analise| 
+         retorno[0] += analise.valor_total
+         retorno[1] +=  analise.cartao_dinheiro
+         retorno[2] += analise.cheque_duplicata
+         retorno[3] +=  analise.parcelas_total
+         retorno[4] +=  analise.parcelas_cartao_dinheiro
+         retorno[5] +=  analise.antes
+         retorno[6] +=  analise.no_prazo
+         retorno[7] +=  analise.quinze
+         retorno[8] +=  analise.trinta
+      }
+    end 
+    retorno
+  end
 
 end

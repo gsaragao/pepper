@@ -1,0 +1,102 @@
+<h2><%= t('analise.titulo')%></h2>
+<br>
+
+<ul class="tabs">
+  <li class="<%=@class_estrela %>"><a href="/analise">Estrelas</a></li>
+  <li class="<%=@class_completo %>"><a href="/analise?completo=1">Completo</a></li>
+</ul>
+<% if @completo.nil? %>  
+
+	<table>
+		<tr>
+			<td style="border-top:0px solid #ddd;">
+			<table class="zebra-striped">
+		       <tr>
+				<th width="3%">#</th>
+				<th width="50%">Cliente</th>
+		        <th width="47%">Classificação</th>
+			</tr>
+			 <% @analise_estrelas.each_with_index do |analise, cont| %>
+				<tr>
+					<td style="color:#1E90FF"><%= cont + 1 %></td>
+					<td style="color:#666"><%= analise.nome %></td>
+					<td style="color:#666">
+						<% (analise.pontos.to_i / 4).times {  %>
+						<%= image_tag("star.png", :size => "20x20", :title => "#{analise.pontos} pontos!" ) %>
+						<% } %>
+
+					</td>
+				</tr>
+			 <% end %>	
+		    </table>
+		</td> 
+        </tr>			
+   </table>
+
+<% elsif !@completo.nil? %>  
+	
+	<table>
+		<tr>
+			<td style="border-top:0px solid #ddd;">
+			<table class="zebra-striped">
+		       <tr>
+				<th width="3%">#</th>
+				<th width="19%">Cliente</th>
+		        <th width="10%">Valor Total</th>
+				<th width="10%">Cartão/Dinheiro</th>
+				<th width="10%">Duplicata/Cheque</th>
+				<th width="8%">Parcelas</th>
+				<th width="8%">À vista</th>
+				<th width="8%">Antecipado</th>
+				<th width="8%">No Prazo</th>
+				<th width="8%">15 a 30 dias</th>
+				<th width="8%">+ de 30 dias</th>
+			</tr>
+			
+			 <% @analise_completa.each_with_index do |analise, cont| %>
+				<tr>
+					<td style="color:#1E90FF"><%= cont + 1 %></td>
+					<td style="color:#666"><%= analise.nome %></td>
+					<td style="color:#006400"><%= number_to_currency(analise.valor_total) if analise.valor_total %></td>
+					<td style="color:#006400"><%= number_to_currency(analise.cartao_dinheiro) if analise.cartao_dinheiro %></td>
+					<td style="color:#006400"><%= number_to_currency(analise.cheque_duplicata) if analise.cheque_duplicata %></td>
+					<td style="color:#666;text-align:center"><%= analise.parcelas_total %></td>
+					<td style="color:#666;text-align:center"><%= analise.parcelas_cartao_dinheiro %></td>
+					<td style="color:#666;text-align:center"><%= analise.antes %></td>
+					<td style="color:#666;text-align:center"><%= analise.no_prazo %></td>
+					<td style="color:#666;text-align:center"><%= analise.quinze %></td>
+					<td style="color:#666;text-align:center"><%= analise.trinta %></td>
+				</tr>
+			 <% end %>	
+			 <tr>
+				<th width="3%">#</th>
+				<th width="19%">Cliente</th>
+		        <th width="10%">Valor Total</th>
+				<th width="10%">Cartão/Dinheiro</th>
+				<th width="10%">Duplicata/Cheque</th>
+				<th width="8%">Parcelas</th>
+				<th width="8%">À vista</th>
+				<th width="8%">Antecipado</th>
+				<th width="8%">No Prazo</th>
+				<th width="8%">15 a 30 dias</th>
+				<th width="8%">+ de 30 dias</th>
+			</tr>
+			 <tr>
+		    	<td>&nbsp;</td>
+		        <td><b>TOTAL</b></td>
+		        <td style="color:#006400;font-size:15px"><b><%= number_to_currency(@retorno[0]) if @retorno[0] %></b></td>  
+		        <td style="color:#006400;font-size:15px"><b><%= number_to_currency(@retorno[1]) if @retorno[1] %></b></td>  
+		        <td style="color:#006400;font-size:15px"><b><%= number_to_currency(@retorno[2]) if @retorno[2] %></b></td>  
+		        <td style="color:#666;text-align:center;font-size:15px"><b><%= @retorno[3] %></b></td>
+				<td style="color:#666;text-align:center;font-size:15px"><b><%= @retorno[4] %> (<%= number_to_percentage(@retorno[4].to_f / @retorno[3].to_f * 100) %>)</b></td>
+				<td style="color:#666;text-align:center;font-size:15px"><b><%= @retorno[5] %> (<%= number_to_percentage(@retorno[5].to_f / @retorno[3].to_f * 100) %>)</b></td>
+				<td style="color:#666;text-align:center;font-size:15px"><b><%= @retorno[6] %> (<%= number_to_percentage(@retorno[6].to_f / @retorno[3].to_f * 100) %>)</b></td>
+				<td style="color:#666;text-align:center;font-size:15px"><b><%= @retorno[7] %> (<%= number_to_percentage(@retorno[7].to_f / @retorno[3].to_f * 100) %>)</b></td>
+				<td style="color:#666;text-align:center;font-size:15px"><b><%= @retorno[8] %> (<%= number_to_percentage(@retorno[8].to_f / @retorno[3].to_f * 100) %>)</b></td>
+		    </tr>	
+		    </table>
+		</td> 
+        </tr>			
+   </table>
+
+<% end %>
