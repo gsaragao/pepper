@@ -98,15 +98,15 @@ Compra.create!(:descricao => 'Setembro 2011', :data => '2011-09-18', :observacao
 
 #Despesas
 Despesa.create!(:descricao => 'Taxi SP', :compra_id => @compra2011.id, :tipo_despesa_id => @tipoTrans.id, :fornecedor_id => @fortax.id,
-                :data => '2011-01-23', :valor => '23.0')
+                :data => '2011-01-23',:data_pagamento => '2011-01-23', :valor => '23.0')
 Despesa.create!(:descricao => 'Voo TAM', :compra_id => @compra2011.id, :tipo_despesa_id => @tipoTrans.id, :fornecedor_id => @fortam.id, 
-                :data => '2011-01-22', :valor => '258.86')
+                :data => '2011-01-22',:data_pagamento => '2011-01-22', :valor => '258.86')
 Despesa.create!(:descricao => 'Mac Donalds', :compra_id => @compra2011.id, :tipo_despesa_id => @tipoAli.id , :fornecedor_id => @formac.id,
-                :data => '2011-01-23', :valor => '14.50')
+                :data => '2011-01-23',:data_pagamento => '2011-01-23', :valor => '14.50')
 Despesa.create!(:descricao => 'Loja TNT', :compra_id => @compra2011.id, :tipo_despesa_id => @tipoRoup.id,  :fornecedor_id => @fortnt.id,
-                :data => '2011-01-24', :valor => '3680.0')
+                :data => '2011-01-24',:data_pagamento => '2011-01-24', :valor => '3680.0')
 Despesa.create!(:descricao => 'Loja Valente', :compra_id => @compra2011.id, :tipo_despesa_id => @tipoRoup.id, :fornecedor_id => @forval.id,
-                :data => '2011-01-25', :valor => '2540.0')
+                :data => '2011-01-25',:data_pagamento => '2011-01-25', :valor => '2540.0')
 
 #Categorias
 @catblu = Categoria.create!(:descricao => 'Blusa')
@@ -162,3 +162,11 @@ Produto.create!(:descricao => 'Short Floral', :codigo_interno => '14', :codigo_f
 Produto.create!(:descricao => 'Bermuda Traco', :codigo_interno => '15', :codigo_fabricante => '0005421BE', :categoria_id => @catber.id, 
                 :compra_id => @compra2011.id, :fornecedor_id => @forlim.id, :valor_compra => 39.00, :valor_venda => 77.00, 
                 :marca_id => @marcalim.id, :tamanho_id => @tamM.id, :cor_id => @corverde.id )
+
+
+user = User.create(name: 'Gustavo', 
+                        username: 'guga', 
+                        email: 'gustavo@teste.com', 
+                        password: '123456', 
+                        password_confirmation: '123456', 
+                        admin: 1)

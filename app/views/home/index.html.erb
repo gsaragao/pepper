@@ -27,14 +27,14 @@
 							<h4>A Pagar</h4><br>
 							<% @pagamento_despesas.each do |pagamento| %>
 								<p>
-								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
-								  <span style="color:#006400"><%= pagamento.valor.real_formatado %></span>
+								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes_ano) %>:</span>
+								  <span style="color:#006400"><%= formata_float(pagamento.valor) %></span>
 								</p>
 						 	<% end %>	
 						<br>
 							<p>
 							  <span style="color:#666"><b>Total:</b></span>
-							  <span style="color:#006400"><b><%= @total_pagamento_despesa.real_formatado %></b></span>
+							  <span style="color:#006400"><b><%= formata_float(@total_pagamento_despesa) %></b></span>
 							</p>
 						</div>
 						<br>
@@ -42,14 +42,14 @@
 							<h4>Últimos Pag.</h4><br>
 							<% @ultimos_pagamentos.each do |pagamento| %>
 								<p>
-								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
-								  <span style="color:#006400"><%= pagamento.valor.real_formatado %></span>
+								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes_ano) %>:</span>
+								  <span style="color:#006400"><%= formata_float(pagamento.valor) %></span>
 								</p>
 						 	<% end %>	
 						<br>
 							<p>
 							  <span style="color:#666"><b>Total:</b></span>
-							  <span style="color:#006400"><b><%= @total_ultimos_pagamentos.real_formatado %></b></span>
+							  <span style="color:#006400"><b><%= formata_float(@total_ultimos_pagamentos) %></b></span>
 							</p>
 						</div>
 		    	    </td>
@@ -60,14 +60,14 @@
 							<h4>A Receber</h4><br>
 							<% @pagamento_vendas.each do |pagamento| %>
 								<p>
-								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes) %>:</span>
-								  <span style="color:#006400"><%= pagamento.valor.real_formatado %></span>
+								  <span style="color:#666"><%= I18n.l(pagamento.data, :format => :mes_ano) %>:</span>
+								  <span style="color:#006400"><%= formata_float(pagamento.valor) %></span>
 								</p>
 						 	<% end %>	
 						<br>
 							<p>
 							  <span style="color:#666"><b>Total:</b></span>
-							  <span style="color:#006400"><b><%= @total_pagamento_venda.real_formatado %></b></span>
+							  <span style="color:#006400"><b><%= formata_float(@total_pagamento_venda) %></b></span>
 							</p>
 						</div>
 						<br>
@@ -75,14 +75,14 @@
 							<h4>Últimos Rec.</h4><br>
 							<% @ultimos_recebimentos.each do |recebimento| %>
 								<p>
-								  <span style="color:#666"><%= I18n.l(recebimento.data, :format => :mes) %>:</span>
-								  <span style="color:#006400"><%= recebimento.valor.real_formatado %></span>
+								  <span style="color:#666"><%= I18n.l(recebimento.data, :format => :mes_ano) %>:</span>
+								  <span style="color:#006400"><%= formata_float(recebimento.valor) %></span>
 								</p>
 						 	<% end %>	
 						<br>
 							<p>
 							  <span style="color:#666"><b>Total:</b></span>
-							  <span style="color:#006400"><b><%= @total_ultimos_recebimentos.real_formatado %></b></span>
+							  <span style="color:#006400"><b><%= formata_float(@total_ultimos_recebimentos) %></b></span>
 							</p>
 						</div>
 				   </td>	
@@ -95,7 +95,7 @@
 							<% @formas_pagamento.each do |forma| %>
 							  <p>
 								 <span style="color:#666"><%= forma.descricao_forma %>:</span>
-								 <span style="color:#006400"><%= forma.valor.real_formatado %></span>
+								 <span style="color:#006400"><%= formata_float(forma.valor) %></span>
 								 <span style="color:#1E90FF">&nbsp;<%= number_to_percentage(((forma.valor.to_f / @total_formas.to_f) * 100)) %></span>
 							  </p>
 						 	<% end %>	

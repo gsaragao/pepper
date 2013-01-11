@@ -39,14 +39,14 @@
 		        <td style="color:#1E90FF"><%= produto.codigo_interno %></td>
 			    <td style="color:#666"><%= produto.descricao %></td>
 		        <td style="color:#666"><%= produto.marca.descricao if produto.marca %></td>
-		        <td style="color:#006400"><%= produto.valor_venda.real_formatado if produto.valor_venda %></td>
-				<td style="color:#006400"><%= produto.valor_vendido.real_formatado if produto.valor_vendido %></td>
+		        <td style="color:#006400"><%= formata_float(produto.valor_venda) if produto.valor_venda %></td>
+				<td style="color:#006400"><%= formata_float(produto.valor_vendido) if produto.valor_vendido %></td>
 		  </tr>
 		 <% end %>
 		<tr>
 	    	<td colspan="3">&nbsp;</td>
 	        <td>TOTAL</td>
-	        <td style="color:#006400"><b><%= @venda.total_vendido.real_formatado if @venda.total_vendido %></b></td>  
+	        <td style="color:#006400"><b><%= formata_float(@venda.total_vendido) if @venda.total_vendido %></b></td>  
 	    </tr>
 		 </table>
 <br><br>
@@ -62,13 +62,13 @@
 					<td style="color:#1E90FF"><%= I18n.l(pagamento.data) if pagamento.data %></td>
 					<td><%= pagamento.venda.lista_formas.key(pagamento.forma_pagamento) %></td>
 					<td><%= pagamento.parcela %>ª</td>
-					<td style="color:#006400"><%= pagamento.valor.real_formatado if pagamento.valor %></td>
+					<td style="color:#006400"><%= formata_float(pagamento.valor) if pagamento.valor %></td>
 				</tr>	
 			 <% end %>	
 				<tr>
 					<td colspan="2">&nbsp;</td>
 					<td style="color:#666">TOTAL</td>
-					<td style="color:#006400"><b><%= @venda.total_pagamento.real_formatado if @venda.total_pagamento %></b></td>
+					<td style="color:#006400"><b><%= formata_float(@venda.total_pagamento) if @venda.total_pagamento %></b></td>
 				</tr>	
         </table>
 

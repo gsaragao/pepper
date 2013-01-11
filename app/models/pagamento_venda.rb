@@ -55,8 +55,8 @@ class PagamentoVenda < ActiveRecord::Base
   end
   
   def self.proximos_recebimentos
-      query = where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') >= DATE_FORMAT(sysdate() , '%m/%Y')")
-      query = query.group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
+      query = where("DATE_FORMAT(pagamento_vendas.data , '%Y-%m') >= DATE_FORMAT(sysdate() , '%Y-%m')")
+      query = query.group("DATE_FORMAT(pagamento_vendas.data , '%Y-%m')")
       query.select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor")
   end
   
@@ -70,8 +70,10 @@ class PagamentoVenda < ActiveRecord::Base
   end
   
   def self.ultimos_seis_recebimentos
-      query = where("DATE_FORMAT(pagamento_vendas.data , '%m/%Y') < DATE_FORMAT(sysdate() , '%m/%Y')")
-      query = query.group("DATE_FORMAT(pagamento_vendas.data , '%m/%Y')")
+      query = where("DATE_FORMAT(pagamento_vendas.data , '%Y-%m') < DATE_FORMAT(sysdate() , '%Y-%m')")
+      query = query.group("DATE_FORMAT(pagamento_vendas.data , '%Y-%m')")
+      query = query.order("DATE_FORMAT(pagamento_vendas.data , '%Y') desc, DATE_FORMAT(pagamento_vendas.data , '%m') desc")
+      query = query.limit(4)
       query.select("pagamento_vendas.data, sum(pagamento_vendas.valor) as valor")
   end
   

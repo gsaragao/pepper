@@ -30,7 +30,7 @@
  
 		<p>
 		  <b><%= t('despesa.valor')%>:</b>
-		  <span style="color:#006400"><%= @despesa.valor.real_formatado if @despesa.valor  %></span>
+		  <span style="color:#006400"><%= formata_float(@despesa.valor) if @despesa.valor  %></span>
 		</p>
     </td>
    <td>
@@ -45,7 +45,7 @@
 				<tr>
 					<td><%= pagamento.despesa.lista_formas.key(pagamento.forma_pagamento) %></td>
 					<td><%= pagamento.parcela %></td>
-					<td style="color:#006400"><%= pagamento.valor.real_formatado if pagamento.valor %></td>
+					<td style="color:#006400"><%= formata_float(pagamento.valor) if pagamento.valor %></td>
 					<td style="color:#1E90FF"><%= I18n.l(pagamento.data) if pagamento.data %></td>
 				</tr>	
 			 <% end %>		

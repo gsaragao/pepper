@@ -153,10 +153,10 @@
 	        <td style="color:#666"><%= despesa.fornecedor.nome if despesa.fornecedor %></td>
 			<td style="color:#666"><%= despesa.descricao %></td>
 	        <td style="color:#1E90FF"><%= I18n.l(despesa.data) if despesa.data %></td>
-	        <td style="color:#006400"><%= despesa.valor.real_formatado if despesa.valor %></td>
+	        <td style="color:#006400"><%= formata_float(despesa.valor) if despesa.valor %></td>
 			<td style="color:#666"><%= despesa.lista_formas.key(despesa.forma_pagamento) %></td>
 			<td style="color:#666"><%= despesa.parcela %></td>
-			<td style="color:#006400"><%= despesa.valor_pagamento.real_formatado if despesa.valor_pagamento %></td>
+			<td style="color:#006400"><%= formata_float(despesa.valor_pagamento) if despesa.valor_pagamento %></td>
 		</tr>
 	 <% end %>	
 	    <tr>

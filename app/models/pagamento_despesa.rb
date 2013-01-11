@@ -6,8 +6,8 @@ class PagamentoDespesa < ActiveRecord::Base
   
   def self.proximos_pagamentos
       query = select("pagamento_despesas.data, sum(pagamento_despesas.valor) as valor")
-      query = query.where("DATE_FORMAT(pagamento_despesas.data , '%m/%Y') >= DATE_FORMAT(sysdate() , '%m/%Y')")
-      query = query.group("DATE_FORMAT(pagamento_despesas.data , '%m/%Y')")
+      query = query.where("DATE_FORMAT(pagamento_despesas.data , '%Y-%m') >= DATE_FORMAT(sysdate() , '%Y-%m')")
+      query = query.group("DATE_FORMAT(pagamento_despesas.data , '%Y-%m')")
       query
   end
   
@@ -22,8 +22,10 @@ class PagamentoDespesa < ActiveRecord::Base
 
   def self.ultimos_seis_pagamentos
       query = select("pagamento_despesas.data, sum(pagamento_despesas.valor) as valor")
-      query = query.where("DATE_FORMAT(pagamento_despesas.data , '%m/%Y') < DATE_FORMAT(sysdate() , '%m/%Y')")
-      query = query.group("DATE_FORMAT(pagamento_despesas.data , '%m/%Y')")
+      query = query.where("DATE_FORMAT(pagamento_despesas.data , '%Y-%m') < DATE_FORMAT(sysdate() , '%Y-%m')")
+      query = query.group("DATE_FORMAT(pagamento_despesas.data , '%Y-%m')")
+      query = query.order("DATE_FORMAT(pagamento_despesas.data , '%Y') desc, DATE_FORMAT(pagamento_despesas.data , '%m') desc")
+      query = query.limit(4)
       query
   end
 

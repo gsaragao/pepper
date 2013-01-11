@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -12,7 +12,7 @@ gem "will_paginate", "~> 3.0.3"
 gem "capybara"
 gem 'factory_girl'
 gem 'devise'
-gem "brdinheiro", "~> 3.1.0"
+gem "brdinheiro"
 
 group :test, :development do
   gem "rspec-rails", "~> 2.4"

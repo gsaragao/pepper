@@ -38,7 +38,7 @@
         <td width="15%" style="color:#666"><%= despesa.fornecedor.nome if despesa.fornecedor %></td>
 		<td width="15%" style="color:#666"><%= despesa.descricao %></td>
         <td width="10%" style="color:#1E90FF"><%= I18n.l(despesa.data) if despesa.data %></td>
-        <td width="10%" style="color:#006400"><%= despesa.valor.real_formatado if despesa.valor %></td>
+        <td width="10%" style="color:#006400"><%= formata_float(despesa.valor) if despesa.valor %></td>
         <td><%= link_to t('botao.detalhes'), despesa %></td>
 		<td><%= link_to t('botao.copiar'), edit_despesa_path(despesa,:acao => Despesa::COPY)%></td>
     	<td><%= link_to t('botao.editar'), edit_despesa_path(despesa)%></td>
