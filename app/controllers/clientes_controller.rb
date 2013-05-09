@@ -5,6 +5,7 @@ class ClientesController < ApplicationController
   before_filter :setar_classe_menu
   before_filter :manage_params, :only => [:index]
   before_filter :load_cliente , :only => [:show, :edit, :update, :destroy]
+  layout false
 
   def index
     @cidades = Cidade.order(:nome)
@@ -52,7 +53,6 @@ class ClientesController < ApplicationController
     if @cliente.save
       Rails.cache.delete(:clientes)
       flash[:notice] = t('msg.create_sucess')
-      #ClienteMailer.enviar(@cliente).deliver
       redirect_to clientes_path
     else
       load_combos
@@ -65,6 +65,7 @@ class ClientesController < ApplicationController
     if @cliente.update_attributes(params[:cliente])
       Rails.cache.delete(:clientes)
       flash[:notice] = t('msg.update_sucess')
+      #ClienteMailer.enviar(@cliente).deliver
       redirect_to clientes_path
     else
       load_combos

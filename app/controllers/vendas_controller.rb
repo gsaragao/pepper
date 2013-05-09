@@ -24,6 +24,11 @@ class VendasController < ApplicationController
     @venda = Venda.new
     @venda.vendedor_id = @vendedor_default.id if @vendedor_default
     @venda.data = Date.today
+
+    if (params[:cliente_id])
+      @venda.cliente = Cliente.find(params[:cliente_id])
+    end
+    
     respond_with @venda
   end
 

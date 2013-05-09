@@ -2,21 +2,21 @@
 <br>
 <%= form_for(@cliente, :html => { :method => :get }, :url => clientes_path) do |f| %>
 
-	<table class="zebra-striped">
-	  <tr 	>
-		<th><%= t('cliente.nome') %>&nbsp;<%= f.text_field :nome , :style=>'width: 200px;' %>&nbsp;&nbsp;
-			<%= t('cliente.cidade') %>&nbsp;	
-		<%= f.select :cidade_id, options_from_collection_for_select(@cidades,:id,:nome, @cliente.cidade_id), :style=>'width: 240px;',
-					:include_blank => true %>&nbsp;&nbsp;
-	      <%= f.submit t('botao.pesquisar'), :class => "btn primary",:style=>'width: 140px;' %></th>
-	 </tr>
-	</table>
+  <table class="zebra-striped">
+    <tr   >
+    <th><%= t('cliente.nome') %>&nbsp;<%= f.text_field :nome , :style=>'width: 200px;' %>&nbsp;&nbsp;
+      <%= t('cliente.cidade') %>&nbsp;  
+    <%= f.select :cidade_id, options_from_collection_for_select(@cidades,:id,:nome, @cliente.cidade_id), :style=>'width: 240px;',
+          :include_blank => true %>&nbsp;&nbsp;
+        <%= f.submit t('botao.pesquisar'), :class => "btn primary",:style=>'width: 140px;' %></th>
+   </tr>
+  </table>
 <% end %>
 
 <% if @clientes.size > 0  %>
  <table class="zebra-striped">
   <tr>
-   	<th width="20%"><%= t('cliente.nome')%></th>
+    <th width="20%"><%= t('cliente.nome')%></th>
     <th width="20%"><%= t('cliente.email')%></th>
     <th width="13%"><%= t('cliente.telefone')%></th>
     <th width="14%"><%= t('cliente.cidade')%></th>
@@ -24,28 +24,30 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
  <% @clientes.each do |cliente| %>
   <tr>
-  	<td style="color:#666"><%= cliente.nome %></td>
-   	<td style="color:#666"><%= cliente.email %></td>
-   	<td style="color:#666"><%= cliente.telefone %></td>
-   	<td style="color:#666"><%= cliente.cidade.nome if cliente.cidade %></td>
-	<td style="color:#1E90FF"><%= I18n.l(cliente.created_at, :format => :data) if cliente.created_at  %></td>
+    <td style="color:#666"><%= cliente.nome %></td>
+    <td style="color:#666"><%= cliente.email %></td>
+    <td style="color:#666"><%= cliente.telefone %></td>
+    <td style="color:#666"><%= cliente.cidade.nome if cliente.cidade %></td>
+    <td style="color:#1E90FF"><%= I18n.l(cliente.created_at, :format => :data) if cliente.created_at  %></td>
+    <td style="color:#1E90FF"><%= link_to t('botao.comprar'), new_venda_path(:cliente_id => cliente.id)%></td>
     <td style="color:#1E90FF"><%= link_to t('botao.detalhes'), cliente %></td>
     <td style="color:#1E90FF"><%= link_to t('botao.editar'), edit_cliente_path(cliente)%></td>
     <td style="color:#1E90FF"><%= link_to t('botao.excluir'), cliente, 
-	confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
+  confirm: 'Tem certeza que deseja excluir este registro?', method: :delete %></td>
   </tr>
  <% end %>
  </table>
-	<div class="apple_pagination">
-	    <%= will_paginate @clientes, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
-	</div>
+  <div class="apple_pagination">
+      <%= will_paginate @clientes, :container => false, :next_label => 'Próximo', :previous_label => 'Anterior' %>
+  </div>
 <% end %>
 
 <br />
 
 <a href="<%= new_cliente_path %>">
-	<button class="btn" name="btnpesquisa"><%= t('cliente.acao.novo')%></button></a>
+  <button class="btn" name="btnpesquisa"><%= t('cliente.acao.novo')%></button></a>
