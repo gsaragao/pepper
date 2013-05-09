@@ -29,7 +29,7 @@ class ClientesController < ApplicationController
       @clientes = Rails.cache.read(:clientes)  
     else
       @clientes = Cliente.order(:nome)
-      Rails.cache.write(:clientes ,@produtos)
+      Rails.cache.write(:clientes ,@clientes)
     end
       
     list = [] 
