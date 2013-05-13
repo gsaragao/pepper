@@ -5,8 +5,7 @@ class ClientesController < ApplicationController
   before_filter :setar_classe_menu
   before_filter :manage_params, :only => [:index]
   before_filter :load_cliente , :only => [:show, :edit, :update, :destroy]
-  layout false
-
+  
   def index
     @cidades = Cidade.order(:nome)
     @cliente = Cliente.new(params[:cliente])
