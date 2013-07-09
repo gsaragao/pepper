@@ -14,7 +14,11 @@ class PagamentoVendasController < ApplicationController
        @pagamento_venda.forma_pagamento = 0       
     end
 
-    @pagamento_vendas = PagamentoVenda.pesquisar(@pagamento_venda,params[:page])
+    @pagamento_vendas = []
+    
+    if params[:commit] == 'Pesquisar'
+      @pagamento_vendas = @pagamento_venda.pesquisar(params[:page])
+    end  
     respond_with @pagamento_vendas
   end
    

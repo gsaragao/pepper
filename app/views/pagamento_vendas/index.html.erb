@@ -8,7 +8,7 @@
 			<%= f.select :cliente_id, options_from_collection_for_select(@clientes,:id,:nome, @pagamento_venda.cliente_id),  
 			:include_blank => true %>&nbsp;&nbsp;<%= t('pagamento_venda.listar') %>&nbsp;
 			<%= f.select :lista, options_for_select([["Todos", ""], ["A Vencer", PagamentoVenda::AVENCER], ["Atrasados", PagamentoVenda::ATRASADO], ["Pagos", PagamentoVenda::PAGO]], @pagamento_venda.lista) %>&nbsp;&nbsp;<%= t('pagamento_venda.forma_pagamento') %>&nbsp;
-			<%= f.select :forma_pagamento, options_for_select([["Todos", "0"], ["Dinheiro", PagamentoVenda::DINHEIRO], ["Duplicata", PagamentoVenda::DUPLICATA]], @pagamento_venda.forma_pagamento) %>&nbsp;
+			<%= f.select :forma_pagamento, options_for_select([["Todos", ""], ["Dinheiro", PagamentoVenda::DINHEIRO], ["Duplicata", PagamentoVenda::DUPLICATA]], @pagamento_venda.forma_pagamento) %>&nbsp;<%= t('data_pagamento') %>&nbsp;<%= f.text_field :data_pagamento_cliente, :class => 'mask-date', :value => (I18n.l(@pagamento_venda.data_pagamento_cliente) if @pagamento_venda.data_pagamento_cliente) %>&nbsp;
 			<%= f.submit t('botao.pesquisar'), :class => "btn primary" %>
 		</th>
 	 </tr>

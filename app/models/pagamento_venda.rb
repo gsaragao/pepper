@@ -27,7 +27,8 @@ class PagamentoVenda < ActiveRecord::Base
     query = query.group("forma_pagamento")
     query
   end
-  
+ 
+=begin 
   def self.pesquisar(obj, page)
     
       query = includes(:venda => :cliente)
@@ -49,7 +50,15 @@ class PagamentoVenda < ActiveRecord::Base
      
       query = query.paginate(:page => page).order("pagamento_vendas.data")
   end
+=end  
   
+  def pesquisar(page)
+    query = PagamentoVenda.paginate(:conditions => conditions, :page => page).order("pagamento_vendas.data")
+    query = query.includes(:venda => :cliente)
+    query
+  end
+
+
   def descricao_forma
     lista_formas.key(forma_pagamento)
   end
@@ -108,6 +117,54 @@ class PagamentoVenda < ActiveRecord::Base
 
   def self.pesquisar_por_venda_duplicata(venda_id)
     where("forma_pagamento = ? and venda_id = ? and data_pagamento_cliente is null", PagamentoVenda::DUPLICATA, venda_id)
+  end
+
+  private
+
+  def data_pagamento_cliente_conditions
+    ["pagamento_vendas.data_pagamento_cliente = ?", data_pagamento_cliente] unless data_pagamento_cliente.blank?
+  end
+    
+  def forma_pagamento_conditions
+    saida = nil
+    if forma_pagamento.blank?
+      saida = ["pagamento_vendas.forma_pagamento in (1,4)"] 
+    else
+      saida = ["pagamento_vendas.forma_pagamento = ?", forma_pagamento]
+    end 
+    saida 
+  end  
+    
+  def cliente_id_conditions
+    ["vendas.cliente_id = ?", cliente_id] unless cliente_id.blank?
+  end
+
+  def lista_conditions
+    saida = nil
+      if lista == PagamentoVenda::ATRASADO 
+        saida = ["data_pagamento_cliente is null and pagamento_vendas.data < ?", Date.today]
+      elsif lista == PagamentoVenda::AVENCER  
+        saida = ["data_pagamento_cliente is null"]
+      elsif lista == PagamentoVenda::PAGO  
+        saida = ["data_pagamento_cliente is not null"]
+      end  
+    saida  
+  end
+
+  def conditions
+    [conditions_clauses.join(' AND '), *conditions_options]
+  end
+
+  def conditions_clauses
+    conditions_parts.map { |condition| condition.first }
+  end
+
+  def conditions_options
+    conditions_parts.map { |condition| condition[1..-1] }.flatten
+  end
+
+  def conditions_parts
+    private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
   end
 
 end
